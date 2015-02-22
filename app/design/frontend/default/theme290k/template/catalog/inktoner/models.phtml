@@ -1,0 +1,9 @@
+<select name="model" id="model" class="form-control">
+    <option>Select One</option>
+    
+	<?php foreach($this->getModels() as $model):?>
+	
+    	<option value="<?php echo $model['search_id']?>"><?php echo $model['supplier_model']?></option>
+    	
+    <?php endforeach;?>
+</select>

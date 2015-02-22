@@ -1,0 +1,49 @@
+<!--<link rel="stylesheet" type="text/css" href="<?php //echo $this->getSkinUrl('mw_epr/css/productreview.css')?>" />-->
+<?php $reviews = $this->getReviews()->getItems();?>
+<div class="mw_epr_list_title"><?php echo Mage::helper('enhancedproductreview')->__('Product Reviews')?></div>
+<div class="mw_epr_list">
+<?php
+    if(!count($reviews)):
+?>	
+	<p><?php echo Mage::helper('enhancedproductreview')->__('Not found reviews'); ?></p>
+	<?php
+	    else:
+	?>
+	<?php foreach ($reviews as $review):?>
+		<?php $p_review = Mage::getModel('catalog/product')->load($review->getEntityPkValue()); ?>
+		<div class="mw_epr_item">
+			<div class="mw_epr_item_pimage">
+				<a href="<?php echo $p_review->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p_review->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($p_review,'image')->resize(112,105); ?>" alt="magento " /></a>
+			</div>
+			<div class="mw_epr_item_info">
+				<div class="mw_epr_item_pname">
+					<a href="<?php echo $p_review->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p_review->getName()) ?>"><?php echo $this->htmlEscape($p_review->getName()) ?></a>
+				</div>
+				<div class="ratings">
+					<div class="epr_rating_title"><?php echo $this->__('Ratings:'); ?></div>
+					<div class="rating-box">
+	                	<div class="rating" style="width: <?php echo $this->__getPercentRate($review); ?>%;"></div>
+	                </div>
+	                <div class="mw_epr_item_clear"></div>
+                </div>
+            
+			  	<div class="mw_epr_item_title"><?php echo $review->getTitle(); ?></div>
+			  	<div class="mw_epr_item_detail"><?php echo $review->getDetail(); ?></div>
+			  	<div class="mw_epr_item_nickname">
+			  		<?php echo $review->getNickname();?>
+			  		<?php 
+			  			echo Mage::helper('enhancedproductreview')->__(" - Created at ");
+			  			echo$review->getCreatedAt();
+			  		?>
+			  	</div>
+		    </div>
+		    <div class="mw_epr_item_clear"></div>
+	    </div>    
+	<?php endforeach;?>
+	<div class="mw_epr_clear">&nbsp;</div>
+	<?php  echo $this->getToolbarHtml(); ?> 
+
+<?php
+    endif;
+?>
+</div>

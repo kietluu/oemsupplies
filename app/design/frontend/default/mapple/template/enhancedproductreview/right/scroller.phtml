@@ -1,0 +1,78 @@
+<?php 
+$enabled = $this->_getEnableReview();
+$type = $this->_getSidebarType();
+$position = $this->_getPositionReview();
+if(($enabled==1) && ($type==3) && ($position==2)){
+	
+	$reviews = $this->getRecentReview();
+	if($reviews){?>
+	<!--<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('mw_epr/css/scroller.css')?>" />-->
+	<script src="<?php echo $this->getSkinUrl('mw_epr/js/jquery/jquery.cycle.all.2.72.js') ?>" type="text/javascript"></script>
+	<div class="erp-block ">
+		<div class="erp-block-title">
+			<strong>
+				<span>
+					<a href="<?php echo Mage::getBaseUrl().'/enhancedproductreview/index/index'?>">
+					<?php echo Mage::helper('enhancedproductreview')->__('Recent Reviews');?>
+					</a>
+				</span>
+			</strong>
+		</div>
+		<div class="erp-block-content" id="epr_scroller_list">
+			<?php $i=1;?>
+			<?php foreach($reviews as $review){?>
+			<?php $p_review = Mage::getModel('catalog/product')->load($review->getEntityPkValue()); ?>
+				<?php if(($i%2)!=0) echo "<div class='epr_scroller_items'>"; ?>
+				<div class="epr_scroller_item">
+					<div class="epr_scroller_item_pimage">
+						<a href="<?php echo $p_review->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p_review->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($p_review,'image')->resize(80,80); ?>" alt="magento" /></a>
+					</div>
+					<div class="epr_scroller_item_info">
+						<div class="epr_scroller_item_pname">
+							<a href="<?php echo $p_review->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p_review->getName()) ?>"><?php echo $this->htmlEscape($p_review->getName()) ?></a>
+						</div>
+						<div>
+							<div class="epr_rating-box">
+			                	<div class="epr_rating" style="width: <?php echo $this->__getPercentRate($review); ?>%;"></div>
+			                </div>
+			            </div>
+					</div>
+					<div class="epr_scroller_clear"></div>
+					<div>
+						<div class="epr_scroller_item_title"><?php echo $review->getTitle(); ?></div>
+						<div class="epr_scroller_item_titles"><?php echo $review->getDetail(); ?></div>
+					  	<div class="epr_scroller_item_nickname"><?php echo $review->getNickname();?></div>
+					</div>
+				</div>
+				<?php if( (($i%2)==0) || ($i==$this->_getTotalRecentReview()) ) echo "</div>"; ?>
+				<?php $i++;?>
+			<?php }?>
+		</div>
+		<div class="erp-block-titles">
+			<strong class="erp-block-title-bottom" style="float:right;">
+				<a href="<?php echo Mage::getBaseUrl().'reviews'?>">
+				<?php echo Mage::helper('enhancedproductreview')->__('View All');?>
+				</a>
+			</strong>
+			<strong class="erp-block-title-bottom" style="float:right;">
+				<a class="back" href="#" id="prev_review"><img src="<?php echo $this->getSkinUrl('images/back.gif') ?>" alt=""/></a>
+				<a class="next" href="#" id="next_review"><img src="<?php echo $this->getSkinUrl('images/next.gif') ?>" alt=""/></a>
+			</strong>
+			<div class="epr_scroller_clear"></div>
+		</div>
+	</div>
+	<div class="epr_scroller_clear" style="width:100%;"></div>
+	<script type="text/javascript">
+		var $j = jQuery.noConflict(); 
+		$j(document).ready(function(){
+			$j('#epr_scroller_list').cycle({ 
+			    fx:     'fade', 
+			    speed:  'fast', 
+			    timeout: 3000, 
+			    next:   '#next_review', 
+			    prev:   '#prev_review' 
+			});
+		});
+	</script>
+	<?php } ?>
+<?php }?>

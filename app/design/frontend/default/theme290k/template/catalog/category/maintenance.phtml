@@ -1,0 +1,61 @@
+<?php 
+
+//65,32,98,17,100,82,264,142,38,71
+$category_ids = $this->getData('category_ids');
+$categories = explode(",", $category_ids);
+
+$dbRead = Mage::getSingleton("core/resource")->getConnection("core_read");
+$top_brands = array("'Starbucks'","'Dixie'","'Air Wick'","'PapaNicholas Coffee'","'LYSOL Brand'","'Energizer'");
+$top_brands = implode(",",$top_brands);
+$top_brands = strtolower($top_brands);
+
+$brandList = $dbRead->fetchAll("SELECT option_id , value from `eav_attribute_option_value` WHERE `option_id` IN
+											  ( SELECT option_id FROM eav_attribute_option WHERE attribute_id = 81 and Lower(value) IN ($top_brands) ) group by option_id order by value asc");
+?>
+<div class="left_block">
+  <div class="pro_block">
+	  <?php $i = 1; foreach($categories as $category_id):?>
+	  		<?php $_category = Mage::getModel('catalog/category')->load($category_id);?>
+	  		
+	  		<?php $_imgUrl = $_category->getImageUrl(); ?>
+	  		<?php if(!$_imgUrl):?>
+	  				<?php $_imgUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'menu/menu_clip_image002.jpg';?>
+	  		<?php endif;?>
+	  
+	  		<div class="menu_pro">
+	  			<a href="<?php echo $_category->getUrl();?>"><img src="<?php echo $_imgUrl;?>" alt="pro1" width="65" height="65" /></a>
+	  			<a style="height:28px;" href="<?php echo $_category->getUrl();?>"> <?php echo $this->escapeHtml($_category->getName());?> </a>
+	  		</div>
+	  
+	  <?php if($i % 5 == 0):?>
+	  		</div><div class="clearBoth"></div><div class="pro_block">
+	  <?php endif;?>
+	  
+	  <?php $i++; endforeach;?>
+  </div>
+  
+  <div class="pro_block">
+  		<div class="menu_pro">
+  			<a href="<?php echo Mage::getBaseUrl('link') . 'maintenance-breakroom.html';?>">
+  				<img src="<?php echo Mage::getBaseUrl('link').'media/menu/arrow-right.png';?>" alt="pro1" width="65" height="65"  />
+  			</a>
+  			<a href="<?php echo Mage::getBaseUrl('link') . 'maintenance-breakroom.html';?>">Show all categories</a>
+  		</div>
+  </div>
+  
+  <div class="clearBoth"></div>
+  
+  <div class="block2" id="wp_custom_menu_3">
+    <h2>Featured Brands</h2>
+    <div class="brands">
+      	<?php foreach($brandList as $brand):?>	
+	  		<div class="brand_logos col-sm-2">
+	  			<a href="<?php echo Mage::getUrl("maintenance-breakroom.html");?>?manufacturer=<?php echo $brand['option_id'];?>">
+	  				<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'menu/maintenance/'.strtolower(str_ireplace(" ", "", $brand['value'])).'_logo.png';?>" alt="<?php echo $brand['value']?>"  class="img-responsive"/>
+	  			</a>	 
+	  		</div>
+	    <?php endforeach;?>
+    </div>
+  </div>
+</div>
+<div class="clearBoth"></div>

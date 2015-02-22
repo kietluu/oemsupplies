@@ -1,0 +1,87 @@
+<div id="categories">
+  <div class="col_full">
+    <div class="listing" >
+ 	<?php	
+        //Get the Current Category
+		$_maincategorylisting = $this->getCurrentCategory();
+		
+		// Iterate all categories in store
+		foreach ($this->getCurrentChildCategories() as $_category):
+			if($_category->getIsActive()):
+				$cur_category = Mage::getModel('catalog/category')->load($_category->getId());
+				
+				// Load a random product from this category
+				$products = Mage::getResourceModel('catalog/product_collection')->addCategoryFilter($cur_category);
+				$products->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(100);
+				$products->load();
+				
+				// This a bit of a fudge - there's only one element in the collection
+				$_product = null;
+				foreach ( $products as $_product ) {}
+				if(isset($_product)):?>
+					<div class="sub-category-listing col-sm-3" style="height:350px;">
+					  <div class="linkimage">
+					    <a href="<?php echo $this->getCategoryUrl($_category)?>" class="product-image">
+						  <?php
+							   $layer = Mage::getSingleton('catalog/layer');
+							   $layer->setCurrentCategory($cur_category);
+							   if($_imgUrl=$this->getCurrentCategory()->getImageUrl()):
+						  		?>
+						  		<img src="<?php echo $_imgUrl ?>"  width="135" height="135"  alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+					 	  <?php endif; ?>
+ 
+ 						  <?php
+							// If there is not a image set for that Category - Display a random product Image
+							if(!$_imgUrl):
+								$product_collection = Mage::getModel('catalog/category')->load($_category->getId())->getProductCollection();
+								$product_collection->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(1);
+								
+								foreach($product_collection as $product) {
+									$product_id = $product->getId();
+									$full_product = Mage::getModel('catalog/product')->load($product_id);
+									$product_image_url = $full_product->getImageUrl();
+								}
+							?>
+							<img src="<?php echo $product_image_url; ?>" width="135" height="135" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+						  <?php endif; ?>
+					   </a>
+				    </div>
+ 
+ 					<h2 class="product-name" style="margin-top: 10px;">
+						<a href="<?php echo $this->getCategoryUrl($_category)?>">
+							<?php echo $_category->getName()?>
+						</a>
+					</h2>
+					
+					<div>
+	                    <dl id="narrow-by-list">
+	                    	<ul style="height:130px;overflow-y:scroll;">
+	                    		<?php $subcategories = Mage::getModel('catalog/category')->getCategories($this->getCurrentCategory()->getId());?>
+	                    		
+	                    		<?php if($subcategories):?>
+					               	<?php foreach ($subcategories as $category):?>
+					                    <li><a href="<?php echo $category->getRequestPath();?>"><?php echo $category->getName(); ?></a></li>
+					                <?php endforeach;?> 
+					                
+					            <?php else:?>
+					            		<li>There are no sub categories.</li>
+					            <?php endif;?>     
+				             </ul>       
+            		   </dl>
+            		   <script type="text/javascript">decorateDataList('narrow-by-list');</script>
+                   </div>
+                   <hr />
+	 
+				   <?php if($_description=$this->getCurrentCategory()->getDescription()):?>
+						<p class="category-description"><?php //echo $_description ?></p>
+				   <?php endif; ?>
+			  </div>
+		<?php
+			endif;
+		endif;
+	endforeach;
+?>
+</div>
+	<br clear=all>
+</div>
+</div> 

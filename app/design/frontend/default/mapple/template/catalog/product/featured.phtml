@@ -1,0 +1,117 @@
+<?php
+//{{block type="core/template" show_total="100" name="product_featured" as="product_featured" template="catalog/product/featured.phtml}}
+
+
+
+$totalPerPage = ($this->show_total) ? $this->show_total : 6;
+$visibility = array(
+                      Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+                      Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
+                  );
+
+$storeId = Mage::app()->getStore()->getId();
+
+$_productCollection = Mage::getResourceModel('reports/product_collection')
+						->addAttributeToSelect('*')     
+					    ->setStoreId($storeId)
+                        ->addStoreFilter($storeId)	
+					    ->addAttributeToFilter('visibility', $visibility)
+						->addAttributeToFilter('featured', true)
+						->setOrder('created_at', 'desc')
+						->addAttributeToSelect('status') 
+						->setPageSize($totalPerPage);
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection);
+Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInSearchFilterToCollection($_productCollection);
+
+
+// // if product is part of configurable product get first parent product
+// $junkProducts = new Varien_Data_Collection();
+// foreach ($_productCollection as $k => $p) {
+	// $p = $p->loadParentProductIds();
+	// $parentIds = $p->getData('parent_product_ids');	
+	// if (is_array($parentIds) && !empty($parentIds)) {
+		// if (!$junkProducts->getItemById($parentIds[0])) {
+			// $parentProduct = Mage::getModel('catalog/product')->setStoreId($storeId)->load($parentIds[0]);
+			// if ($parentProduct->isVisibleInCatalog()) {
+				// $junkProducts->addItem($parentProduct);
+			// }
+		// }
+	// } else {
+		// if (!$junkProducts->getItemById($k)) {
+			// $junkProducts->addItem($p);
+		// }
+	// }		
+// }
+// $_productCollection = $junkProducts;
+// //end if product is part of configurable product get first parent product
+?>
+	<div class="clear_both"></div>
+	<div class="title_featured"><span>Featrured Products</span></div>
+	<div class="block-home-content products-grid">
+	<table class="wrapper_boxgrid">
+		<?php $_collectionSize = count($_productCollection) ?>
+		<?php $_columnCount = 3; ?>
+		<?php $i=0; foreach ($_productCollection as $_product): ?>
+		
+		<?php if($i++%$_columnCount==0): ?>
+		
+			<tr class="grid-row">
+		<?php endif; ?>
+			<td class="item <?php if($i%3==1):?> first <?php elseif($i%3==0):?>last<?php endif;?>">
+				<div class="boxgrids captionfulls">
+					<h2><a class="product-name" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+					<a class="product-image" href="<?php echo $_product->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(155,114); ?>"  width="155" height="114" alt="<?php echo $this->htmlEscape($_product->getName()) ?>"/></a>
+					<div class="covers boxcaptions">
+						<div class="product-description">
+							<?php if ($_product->getSpecialPrice()>0):?>
+								<div class="box-prices">
+									<span class="special_price">
+										<span class="prices"><?php echo $this->helper('checkout')->formatPrice($_product->getSpecialPrice()) ?> </span>
+									</span>
+									<span class="old-price">
+										<span  class="prices"> <?php echo $this->helper('checkout')->formatPrice($_product->getPrice()) ?></span>
+									</span>
+								</div>
+							<?php else: ?>
+							
+								<!--review-->
+								<?php
+								$_reviews = Mage::getModel('review/review')->getResourceCollection();  
+
+								$_reviews->addStoreFilter( Mage::app()->getStore()->getId() )  
+								->addEntityFilter('product', $_product->getId())
+								->addStatusFilter( Mage_Review_Model_Review::STATUS_APPROVED )  
+								->setDateOrder()  
+								->addRateVotes(); 
+
+								$avg = 0; 
+								$ratings = array(); 
+								if (count($_reviews) > 0){
+								foreach ($_reviews->getItems() as $_review): ?>
+								<?php foreach( $_review->getRatingVotes() as $_vote ): ?>
+								<?php $ratings[] = $_vote->getPercent();   ?>
+								<?php endforeach; ?>
+								<?php endforeach;   
+								$avg = array_sum($ratings)/count($ratings);  } 
+								?> 
+
+								<div class="rating-box">  
+								<div class="rating" style="width: <?php echo ceil($avg) ; ?>%;"></div>  
+								</div> 
+								<!--end review-->
+							
+								<div class="box_prices"><span class="prices"><?php echo $this->helper('checkout')->formatPrice($_product->getPrice()) ?></span></div>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+			</td>
+			<?php if($i%$_columnCount==0 || $i==$_collectionSize): ?>
+			</tr>
+			<?php endif; ?>
+			<?php //if($i>=3):break; endif;?>
+		<?php endforeach ?>
+	</table>
+	<script type="text/javascript">decorateGeneric($$('.grid-row'), ['last', 'odd', 'even']);</script> 
+	</div>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : config.xml
+    Created on : 5 February, 2015, 7:29 AM
+    Author     : parmanand
+    Description:
+        Purpose of the document follows.
+-->
+<config>
+    <modules>
+        <Recycle_Emptytoner>
+            <version>0.1.0</version>
+        </Recycle_Emptytoner>
+    </modules>
+
+    <frontend>
+        <routers>
+            <recycle-empty-toner>
+                <use>standard</use>
+                <args>
+                    <module>Recycle_Emptytoner</module>
+                    <frontName>recycle-empty-toner</frontName>
+                </args>
+            </recycle-empty-toner>
+        </routers>
+    </frontend>
+</config>

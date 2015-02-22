@@ -1,0 +1,65 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://ws.ussco.com/eCatalog/catalog/1" xmlns="http://ws.ussco.com/eCatalog/catalog/1">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>%s</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">%s</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ns:getSearchRequest>
+         <ns:requestHeader>
+            <ns:IdentificationRequest>
+               <ns:SessionId>%s</ns:SessionId>
+            </ns:IdentificationRequest>
+            <!--Optional:-->
+            <ns:IncExcList>
+               <ns:ItemList IncExcType="Inclusion">
+                  <ns:ListName>OemSearchList</ns:ListName>
+               </ns:ItemList>
+               <ns:ItemList IncExcType="Inclusion">
+                  <ns:ListName>OemCustomSearchList</ns:ListName>
+               </ns:ItemList>
+            </ns:IncExcList>
+            <!--Optional:-->
+            <ns:ResultStyle>
+               <ns:ItemResultStyle>Brief</ns:ItemResultStyle>
+            </ns:ResultStyle>
+            <!--Optional:-->
+            <ns:CatNavDepth>0</ns:CatNavDepth>
+            <!--Optional:-->
+            <ns:IncludeDiscontinuedItem>false</ns:IncludeDiscontinuedItem>
+            <!--Optional:-->
+            <ns:IncludeSuggestedItem>false</ns:IncludeSuggestedItem>
+            <!--Optional:-->
+            <ns:GetGreenFilter>false</ns:GetGreenFilter>
+            <!--Optional:-->
+            <ns:GetCountryOfOriginFilter>false</ns:GetCountryOfOriginFilter>
+         </ns:requestHeader>
+         <ns:searchRequest>
+            <!--Optional:-->
+            <ns:SearchFilters>
+               %s
+               %s
+               <ns:CatFilterDepth>1</ns:CatFilterDepth>
+            </ns:SearchFilters>
+            <!--Optional:-->
+            <ns:SearchSort>
+               <ns:SortCode>%s</ns:SortCode>
+            </ns:SearchSort>
+            <!--Optional:-->
+            <ns:StartAtResult>%s</ns:StartAtResult>
+            <!--Optional:-->
+            <ns:BufferSize>%s</ns:BufferSize>
+            <!--Optional:-->
+            <ns:AllowLanding>true</ns:AllowLanding>
+            <!--Optional:-->
+            <ns:AllowBrandLanding>true</ns:AllowBrandLanding>
+            <!--Optional:-->
+            <ns:AllowCategoryLanding>true</ns:AllowCategoryLanding>
+            %s
+         </ns:searchRequest>
+      </ns:getSearchRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

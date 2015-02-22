@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="head">
+			<action method="addJs"><script>mw_js/jquery.js</script></action>
+			<action method="addJs"><script>mw_js/jquery_noconflict.js</script></action>
+			
+			<action method="addCss"><stylesheet>mw_epr/css/scroller.css</stylesheet></action>
+			<action method="addCss"><stylesheet>mw_epr/css/slider.css</stylesheet></action>
+			<action method="addCss"><stylesheet>mw_epr/css/list.css</stylesheet></action>
+			<action method="addCss"><stylesheet>mw_epr/css/productreview.css</stylesheet></action>
+		</reference>
+		
+    	<reference name="left">
+    		<block type="enhancedproductreview/recentreview" name="productreview.left.list" template="enhancedproductreview/left/list.phtml" before="-"></block>
+    		<block type="enhancedproductreview/recentreview" name="productreview.left.slider" template="enhancedproductreview/left/slider.phtml" before="-"></block>
+    		<block type="enhancedproductreview/recentreview" name="productreview.left.scroller" template="enhancedproductreview/left/scroller.phtml" before="-"></block>
+    	</reference>
+    	
+    	<reference name="right">
+    		<block type="enhancedproductreview/recentreview" name="productreview.right.list" template="enhancedproductreview/right/list.phtml" after="cart_sidebar"></block>
+    		<block type="enhancedproductreview/recentreview" name="productreview.right.slider" template="enhancedproductreview/right/slider.phtml" after="cart_sidebar"></block>
+    		<block type="enhancedproductreview/recentreview" name="productreview.right.scroller" template="enhancedproductreview/right/scroller.phtml" before="right.poll" ></block>
+    	</reference>
+    </default>
+	
+    <enhancedproductreview_index_index>
+        <reference name="content">
+            <block type="enhancedproductreview/list" name="productreview.list" template="enhancedproductreview/list.phtml" />
+        </reference>
+    </enhancedproductreview_index_index>
+</layout> 

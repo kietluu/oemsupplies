@@ -1,0 +1,85 @@
+<form id="search_mini_form" action="<?php echo $this->helper('catalogsearch')->getResultUrl() ?>" method="get">
+    <div class="form-search" style="position:relative;">
+        <label for="search"><?php echo $this->__('Search:') ?></label>
+        <input id="search" autocomplete="off" type="text" name="<?php echo $this->helper('catalogsearch')->getQueryParamName() ?>" value="<?php echo $this->helper('catalogsearch')->getEscapedQueryText() ?>"  class="input-text" />
+        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"><strong><i class="fa fa-search"></i></strong></button>
+        <div id="search_autocomplete" class="search-autocomplete"></div>
+        
+        <script type="text/javascript">
+        //<![CDATA[
+            //var searchForm = new Varien.searchForm('search_mini_form', 'search', '<?php echo $this->__('Search entire store here...') ?>');
+            //searchForm.initAutocomplete('<?php echo $this->helper('searchautocomplete')->getSuggestUrl() ?>', 'search_autocomplete');
+        //]]>
+        </script>
+    </div>
+</form>
+<script>
+	var baseURL = '<?php echo Mage::getBaseUrl();?>';
+</script>
+<style>
+.ssTypeAheadWrapper{
+	 z-index:1000;
+}
+.ssSuggestBucket {
+	background: #fff;
+	color: #000;
+	border: 1px solid #999;
+	padding:5px;
+	text-align: left;
+}
+.ssSuggestBucket ul {
+	padding: 0;
+}
+.ssSuggestBucket li {
+	list-style: none outside none;
+	padding: 0px 0px;
+	overflow:hidden;
+	white-space:nowrap;
+}
+.ssSuggestBucket li a {
+	text-decoration: none;
+	overflow:hidden;
+	white-space:nowrap;
+}
+.ssSuggestBucket li:hover {
+	background: #e5e5e5;
+	color:#fff;
+}
+</style>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('smart_search/ssjs.js') ?>"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		jQuery("#search").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:2});
+	});
+</script>    
+
+<?php //echo Mage::helper('searchautocomplete')->getStyle(); ?>
+<!-- <script type="text/javascript" src="<?php //echo $this->getSkinUrl("js/jquery-ui.js"); ?>"></script>
+<link href="<?php //echo $this->getSkinUrl("css/jquery-ui.css"); ?>" rel="stylesheet" type="text/css" />
+-->
+ 
+<style type="text/css">
+	.ui-autocomplete { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; }
+	.ui-autocomplete .ui-menu-item{ padding: 2px 5px; white-space: nowrap; overflow: hidden; text-align:left; }
+	.ui-autocomplete .ui-menu-item a{ font-size:13px;}
+</style>
+
+<script type="text/javascript">
+    function getInkKeywords(){
+    	jQuery(document).ready(function($) {
+	    	type = jQuery("#inktoner_search input[type='radio']:checked").val();
+	    	console.log(type);
+	    	
+	    	if(type == 'cartridge'){
+	       		jQuery("#inkkeyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
+	    	}
+	    	else{
+	       		jQuery("#inkkeyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
+	    	}
+    	});
+    	
+    	/*jQuery("#inkkeyword").autocomplete({
+        	source : url
+        });*/
+    }
+</script>

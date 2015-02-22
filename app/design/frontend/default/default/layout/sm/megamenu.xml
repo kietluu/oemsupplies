@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<!-- add megamenu to top menu site, please -->
+		
+		
+			<reference name="top.menu">
+				<block type="megamenu/list" name="megamenu.list.theme"/>
+			</reference>
+		
+		
+		<!--end add-->
+		
+		<!-- remove menu default from top menu site -->
+		
+		
+			<remove name="catalog.topnav"/>
+		
+		
+		<!-- end remove-->
+		
+    </default>
+    <megamenu_index_index>
+		<reference name="root">
+			<action method="setTemplate"><template>page/empty.phtml</template></action>
+		</reference>
+		<remove name="top.menu"/>		
+        <reference name="content">
+			<block type="megamenu/list" name="megamenu.list.theme">
+				<!--<action method="setConfig">	<name>		<theme>theme1</theme>						</name>		</action>-->
+			</block>
+        </reference>
+    </megamenu_index_index>
+</layout> 

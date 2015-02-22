@@ -1,0 +1,58 @@
+<div class="left_block">
+  <form method="get" action="<?php echo $this->getSearchUrl()?>" id="inktoner_search">	
+  	  <h2> Search by cartridge or printer</h2>
+  	  <div class="brands">
+		    <div class="leftside col-sm-6">
+		      <div class="space">
+				<div class="radiobtn radio ">
+				   <input name="search_type" type="radio" value="cartridge"  />
+				</div>
+				
+				<div class="f_left"> Cartridge</div>
+				
+				<div class="radiobtn radio " style="padding-left:10px;">
+				  <input name="search_type" checked="checked" type="radio" value="printer" />
+				</div>
+				<div class="f_left"> Printer</div>
+		   		<div class="clearBoth"> </div>   </div>
+		    </div>
+		    
+		    <div class="rightside col-sm-6">
+		      <div class="space">
+		        <div class="f_left">
+		            <input name="inkkeyword" type="text" id="inkkeyword" class="form-control inputs" placeholder="keyword" onclick="getInkKeywords()" onchange="getInkKeywords()" />
+		        </div>
+		        <div>   
+		        	<button type="submit" class="btn btn-success" style=" background:#60a810; margin:0 0 0 10px;">Go</button>	
+		        </div>
+                <div class="clearBoth"> </div>
+		      </div>
+		    </div>
+    		<div class="clearBoth"> </div>
+  	  </div>
+  </form>
+  
+  <?php $brandList = $this->getInkBrands(); ?>
+  
+  <div class="clearBoth"></div>
+  <div class="block2" id="wp_custom_menu_3">
+    <div class="f_left">
+       <h2>Featured Brands</h2>
+    </div>
+    
+    <div class="rightside_link"><a href="<?php echo Mage::getUrl('ink-toner.html');?>">See all brands in our ink and toner store</a></div>
+    
+    <div class="clearBoth"></div>
+    <div class="brands_list">
+    	<?php $i = 0; foreach($brandList as $brand): if($i == 12){ break;}?>	
+	  		<div class="featured_brands_list_bg">
+	  			<a href="<?php echo Mage::getUrl("catalog/inktoner");?>?m=<?php echo $brand['search_id'];?>&name=<?php echo $brand['supplier_name'];?>">
+	  				<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'manufacturers/'.strtoupper(str_ireplace(" ", "", $brand['supplier_name'])).'_LOGO.JPG';?>" alt="<?php echo $brand['supplier_name']?>" width="80" height="50" />
+	  			</a>	 
+	  		</div>
+	    <?php $i++; endforeach;?>
+      <div class="clearBoth"> </div>
+    </div>
+  </div>
+</div>
+<div class="clearBoth"></div>

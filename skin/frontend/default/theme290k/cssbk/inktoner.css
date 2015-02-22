@@ -1,0 +1,159 @@
+@CHARSET "ISO-8859-1";
+
+/*.clearBoth {
+	clear: both;
+}
+
+.header_back {
+	height: 40px;
+	width: 100%;
+	background: url(../images/bg_title.gif) repeat-x scroll 0 100% #fff;
+	border: 1px solid #d0dcf5;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font: 18px Arial, Helvetica, sans-serif;
+	padding: 10px;
+	border-bottom: none;
+}
+
+.inktoner_bg {
+	background: url(../images/grid_wrap.gif) repeat-x scroll 0 100% #fff;
+	border: 1px solid #c8c8c8;
+	border-top: 0;
+	width: 100%;
+	padding: 10px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	text-transform: capitalize;
+}
+
+.space {
+	margin: 10px 0;
+}
+
+.space a {
+	color: #60a810;
+}
+
+.space a:hover {
+	color: #2a6496;
+}
+
+.inktoner_bg h3 {
+	font: bold 15px Arial, Helvetica, sans-serif;
+	padding: 0;
+	margin: 0;
+}
+
+.leftpart {
+	float: left;
+	margin: 0 0 0 30px;
+	width: 43%;
+}
+
+.midpart {
+	background: url(../images/or.png);
+	height: 93px;
+	width: 24px;
+	float: left;
+	margin: 25px 0 0;
+}
+
+.rightpart {
+	float: right;
+	width: 45%;
+}
+
+.go_button {
+	background: none repeat scroll 0 0 #60a810;
+	border-radius: 5px;
+	color: #fff;
+	float: left;
+	margin: 0 0 0 10px;
+	padding: 4px 22px 4px 8px;
+	width: 20px;
+}
+
+.go_button a {
+	color: #fff;
+}
+
+.go_button a:hover {
+	background: none repeat scroll 0 0 #232323;
+	color: #fff;
+}
+
+.f_left {
+	float: left;
+}
+
+.f_right {
+	float: right;
+}
+
+.offer {
+	margin: 15px 0;
+	width: 100%;
+}
+
+.brands_list {
+	width: 100%;
+}
+
+.brands_list_bg {
+	background: url(../images/brandsbg.jpg);
+	width: 84px;
+	height: 45px;
+	float: left;
+	margin: 0 14px 0 0;
+	text-align: center;
+}
+
+.brands_list_bg img {
+	margin: 3px 0 0 0;
+}
+
+.inputs {
+	height: 28px;
+	padding: 0 0 0 10px;
+	text-transform: capitalize;
+	width: 300px;
+}
+
+.text {
+	width: 100%;
+	margin: 20px 0;
+}
+
+.charlist li {
+	background: none repeat scroll 0 0 #60a810;
+	border-radius: 5px;
+	float: left;
+	margin: 10px 10px 10px 0;
+	padding: 0 7px;
+}
+
+.charlist li a {
+	color: #fff;
+}
+
+.listing {
+	width: 100%;
+}
+
+.listing ul li {
+	display: inline;
+	float: left;
+	margin: 2px 5px;
+	width: 150px;
+}
+
+.radiobtn {
+	float: left;
+	margin: 0 10px 15px 0;
+}
+
+.radiobtn input[type="radio"],input[type="checkbox"] {
+	margin: 0;
+	outline: medium none;
+}*/

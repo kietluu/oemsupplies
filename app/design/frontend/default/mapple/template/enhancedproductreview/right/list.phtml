@@ -1,0 +1,54 @@
+<?php 
+$enabled = $this->_getEnableReview();
+$type = $this->_getSidebarType();
+$position = $this->_getPositionReview();
+if(($enabled==1) && ($type==1) && ($position==2)){
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('mw_epr/css/list.css')?>" />
+	<?php 
+	$reviews = $this->getRecentReview();
+	if($reviews){?>
+	<div class="erp-block  erp-block-compare">
+		<div class="erp-block-title">
+			<strong>
+				<span>
+				<?php echo Mage::helper('enhancedproductreview')->__('Recent Reviews');?>
+				</span>
+			</strong>
+		</div>
+		<div class="erp-block-content">
+			<ul class="mw_epr_sidebar_list">
+			<?php foreach($reviews as $review){?>
+				<?php $p_review = Mage::getModel('catalog/product')->load($review->getEntityPkValue()); ?>
+				<li class="mw_epr_list_item">
+					<div class="mw_epr_list_item_pimage">
+						<a href="<?php echo $p_review->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p_review->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($p_review,'image')->resize(80,80); ?>" alt="magento themes"></a>
+					</div>
+					<div class="mw_epr_list_item_info">
+						<div class="mw_epr_list_item_pname">
+							<a href="<?php echo $p_review->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p_review->getName()) ?>"><?php echo $this->htmlEscape($p_review->getName()) ?></a>
+						</div>
+						<div>
+							<div class="epr_rating-box">
+			                	<div class="epr_rating" style="width: <?php echo $this->__getPercentRate($review); ?>%;"></div>
+			                </div>
+			            </div>
+					</div>
+					<div class="mw_epr_item_clear"></div>
+					<div >
+						<div class="mw_epr_item_title"><?php echo $review->getTitle(); ?></div>
+						<div class="mw_epr_item_description"><?php echo $review->getDetail(); ?></div>
+					  	<div class="mw_epr_list_item_nickname"><?php echo $review->getNickname();?></div>
+					</div>
+				</li>
+			<?php }?>
+			</ul>
+			<div class="epr_list_viewall">
+					<a href="<?php echo Mage::getBaseUrl().'reviews'?>">
+					<?php echo Mage::helper('enhancedproductreview')->__('View All');?>
+					</a>
+			</div>
+		</div>	
+	</div>
+	<?php } ?>
+<?php } ?>

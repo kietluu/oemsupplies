@@ -1,0 +1,191 @@
+<link href="<?php echo $this->getSkinUrl("css/inktoner.css"); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    function getCategories(id){
+        url = '<?php echo Mage::getUrl('catalog/inktoner/getCategories');?>?id='+id;
+    	jQuery.ajax({
+			url: url,
+			success: function(data){
+			   jQuery("#categories").html(data);
+			},
+			error: function(){
+				
+			}
+        });
+    }
+
+    function getModels(id){
+        url = '<?php echo Mage::getUrl('catalog/inktoner/getCategoryModels');?>?id='+id;
+    	jQuery.ajax({
+			url: url,
+			success: function(data){
+			   jQuery("#models").html(data);
+			},
+			error: function(){
+				
+			}
+        });
+    }
+
+    function getKeywords(){
+    	jQuery(document).ready(function($) {
+	    	type = (jQuery("#search_type1").prop("checked")) ? 'cartridge' : 'printer';
+	    	console.log(type);
+	    	
+	    	if(type == 'cartridge'){
+	       		jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
+	    	}
+	    	else{
+	       		jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
+	    	}
+    	});
+    	
+    	/*url = '< ?php echo Mage::getUrl('catalog/inktoner/getKeywords');? >?type='+type;
+    	jQuery("#keyword").autocomplete({
+        	source : url
+        });*/
+    }
+</script>
+
+<div class="inktoner-main">
+  <div class="header_back">Your Ink and Toner Finder </div>
+  <div class="inktoner_bg">
+    <div class="col-sm-6">
+       <form method="get" action="<?php echo $this->getSearchUrl()?>">	
+	    	<h3>Search for Printer</h3>
+            <div class="space">
+            	<select name="brand" id="brand" onchange="getCategories(this.value)" class="form-control">
+            		<option value="">Select One</option>
+            		<?php foreach($this->getBrands() as $brand):?>
+            			<option value="<?php echo $brand['id']?>"><?php echo $brand['supplier_name']?></option>
+            		<?php endforeach;?>
+            	</select>
+            </div>
+            
+            <div class="space" id="categories">
+            	<select name="category" id="category" disabled="disabled" class="form-control">
+            		<option>Select One</option>
+            	</select>
+            </div>
+            
+            <div class="space" id="models">
+            	<select name="model" id="model" disabled="disabled" class="form-control">
+            		<option>Select One</option>
+            	</select>
+            </div>
+            
+            <button type="submit" class="btn btn-success" style=" background:#60a810;">Search</button>
+        </form>
+    </div>
+
+    <div class="col-sm-1 midpart"><img src="/demo/skin/frontend/default/theme290k/images/or.png" alt=""/></div>
+
+    <div class="col-sm-5">
+       <form method="get" action="<?php echo $this->getSearchUrl()?>" class="form-search">
+	      <h3>Search by cartridge or printer</h3>
+	      <div class="space">
+			<div class="radiobtn radio" style="padding-left:0;">
+			   <input name="search_type" type="radio" checked="checked" value="cartridge" id="search_type1" onclick="jQuery('#keyword').val('')"  />
+			</div>
+			
+			<div class="f_left"> Cartridge</div>
+			
+			<div class="radiobtn radio" style="padding-left:10px;">
+			  <input name="search_type" type="radio" value="printer" id="search_type2" onclick="jQuery('#keyword').val('')"  />
+			</div>
+			<div class="f_left"> Printer</div>
+	      <div class="clearBoth"> </div> </div>
+ 
+	      <div class="space" style="position:relative;">
+		  	   <input name="keyword" type="text" id="keyword" placeholder="keyword" onkeypress="getKeywords()" onkeyup="getKeywords()" class="form-control inputs" />
+		  </div>
+            
+          <div> <button type="submit" class="btn btn-success" style=" background:#60a810;">Go</button></div>
+		  <div class="clearBoth"></div>
+	  
+	      <div class="space"><a href="#allbrands">See all Brands</a></div>
+	   </form>
+    </div>
+    <div class="clearBoth"> </div>
+  </div>
+  <div class="clearBoth"> </div>
+</div>
+
+<div class="offer">
+  <div class="col-sm-6" style="margin-bottom:10px;"><img src="<?php echo $this->getSkinUrl('images/offer.jpg')?>" alt="offer" width="372" height="132" class="img-responsive"  /></div>
+  <div class="col-sm-6"  style="margin-bottom:10px;"><img src="<?php echo $this->getSkinUrl('images/offer.jpg')?>" alt="offer" width="372" height="132" class="img-responsive" /></div>
+  <div class="clearBoth"></div>
+</div>
+
+<?php $brandList = $this->getTopBrands(); ?>
+
+<div class="brands_list">
+  <?php foreach($brandList as $brand):?>	
+  		<div class="brands_list_bg">
+  			<a href="<?php echo Mage::getUrl("catalog/inktoner");?>?m=<?php echo $brand['search_id'];?>&name=<?php echo $brand['supplier_name'];?>">
+  				<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'manufacturers/'.strtoupper(str_ireplace(" ", "", $brand['supplier_name'])).'_LOGO.JPG';?>" alt="<?php echo $brand['supplier_name']?>" width="80" height="60" />
+  			</a>	 
+  		</div>
+  <?php endforeach;?>
+  <div class="clearBoth"> </div>
+</div>
+
+<div class="text">
+  <p>Imagining an office without printer or printer supplies is quite impossible and imagining printer use without ink and toner is equally impossible! OEM Supplies bring you best of ink and toner supplies at most reasonable prices so that your regular printer use never ever gets withheld or you essential tasks stop in between.</p>
+  <div class="clearBoth"> </div>
+</div>
+
+<div class="header_back">All Brands </div>
+<div>
+  <p>Scroll down to see our entire list of  printer brands below</p>
+</div>
+
+<div id="allbrands">
+  <ul class="charlist">
+    <li><a href="#brand_1-9">1-9</a></li>
+    
+    <?php for($i=65; $i<=90; $i++): $letter = chr($i);?>
+		<li><a href="#brand_<?php echo $letter; ?>"><?php echo $letter; ?></a></li>
+    <?php endfor; ?>
+  </ul>
+  <div class="clearBoth"> </div>
+</div>
+
+<?php $supplierAlphaList = $this->getAlphaSuppliers(); ?>
+<?php $supplierNumList = $this->getNumericSuppliers(); ?>
+
+<div class="listing" id="listing"> 
+   <b><a id="brand_1-9" name="brand_1-9">Brands: 0-9</a></b><br>
+   <b style="float:left;">--------------------------</b>
+   <div style="clear:both"></div>
+  		
+   <ul class="manufacturerlist">
+  	  <?php foreach($supplierNumList as $supplier):?>
+    		<li><a href="<?php echo Mage::getUrl("catalog/inktoner");?>?m=<?php echo $supplier['search_id'];?>&name=<?php echo $supplier['supplier_name'];?>">
+	    		<?php echo $supplier['supplier_name'];?>
+	    	</a></li>
+      <?php endforeach;?>		
+   </ul>
+   <div style="clear:both"></div>
+   -----------------------------------------------------------------------------------------------------------------------------------<a style="float:right;" href="#listing">Back to Top</a>
+   <div style="clear:both"></div>
+ 		
+   <?php foreach($supplierAlphaList as $letter => $suppliers):?>
+   		<br>
+	 	<b><a id="brand_<?php echo $letter;?>" name="brand_<?php echo $letter;?>">Brands: <?php echo $letter;?></a></b><br>
+	  	<b style="float:left;">--------------------------</b>
+	  	<div style="clear:both"></div>
+	 		
+	 	<ul class="manufacturerlist">
+	 		<?php foreach($suppliers as $supplier):?>
+	 				<li><a href="<?php echo Mage::getUrl("catalog/inktoner");?>?m=<?php echo $supplier['search_id'];?>&name=<?php echo $supplier['supplier_name'];?>">
+			    		<?php echo $supplier['supplier_name'];?>
+			    	</a></li>
+	    	<?php endforeach;?>
+	  	</ul>
+	  	<div style="clear:both"></div>
+  		
+  		-----------------------------------------------------------------------------------------------------------------------------------<a style="float:right;" href="#listing">Back to Top</a>
+   <?php endforeach;?>
+ 	    		
+  <div style="clear:both"></div>
+</div>

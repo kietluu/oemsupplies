@@ -1,0 +1,51 @@
+/*@CHARSET "ISO-8859-1";*/
+/*.erp-block-title  {
+	background:url("../images/bkg_block-title.gif") repeat-x scroll 0 0 transparent;
+	border-bottom:1px solid #DDDDDD;
+	padding:2px 9px;
+	text-transform:uppercase;
+	text-align:left !important;
+	color: #E26703;
+}
+
+.erp-block-title  a
+{
+	color: #000;	
+	text-decoration:none;
+}
+.erp-block {
+	border:1px solid #C4C1BC;
+	margin:0 0 15px;
+}*/
+
+#epr_scroller_list{position: relative;width:192px;height:auto; background-color: white; overflow: hidden;}
+.epr_scroller_item_pname{padding-bottom:7px;}
+.epr_scroller_item{padding:16px 8px;width:176px !important;border-bottom:1px solid #e7e7e7;}
+.epr_scroller_item_pimage{float:left;width:32%;height:auto;}
+.epr_scroller_item_pimage img{float:left;width:48px;border:none;}
+.epr_scroller_item_info{float:right !important;width:68%;overflow:hidden;}
+.epr_scroller_item_title{font-weight:bold; color:#555;font-size:11px;}
+
+.epr_scroller_item_nickname{text-align:right !important;font-size:11px;font-style:italic;font-weight:bold;}
+.epr_scroller_item_pname a{font-size:11px;text-decoration:none; font-weight:bold;color:#444;}
+.epr_scroller_clear{clear:both;height:1px;overflow:hidden;}
+
+.epr_scroller_item_title{font-weight:bold;padding-right:8px;padding-top:4px;}
+.epr_scroller_viewall{text-align:right;background:white;padding:0px 5px;}
+.epr_rating-box, .epr_rating{
+	background: url("../images/product_rating_full_star.gif") repeat-x scroll 0 0 transparent;
+	height:13px;
+	left:0;
+	/*postion: absolute;*/
+	top:0;
+}
+.erp-block-titles{padding:11px;height:14px;}
+.epr_rating-box {
+    background: url(../images/bg-recent.gif) no-repeat scroll center center;
+    display: inline-block;
+    font-size: 9px;
+    height: 13px;
+    padding: 1px;
+    text-indent: -9999em;
+    width: 13px;
+}

@@ -1,0 +1,52 @@
+<?php 
+
+//267,113,20,456,367,293,157,12,279,413
+$category_ids = $this->getData('category_ids');
+$categories = explode(",", $category_ids);
+?>
+<div class="left_block">
+  <div class="pro_block">
+	  <?php $i = 1; foreach($categories as $category_id):?>
+	  		<?php $_category = Mage::getModel('catalog/category')->load($category_id);?>
+	  		
+	  		<?php $_imgUrl = $_category->getImageUrl(); ?>
+	  		<?php if(!$_imgUrl):?>
+	  				<?php $_imgUrl = 'http://oemsupplies.com/demo/media/menu/menu_clip_image002.jpg';?>
+	  		<?php endif;?>
+	  
+	  		<div class="menu_pro">
+	  			<a href="<?php echo $_category->getUrl();?>"><img src="<?php echo $_imgUrl;?>" alt="pro1" width="65" height="65" /></a>
+	  			<a href="<?php echo $_category->getUrl();?>"> <?php echo $this->escapeHtml($_category->getName());?> </a>
+	  		</div>
+	  
+	  <?php if($i % 5 == 0):?>
+	  		</div><div class="clearBoth"></div><div class="pro_block">
+	  <?php endif;?>
+	  
+	  <?php $i++; endforeach;?>
+  </div>
+  
+  <div class="pro_block">
+  		<div class="menu_pro">
+  			<a href="<?php echo Mage::getBaseUrl('link') . 'technology.html';?>">
+  				<img src="<?php echo Mage::getBaseUrl('link').'media/menu/arrow-right.png';?>" alt="pro1" width="65" height="65"  />
+  			</a>
+  			<a href="<?php echo Mage::getBaseUrl('link') . 'technology.html';?>">Show all categories</a>
+  		</div>
+  </div>
+  
+  <div class="clearBoth"></div>
+  
+  <div class="block2" id="wp_custom_menu_3">
+    <h2>Featured Brands</h2>
+    <div class="brands">
+      <div class="brand_logos"><a href=""><img src="http://oemsupplies.com/demo/media/menu/BROTHER_LOGO.png" alt="BROTHER" width="60" height="60"  /></a> </div>
+      <div class="brand_logos"><a href=""><img src="http://oemsupplies.com/demo/media/menu/CANON_LOGO.png" alt="CANON_LOGO" width="60" height="60" /></a> </div>
+      <div class="brand_logos"><a href=""><img src="http://oemsupplies.com/demo/media/menu/DELL_LOGO.png" alt="DELL_LOGO" width="90" height="60"  /></a> </div>
+      <div class="brand_logos"><a href=""><img src="http://oemsupplies.com/demo/media/menu/HP_LOGO.png" alt="HP_LOGO" width="60" height="60"  /></a> </div>
+      <div class="brand_logos"><a href=""><img src="http://oemsupplies.com/demo/media/menu/ZEBRA_LOGO.png" alt="ZEBRA_LOGO" width="52" height="60"  /></a> </div>
+      <div class="brand_logos"><a href=""><img src="http://oemsupplies.com/demo/media/menu/LEXMARK_LOGO.png" alt="LEXMARK_LOGO" width="60" height="60"  /></a> </div>
+    </div>
+  </div>
+</div>
+<div class="clearBoth"></div>

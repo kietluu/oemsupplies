@@ -1,0 +1,102 @@
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) ; ?>jquery.validate.js"></script>
+<script type="text/javascript">
+    jQuery(function() {
+    // Setup form validation on the #register-form element
+    jQuery("#req_tech_form").validate({
+        // Specify the validation rules
+        rules: {
+            companyname: "required",
+            firstname: "required",
+            lastname: "required",
+            comment:"required",
+            printername:"required",
+            printermodelno:"required",
+            email: {
+                required: true,
+                email: true
+            },
+            phone: {
+                required: true,
+                number: true,
+                minlength: 10,
+                maxlength:15
+            }
+        },
+        // Specify the validation error messages
+        messages: {
+            companyname: "Please enter your company name",
+            firstname: "Please enter your first name",
+            lastname:"Please enter your last name",
+            printername:"Please enter printer name",
+            printermodelno:"please enter printer Model number",
+            phone: {
+                required: "Please provide a Phone Number",
+                number:"Please enter number only",
+                minlength: "Your phone number must be at least 10 digit long",
+                maxlength: "Your phone number must be at most 15 digit long"
+
+            },
+            email: "Please enter a valid email address",
+            comment: "Please Enter Comments"
+        },
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
+  });
+</script>
+
+<?php if ($messages = $this->getNoteMessages()):?>
+    <p class="note-msg">
+        <?php foreach ($messages as $message):?>
+            <?php echo $message?><br />
+        <?php endforeach;?>
+    </p>
+<?php endif; ?>
+
+<div class="page-title">
+    <h1>Request Service technician</h1>
+</div>
+<div class="std"><h3>Fill all the information for Request Service technician</h3>
+    <form id="req_tech_form" name="req_tech_form" role="form" action="<?php echo $this->getUrl('recycle-empty-toner/') ?>index/requestservicetech" method="post">
+        <div class="form-group">
+            <label for="companyname">Company Name *</label>
+            <input type="name" class="form-control" id="companyname" name="companyname" placeholder="Company Name">
+        </div>
+        <div class="form-group">
+            <label for="name">First Name *</label>
+            <input type="name" class="form-control" id="firstname" name="firstname" value="<?php if(isset($name['0'])&&!empty($name['0'])){ echo $name['0'] ; }?>" placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <label for="name">Last Name *</label>
+            <input type="name" class="form-control" id="lastname" name="lastname" value="<?php if(isset($name['1'])&&!empty($name['1'])){ echo $name['1'] ; }?>" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone # *</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone">
+        </div>
+        <div class="form-group">
+            <label for="E-Mail">E-Mail Address *</label>
+            <input type="E-Mail" class="form-control" id="email" name="email" value="<?php if(isset($email)&&!empty($email)){ echo $email ; }?>" placeholder="Enter E-Mail">
+        </div>
+        <div class="form-group">
+            <label for="Printer-name">Printer Name *</label>
+            <input type="text" class="form-control" id="printername" name="printername" placeholder="Enter Printer Name">
+        </div>
+        <div class="form-group">
+            <label for="Printer-modelno">Printer Model Number *</label>
+            <input type="text" class="form-control" id="printermodelno" name="printermodelno" placeholder="Enter Printer Model No">
+        </div>
+        <div class="form-group">
+            <label for="under_warranty">Printer Warrenty *</label>
+            <select name="under_warranty" class="valid">
+                <option value="Yes">Yes</option>
+                <option value="No" selected="selected">No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="comment"> Comment </label>
+            <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Send Request</button>
+    </form></div>

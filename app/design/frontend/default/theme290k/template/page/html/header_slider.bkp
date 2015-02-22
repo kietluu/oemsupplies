@@ -1,0 +1,128 @@
+<div class="index-container">
+  <div class="container">
+	<div class="row">
+	   <div class="col-xs-12">
+    	  <div class="index_block">
+     		
+     		<div class="header_slider" style="display:none">
+				<script type="text/javascript" src="{{skin url=''}}js/camera.js"></script>
+      			<script type="text/javascript">
+			      /* index slider */
+			      jQuery(function(){
+		      		jQuery('#camera_wrap').camera({
+			      		alignmen: 'topCenter',
+			      		height: '25%',
+			     		 minHeight: '50px',
+			     		 loader : false,
+			     		 /*navigation: false,*/
+			     		 fx: 'simpleFade',
+			     		 navigationHover:false,
+			     		 thumbnails: false,
+			      		playPause: false 
+			      	});
+			      });    
+      			</script>
+     		   <div class="fluid_container">
+       			 <div class="camera_wrap camera_orange_skin" id="camera_wrap">
+          			 <div data-src="http://oemsupplies.com/demo/media/bannerslider/h/p/hp_october_ads.jpg" data-link="technology.html">            
+		               <div class="camera_caption fadeIn">
+		                   <div class="right_slider_side sl_1">
+		                    <h2></h2>
+		                    <h3>HP</h3>
+		                    <p></p>
+		                    <a href="{{store url='technology.html'}}" class="shop_now">Shop now!</a>
+		                   </div>                
+		               </div>
+           			</div>
+          			<div data-src="http://oemsupplies.com/demo/media/bannerslider/o/c/hp_banner_november.jpg" data-link="office-supplies.html">            
+		               <div class="camera_caption fadeIn">
+		                   <div class="right_slider_side sl_2">
+		                    <h2></h2>
+		                    <h3></h3>
+		                    <p></p>
+		                    <a href="{{store url='office-supplies.html'}}" class="shop_now">Shop now!</a>
+		                   </div>            
+		               </div>
+           			</div>
+		           <div data-src="http://oemsupplies.com/demo/media/bannerslider/q/4/Universal_1_NOV.jpg" data-link="maintenance-breakroom.html">            
+		               <div class="camera_caption fadeIn">
+		                   <div class="right_slider_side sl_3">
+		                    <h2></h2>
+		                    <h3></h3>
+		                    <p></p>
+		                    <a href="{{store url='maintenance-breakroom.html'}}" class="shop_now">Shop now!</a>
+		                   </div>            
+		               </div>
+		           </div>
+		       </div>
+      		 <div class="clear"></div>
+      		</div>
+     	</div>
+     	
+     	<div class="banners_row b_row1">
+		      <div class="banner ban1">      	
+			       <div class="ban_img"><img src="{{skin url='images/banner1.jpg'}}" alt=""  /></div>
+			       <div class="ban_wrap">
+			        	<h2>File Folders & Storage</h2>
+			        	<h3>Consoles</h3>
+			        	<p>Lorem ipsum dolor sit amet conse ctetur adipisi.</p>
+			        	<a href="{{store url='office-supplies.html?cat=22'}}" class="shop_now">Shop now!</a>
+			       </div> 
+		      </div>
+	
+	      	  <div class="banner ban2">      	
+	       			<div class="ban_img"><img src="{{skin url='images/banner2.jpg'}}" alt=""  /></div>
+	       			<div class="ban_wrap">
+	        			<h2>Stamps & Supplies</h2>
+	        			<h3>Consoles</h3>
+	        			<p>Lorem ipsum dolor sit amet conse ctetur adipisi.</p>
+	        			<a href="{{store url='office-supplies.html?cat=22'}}" class="shop_now">Shop now!</a>
+	       			</div> 
+		      </div>
+		      
+	      	  <div class="banner ban3">      	
+		       		<div class="ban_img"><img src="{{skin url='images/banner3.jpg'}}" alt=""  /></div>
+				    <div class="ban_wrap">
+				        <h2>Tape & Adhesives</h2>
+				        <h3>Glue, push pins, binder clips</h3>
+				        <p>Glues-Push Pins-Clips-Taks-Binder Clips Etc</p>
+				        <a href="{{store url='maintenance-breakroom.html?cat=65'}}" class="shop_now">Shop now!</a>
+				    </div> 
+			 </div>
+			 
+	      	 <div class="banner ban4">      	
+			       <div class="ban_img"><img src="{{skin url='images/banner4.jpg'}}" alt=""  /></div>
+			       <div class="ban_wrap">
+			        	<h2>Writting & Correction</h2>
+			        	<h3>Consoles</h3>
+			        	<p>Lorem ipsum dolor sit amet conse ctetur adipisi.</p>
+			        	<a href="{{store url='gifts-gadgets.html'}}" class="shop_now">Shop now!</a>
+			       </div> 
+		     </div>
+		      
+	      	 <div class="banner ban5">      	
+		       		<div class="ban_img"><img src="{{skin url='images/banner5.jpg'}}" alt=""  /></div>
+		       		<div class="ban_wrap">
+		       			 <h2>Printers</h2>        
+		       			 <h3>Copiers, Lasers, Deskjets</h3>
+		        		 <p>HP Brother Canon Epson Oki Lexmark Samsung.</p>
+		        		<a href="{{store url='games/xbox-360.html'}}" class="shop_now">Shop now!</a>
+		       		</div> 
+	      	 </div>
+	      	 
+	      	<div class="banner ban6">      	
+	      		 <div class="ban_img"><img src="{{skin url='images/banner6.jpg'}}" alt=""  /></div>
+	      		 <div class="ban_wrap">
+	        		<h2>Label Makers & Labels</h2>
+	        		<h3>Consoles</h3>
+	        		<p>Lorem ipsum dolor sit amet conse ctetur adipisi.</p>
+	        		<a href="{{store url='games/nintendo-3ds.html'}}" class="shop_now">Shop now!</a>
+	       		 </div> 
+	      	</div>
+       </div>
+     
+    </div>
+   </div>
+   </div>
+  </div>
+</div>

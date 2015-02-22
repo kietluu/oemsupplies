@@ -1,0 +1,69 @@
+<?php
+$totalPerPage = ($this->show_total) ? $this->show_total : 6;
+$visibility = array(
+                      Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+                      Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
+                  );
+
+$storeId = Mage::app()->getStore()->getId();
+
+$_productCollection = Mage::getResourceModel('reports/product_collection')
+						->addAttributeToSelect('*')     
+					    ->setStoreId($storeId)
+                        ->addStoreFilter($storeId)	
+					    ->addAttributeToFilter('visibility', $visibility)
+						//->addAttributeToFilter('featured', true)
+						->setOrder('created_at', 'desc')
+						->addAttributeToSelect('status') 
+						->setPageSize($totalPerPage);
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($_productCollection);
+Mage::getSingleton('cataloginventory/stock')->addInStockFilterToCollection($_productCollection);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInSearchFilterToCollection($_productCollection);
+
+
+// // if product is part of configurable product get first parent product
+// $junkProducts = new Varien_Data_Collection();
+// foreach ($_productCollection as $k => $p) {
+	// $p = $p->loadParentProductIds();
+	// $parentIds = $p->getData('parent_product_ids');	
+	// if (is_array($parentIds) && !empty($parentIds)) {
+		// if (!$junkProducts->getItemById($parentIds[0])) {
+			// $parentProduct = Mage::getModel('catalog/product')->setStoreId($storeId)->load($parentIds[0]);
+			// if ($parentProduct->isVisibleInCatalog()) {
+				// $junkProducts->addItem($parentProduct);
+			// }
+		// }
+	// } else {
+		// if (!$junkProducts->getItemById($k)) {
+			// $junkProducts->addItem($p);
+		// }
+	// }		
+// }
+// $_productCollection = $junkProducts;
+// //end if product is part of configurable product get first parent product
+?>
+<div class="listing-type-grid catalog-listing">
+	<div class="product_body">
+	<?php $_collectionSize = count($_productCollection) ?>
+	<?php $_columnCount = 3; ?>
+		<ul id="mycarousel" class="jcarousel-skin-tango">
+		<?php $i=0; foreach ($_productCollection as $_product): ?>
+			<li>
+				<div class="boxgrid caption">	
+					<a class="product-image" href="<?php echo $_product->getProductUrl() ?>"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(104,125); ?>"  width="104" height="125" alt="<?php echo $this->htmlEscape($_product->getName()) ?>"/></a>
+					<div class="covers boxcaptions">
+						<h3><a class="product-name" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3>
+						<div class="clear_both"><span></span></div>
+						<div class="group_box">
+							<div class="box_price">
+								<span class="price"><?php echo $this->__('From ') ?><?php echo $this->helper('checkout')->formatPrice($_product->getPrice()) ?></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<?php endforeach ?>
+		</ul>
+	<div class="clear_both"><span></span></div>
+	</div>
+</div>

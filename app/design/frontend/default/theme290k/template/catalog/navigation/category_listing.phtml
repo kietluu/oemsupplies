@@ -1,0 +1,25 @@
+<?php $_maincategorylisting=$this->getCurrentCategory()?>
+<?php $_categories=$this->getCurrentChildCategories()?>
+<h2><?php echo $this->__('Browse Products') ?> </h2>
+<div class="subcat-listing">
+<ul class="subcat-products">
+<? foreach ($_categories as $_category):?>
+<? if($_category->getIsActive()): ?>
+<?php $cur_category=Mage::getModel('catalog/category')->load($_category->getId()); ?>
+<?php $layer = Mage::getSingleton('catalog/layer'); ?>
+<?php $layer->setCurrentCategory($cur_category); ?>
+<? if($_imageUrl=$this->getCurrentCategory()->getImageUrl()):?>
+<li> <a href="<?php echo $this->getCategoryUrl($_category) ?>" title="<?php echo $this->htmlEscape($_category->getName()) ?>">
+<img src="<?php echo $_imageUrl ?>" width="auto" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+</a>
+<h3><?php echo $this->htmlEscape($_category->getName()) ?></h3>
+<? if($_description=$this->getCurrentCategory()->getDescription()):?>
+<p class="category-description">
+<?php echo $_description ?></</p>
+<?php endif; ?>
+<? endif; ?>
+<? endif; ?>
+<?php endforeach; ?>
+</ul>
+</div>
+<?php $layer->setCurrentCategory($_maincategorylisting); ?>
