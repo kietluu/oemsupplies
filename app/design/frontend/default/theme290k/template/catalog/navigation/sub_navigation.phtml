@@ -1,10 +1,30 @@
+<?php 
+
+//Get the Current Category
+$_maincategorylisting = $this->getCurrentCategory();
+
+?>
+<style>
+ .sub-category-listing{
+ 	 <?php if($_maincategorylisting->getLevel() == 2):?>
+     		height:340px;
+     <?php else:?>
+     		height:240px;
+     <?php endif;?>
+     		
+     border:1px solid #b1b1b1;
+     border-radius:4px;
+     width:23%;
+     margin:5px;
+     padding-top:10px;
+     font-size:13px;
+     line-height:15px;
+ }
+</style>
 <div id="categories">
   <div class="col_full">
     <div class="listing" >
  	<?php	
-        //Get the Current Category
-		$_maincategorylisting = $this->getCurrentCategory();
-		
 		// Iterate all categories in store
 		foreach ($this->getCurrentChildCategories() as $_category):
 			if($_category->getIsActive()):
@@ -19,7 +39,7 @@
 				$_product = null;
 				foreach ( $products as $_product ) {}
 				if(isset($_product)):?>
-					<div class="sub-category-listing col-sm-3" style="height:350px;">
+					<div class="sub-category-listing col-sm-3">
 					  <div class="linkimage">
 					    <a href="<?php echo $this->getCategoryUrl($_category)?>" class="product-image">
 						  <?php
@@ -47,26 +67,28 @@
 					   </a>
 				    </div>
  
- 					<h2 class="product-name" style="margin-top: 10px;">
+ 					<h2 class="product-name" style="margin-top: 5px;">
 						<a href="<?php echo $this->getCategoryUrl($_category)?>">
-							<?php echo $_category->getName()?>
+							<b><?php echo $_category->getName()?></b>
 						</a>
 					</h2>
 					
 					<div>
 	                    <dl id="narrow-by-list">
-	                    	<ul style="height:130px;overflow-y:scroll;">
+	                    	<ul>
 	                    		<?php $subcategories = Mage::getModel('catalog/category')->getCategories($this->getCurrentCategory()->getId());?>
 	                    		
 	                    		<?php if($subcategories):?>
-					               	<?php foreach ($subcategories as $category):?>
+					               	<?php $n = 0;foreach ($subcategories as $category): if($n >= 4) break;?>
 					                    <li><a href="<?php echo $category->getRequestPath();?>"><?php echo $category->getName(); ?></a></li>
-					                <?php endforeach;?> 
+					                <?php $n++; endforeach;?> 
 					                
 					            <?php else:?>
 					            		<li>There are no sub categories.</li>
 					            <?php endif;?>     
-				             </ul>       
+					            
+					            <li style="margin-top:5px;"><a href="<?php echo $this->getCategoryUrl($_category)?>"><b>All Categories</b></a></li>
+				           </ul>       
             		   </dl>
             		   <script type="text/javascript">decorateDataList('narrow-by-list');</script>
                    </div>

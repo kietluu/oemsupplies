@@ -52,6 +52,13 @@
             <div class="product-name">
                 <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
             </div>
+            
+            <?php $stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product);?>
+            
+            <div class="outofstock">
+    			<a href="javascript:;" onclick="window.open('quantity_box.php?products_id=<?php echo $_product->getId();?>','qtybox','width=400,height=450');"><b><?php echo (int)$stock->getQty() . ' Units in Stock'; ?></b></a>
+		    </div>
+		    
             <?php if ($this->displayProductStockStatus()): ?>
                 <?php if ($_product->isAvailable()): ?>
                     <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
@@ -74,7 +81,7 @@
             <?php endif;?>
             <div class="clear"></div>
             <?php echo $this->getChildHtml('extrahint') ?>
-
+            
             <?php if (!$this->hasOptions()):?>
                 <div class="add-to-box">
                     <?php if($_product->isSaleable()): ?>

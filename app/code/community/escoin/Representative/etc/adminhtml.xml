@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Escoin_Representative extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category   	Escoin
+ * @package		Escoin_Representative
+ * @copyright  	Copyright (c) 2013
+ * @license		http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<representative translate="title" module="representative">
+										<title>Representative</title>
+									</representative>
+								</children>
+							</config>
+						</children>
+					</system>
+					<representative translate="title" module="representative">
+						<title>Representative</title>
+						<children>
+							<representative translate="title" module="representative">
+								<title>Representatives</title>
+							</representative>
+						</children>
+					</representative>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+	<menu>
+		<representative translate="title" module="representative">
+			<title>Representative</title>
+			<sort_order>85</sort_order>
+			<depends>
+				<module>Escoin_Representative</module>
+		 	</depends>
+		 	<children>
+				<representative translate="title" module="representative">
+					<title>Representatives</title>
+					<action>adminhtml/representative_representative</action>
+					<sort_order>0</sort_order>
+				</representative>
+			</children>
+		</representative>
+	</menu>
+</config>

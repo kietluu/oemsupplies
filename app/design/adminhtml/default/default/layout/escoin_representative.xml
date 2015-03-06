@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Escoin_Representative extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category   	Escoin
+ * @package		Escoin_Representative
+ * @copyright  	Copyright (c) 2013
+ * @license		http://opensource.org/licenses/mit-license.php MIT License
+ */
+--> 
+<layout>
+	<!-- Representatives grid action -->
+	<adminhtml_representative_representative_index>
+		<reference name="menu">
+			<action method="setActive">
+				<menupath>representative/representative</menupath>
+			</action>
+		</reference>
+		<reference name="content">
+			<block type="representative/adminhtml_representative" name="representative" />
+		</reference>
+	</adminhtml_representative_representative_index>
+	<adminhtml_representative_representative_grid>
+		<block type="core/text_list" name="root" output="toHtml">
+			<block type="representative/adminhtml_representative_grid" name="representative_grid"/>
+		</block>
+	</adminhtml_representative_representative_grid>
+	<!-- Representative add/edit action -->
+	<adminhtml_representative_representative_edit>
+		<update handle="editor"/>
+		<reference name="menu">
+			<action method="setActive">
+				<menupath>representative/representative</menupath>
+			</action>
+		</reference>
+		<reference name="content">
+			<block type="representative/adminhtml_representative_edit" name="representative_edit"></block>
+		</reference>
+		<reference name="left">
+			<block type="representative/adminhtml_representative_edit_tabs" name="representative_tabs"></block>
+		</reference> 
+	</adminhtml_representative_representative_edit>
+</layout>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   WebRotate 360
+ * @package    WebRotate360_Catalog
+ * @author     WebRotate 360 LLC
+ * @copyright  Copyright (c) 2013 WebRotate 360 LLC. (http://www.webrotate360.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<layout>
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addCss">
+                <file helper="WebRotate360_Catalog/class/getSkinBasedOnConfig" />
+            </action>
+            <action method="addCss">
+                <stylesheet>prettyPhoto/css/prettyphoto.css</stylesheet>
+            </action>
+            <action method="addItem" ifconfig="wr360_product_view/settings/include_jquery">
+                <type>skin_js</type>
+                <name>webrotate360/imagerotator/html/js/jquery-1.11.1.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>webrotate360/imagerotator/html/js/imagerotator.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>webrotate360/wr360hook.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>prettyPhoto/js/jquery.prettyPhoto.js</name>
+            </action>
+            <block type="page/html" name="webrotateadhoc" output="toHtml">
+                <action method="setTemplate" ifconfig="wr360_product_view/adhoc/use_adhoc">
+                    <template>webrotate360/catalog/product/view/adhoc.phtml</template>
+                </action>
+            </block>
+        </reference>
+        <reference name="product.info.media">
+            <action method="setTemplate" ifconfig="wr360_product_view/standard/use_standard">
+                <template>webrotate360/catalog/product/view/media.phtml</template>
+            </action>
+        </reference>
+    </catalog_product_view>
+</layout>
+

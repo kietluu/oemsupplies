@@ -155,7 +155,7 @@ class Vendor1{
 			->setMsrp($product['ListAmount']) //Manufacturer's Suggested Retail Price
 			->setUnitCode($product['ListUnitCode'])
 			->setNewsFromDate(strtotime('now'))
-			->setNewsToDate(strtotime('+60 Days'))
+			->setNewsToDate(strtotime('+120 Days'))
 			->setVendorCode('21316')
 
 			->setDescription($product_description)
@@ -374,7 +374,7 @@ class Vendor1{
 	}
 
 	public function getProductDescription($notes){
-		$html = '<table>
+		$html = '<table class="table">
                <tr><td><ul>';
 
 		$html .= '<li>'.$notes['Selling_Point_1'].'</li>';
@@ -597,7 +597,7 @@ class Vendor1{
 		$fp = fopen($qty_file,"r") or die("can not found qty file");
 		$live_qty = '';
 
-		$this->dbWrite->query("update catalog_product_entity_int SET value = 0 where attribute_id = 96 and entity_type_id = 4");
+		$this->dbWrite->query("update catalog_product_entity_int SET value = 1 where attribute_id = 96 and entity_type_id = 4");
 
 		$i = 0;
 		while(!feof($fp)){
@@ -628,9 +628,9 @@ class Vendor1{
 			$productModel = Mage::getModel("catalog/product");
 			$product_id = $productModel->getIdBySku($model);
 			if($product_id){
+				$vender2_qty = $this->dbRead->fetchRow("select (city_StLouis+city_Carlisle+city_Fresno+city_dallas) as qty from catalog_product_quantities where product_id = '$product_id'");
+				$product_qty += $vender2_qty['qty'];
 				$this->dbWrite->query("update cataloginventory_stock_item SET qty = '$product_qty' where product_id = '".$product_id."'");
-
-				$this->dbWrite->query("update catalog_product_entity_int SET value = 1 where entity_id = '".$product_id."' and attribute_id = 96 and entity_type_id = 4");
 			}
 		}
 
@@ -762,7 +762,7 @@ class Vendor1{
 			if($cross_sell_ids){
 				//print $product_sku. "--". print_r($cross_sell_ids);
 
-				$productModel->setUpSellLinkData($cross_sell_ids);
+				//$productModel->setUpSellLinkData($cross_sell_ids);
 				$productModel->setRelatedLinkData($cross_sell_ids);
 
 				//$productModel->setCrossSellLinkData($cross_sell_ids);

@@ -264,10 +264,141 @@ class SmartSearch {
 		$extra .= '</ns:Filter>';
 		return $extra;
 	}
+	
+	public function updateListRequest($list_name , $start , $limit = 2000){
+		$filename = Mage::getBaseDir()."/xml/update_list.xml";
+		$xml = file_get_contents($filename);
+		
+		if($list_name == 'OemCustomSearchList'){
+			$listItems = $this->ListCustomItems($start , $limit);
+		}
+		else{
+			$listItems = $this->ListItems($start , $limit);
+		}
+		
+		if(strlen($listItems) <= 0){
+			return;
+		}
+		
+		$xml = sprintf($xml,$this->username,$this->password,$list_name,$listItems);
+		$result = $this->sendRequest($xml , $this->requestUrl);
+		
+		$start_pos = strpos($result,"<updateItemListResponse");
+		$end_pos   = strpos($result,"</updateItemListResponse>");
+		$result = substr($result,$start_pos,$end_pos);
+		$result = str_replace(array('</soapenv:Envelope>','</soapenv:Body>'),"",$result);
+		$result = str_replace(' xmlns="http://ws.ussco.com/eCatalog/catalog/1"','',$result);
+		
+		$response = array();
+		
+		$responsObj = simplexml_load_string($result) or die("can not parse");
+		if(!$responsObj){
+			return $response;
+		}
+		
+		foreach($responsObj->itemListResponse->List->ListItem as $item){
+			if($item->ResultStatus->StatusCode == 410){
+				$this->dbWrite->query("update catalog_product_entity set ussco_added = 0 where sku = '".$item->ItemNumber."'");
+			}
+		}
+	}
+	
+	public function ListItems($startLimit = 0 , $endLimit = 1000){
+		$listItems = '';
+		
+		$catalog_entities = $this->dbRead->fetchRow("select group_concat(entity_id) as entity_id from catalog_product_entity_int where attribute_id = 135 and value != '21316'");
+		$catalog_entities_str = $catalog_entities['entity_id'];
+	
+		$products  = $this->dbRead->fetchRows("select sku from catalog_product_entity Where entity_id not in ($catalog_entities_str) limit $startLimit , $endLimit");
+		foreach ($products as $product){
+			$listItems .= '<ns:ListItem><ns:ItemNumber><![CDATA['.$product['sku'].']]></ns:ItemNumber></ns:ListItem>';
+		}
+	
+		return $listItems;
+	}
+	
+	public function ListCustomItems($startLimit = 0 , $endLimit = 1000){
+		$listItems = '';
+		
+		$catalog_entities = $this->dbRead->fetchRow("select group_concat(entity_id) as entity_id from catalog_product_entity_int where attribute_id = 135 and value != '21316'");
+		$catalog_entities_str = $catalog_entities['entity_id'];
+		
+		$products  = $this->dbRead->fetchRows("select sku from catalog_product_entity Where ussco_added = 1 and entity_id in ($catalog_entities_str) limit $startLimit , $endLimit");
+		foreach ($products as $product){
+			$listItems .= '<ns:ListItem><ns:DealerItemNumber><![CDATA['.$product['sku'].']]></ns:DealerItemNumber></ns:ListItem>';
+		}
+		
+		return $listItems;
+	}
+	
+	function updateRequest($endLimit = 500 , $ussco_added = 0){
+		for($i = 0; $i < 50000; $i += $endLimit){
+			$startLimit = $i;
+			
+			$products = $this->dbRead->fetchRows("select sku from catalog_product_entity Where ussco_added = $ussco_added limit $startLimit , $endLimit");
+			if(!$products){
+				return;
+			}
+			
+			$listItem = '';
+			foreach($products as $product){
+				$keywords   = str_split($product['sku'],3);
+				$keywords[] = substr($product['sku'],3,strlen($product['sku']));
+				
+				$keywords = implode(",",$keywords);
+				
+				$listItem .= '<ns:Item UpdateStyle="Insert">'.
+							 	'<ns:DealerItemNumber><![CDATA['.$product['sku'].']]></ns:DealerItemNumber>'.
+							 	'<ns:DealerDescription><![CDATA['.$products_name.']]></ns:DealerDescription>'.
+							 	'<ns:DealerKeywords><![CDATA['.$keywords.']]></ns:DealerKeywords>'.
+							 	'<ns:StockedItem>Y</ns:StockedItem>'.
+							 '</ns:Item>';
+			}
+			
+			$filename = Mage::getBaseDir()."/xml/custom_list.xml";
+			$xml = file_get_contents($filename);
+			
+			$xml = sprintf($xml,$this->username,$this->password,$listItem);
+			$result = $this->sendRequest($xml , $this->requestUrl);
+			
+			$start_pos = strpos($result,"<updateItemResponse");
+			$end_pos   = strpos($result,"</updateItemResponse>");
+			$result = substr($result,$start_pos,$end_pos);
+			$result = str_replace(array('</soapenv:Envelope>','</soapenv:Body>'),"",$result);
+			$result = str_replace(' xmlns="http://ws.ussco.com/eCatalog/catalog/1"','',$result);
+			
+			$responsObj = simplexml_load_string($result) or die("can not parse $result $xml");
+			
+			$arr = array();
+			$arrs = array();
+			$i = 0;
+			foreach($responsObj->itemResponse->Item as $item){
+				if($item->ResultStatus->StatusCode == 230){
+					$arr[] = "'" . $item->DealerItemNumber . "'";
+				}
+				else{
+					$arrs[] = $item->DealerItemNumber;
+					$i++;
+				}
+			}
+			
+			$item_string = implode(",",$arr);
+			if($item_string){
+				$this->dbWrite->query("update catalog_product_entity SET ussco_added = 1 where sku IN ($item_string)");
+			}
+		}
+		
+		return 1;
+	}
 
-	public function sendRequest($xml){
+	public function sendRequest($xml , $url = false){
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$this->searchUrl);
+		if($url){
+			curl_setopt($ch, CURLOPT_URL,$url);
+		}
+		else{
+			curl_setopt($ch, CURLOPT_URL,$this->searchUrl);
+		}
 
 		curl_setopt($ch, CURLOPT_POST,1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS,$xml);

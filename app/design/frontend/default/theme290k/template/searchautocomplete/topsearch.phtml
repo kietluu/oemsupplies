@@ -65,21 +65,9 @@
 </style>
 
 <script type="text/javascript">
-    function getInkKeywords(){
-    	jQuery(document).ready(function($) {
-	    	type = jQuery("#inktoner_search input[type='radio']:checked").val();
-	    	console.log(type);
-	    	
-	    	if(type == 'cartridge'){
-	       		jQuery("#inkkeyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
-	    	}
-	    	else{
-	       		jQuery("#inkkeyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
-	    	}
-    	});
-    	
-    	/*jQuery("#inkkeyword").autocomplete({
-        	source : url
-        });*/
-    }
+	jQuery(document).ready(function($) {
+		   jQuery("#inkkeyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
+		   
+		   jQuery("#printer_inkkeyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
+	});
 </script>

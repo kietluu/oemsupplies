@@ -5,13 +5,13 @@
 		    <div class="leftside col-sm-6">
 		      <div class="space">
 				<div class="radiobtn radio ">
-				   <input name="search_type" type="radio" value="cartridge"  />
+				   <input name="search_type" type="radio" value="cartridge" onclick="jQuery('#inkkeyword').val('');jQuery('#inkkeyword').show();jQuery('#printer_#inkkeyword').hide();" />
 				</div>
 				
 				<div class="f_left"> Cartridge</div>
 				
 				<div class="radiobtn radio " style="padding-left:10px;">
-				  <input name="search_type" checked="checked" type="radio" value="printer" />
+				  <input name="search_type" checked="checked" type="radio" value="printer" onclick="jQuery('#printer_#inkkeyword').val('');jQuery('#printer_#inkkeyword').show();jQuery('#inkkeyword').hide();" />
 				</div>
 				<div class="f_left"> Printer</div>
 		   		<div class="clearBoth"> </div>   </div>
@@ -20,7 +20,9 @@
 		    <div class="rightside col-sm-6">
 		      <div class="space">
 		        <div class="f_left">
-		            <input name="inkkeyword" type="text" id="inkkeyword" class="form-control inputs" placeholder="keyword" onclick="getInkKeywords()" onchange="getInkKeywords()" />
+		        	  <input name="inkkeyword" type="text" id="keyword" autocomplete="off" placeholder="inkkeyword" class="form-control inputs" />
+		  	   
+		  	          <input name="printer_inkkeyword" style="display:none" type="text" id="printer_inkkeyword" autocomplete="off" placeholder="keyword" class="form-control inputs" />
 		        </div>
 		        <div>   
 		        	<button type="submit" class="btn btn-success" style=" background:#60a810; margin:0 0 0 10px;">Go</button>	

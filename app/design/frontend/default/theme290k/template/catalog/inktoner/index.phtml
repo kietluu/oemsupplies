@@ -26,29 +26,17 @@
         });
     }
 
-    function getKeywords(){
-    	jQuery(document).ready(function($) {
-	    	type = (jQuery("#search_type1").prop("checked")) ? 'cartridge' : 'printer';
-	    	console.log(type);
-	    	
-	    	if(type == 'cartridge'){
-	       		jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
-	    	}
-	    	else{
-	       		jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
-	    	}
-    	});
-    	
-    	/*url = '< ?php echo Mage::getUrl('catalog/inktoner/getKeywords');? >?type='+type;
-    	jQuery("#keyword").autocomplete({
-        	source : url
-        });*/
-    }
+    jQuery(document).ready(function($) {
+    	   jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
+    	   
+    	   jQuery("#printer_keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
+	});
 </script>
+
 <div class="inktoner-main">
   <div class="header_back">Your Ink and Toner Finder </div>
   <div class="inktoner_bg">
-    <div class="leftpart">
+    <div class="col-sm-6">
        <form method="get" action="<?php echo $this->getSearchUrl()?>">	
 	    	<h3>Search for Printer</h3>
             <div class="space">
@@ -71,38 +59,38 @@
             		<option>Select One</option>
             	</select>
             </div>
+            
             <button type="submit" class="btn btn-success" style=" background:#60a810;">Search</button>
         </form>
     </div>
 
-    <div class="midpart"></div>
+    <div class="col-sm-1 midpart"><img src="/demo/skin/frontend/default/theme290k/images/or.png" alt=""/></div>
 
-    <div class="rightpart">
-       <form method="get" action="<?php echo $this->getSearchUrl()?>">
+    <div class="col-sm-5">
+       <form method="get" action="<?php echo $this->getSearchUrl()?>" class="form-search">
 	      <h3>Search by cartridge or printer</h3>
 	      <div class="space">
-				<div class="radiobtn radio" style="padding-left:0;">
-				   <input name="search_type" type="radio" checked="checked" value="cartridge" id="search_type1"  />
-				</div>
-				
-				<div class="f_left"> Cartridge</div>
+			<div class="radiobtn radio" style="padding-left:0;">
+			   <input name="search_type" type="radio" checked="checked" value="cartridge" id="search_type1" onclick="jQuery('#keyword').val('');jQuery('#keyword').show();jQuery('#printer_keyword').hide();"  />
+			</div>
 			
-				<div class="radiobtn radio" style="padding-left:10px;">
-				    <input name="search_type" type="radio" value="printer" id="search_type2"  />
-				</div>
-				<div class="f_left"> Printer</div>
-	      		<div class="clearBoth"> </div>   
-	       </div>
-	      
-	       <div class="space" style="position:relative;">
-		  	   <input name="keyword" type="text" id="keyword" placeholder="keyword" onkeypress="getKeywords()" onkeyup="getKeywords()" class="form-control inputs" />
-		   </div>
+			<div class="f_left"> Cartridge</div>
+			
+			<div class="radiobtn radio" style="padding-left:10px;">
+			  <input name="search_type" type="radio" value="printer" id="search_type2" onclick="jQuery('#printer_keyword').val('');jQuery('#printer_keyword').show();jQuery('#keyword').hide();"  />
+			</div>
+			<div class="f_left"> Printer</div>
+	      <div class="clearBoth"> </div> </div>
+ 
+	      <div class="space" style="position:relative;">
+		  	   <input name="keyword" type="text" id="keyword" autocomplete="off" placeholder="keyword" class="form-control inputs" />
+		  	   
+		  	   <input name="printer_keyword" style="display:none" type="text" id="printer_keyword" autocomplete="off" placeholder="keyword" class="form-control inputs" />
+		  </div>
             
-           <div>   
-            	<button type="submit" class="btn btn-success" style=" background:#60a810;">Go</button>	
-           </div>
-		   <div class="clearBoth"></div>
-	      
+          <div> <button type="submit" class="btn btn-success" style=" background:#60a810;">Go</button></div>
+		  <div class="clearBoth"></div>
+	  
 	      <div class="space"><a href="#allbrands">See all Brands</a></div>
 	   </form>
     </div>

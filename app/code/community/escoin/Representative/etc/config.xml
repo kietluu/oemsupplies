@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Escoin_Representative extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category   	Escoin
+ * @package		Escoin_Representative
+ * @copyright  	Copyright (c) 2013
+ * @license		http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+	<modules>
+		<Escoin_Representative>
+			<version>0.0.2</version>
+		</Escoin_Representative>
+	</modules>
+	<global>
+		<resources>
+			<escoin_representative_setup>
+				<setup>
+					<module>Escoin_Representative</module>
+					<class>Escoin_Representative_Model_Resource_Setup</class>
+				</setup>
+			</escoin_representative_setup>
+		</resources>
+		<blocks>
+			<representative>
+				<class>Escoin_Representative_Block</class>
+			</representative>
+		</blocks>
+		<helpers>
+			<representative>
+				<class>Escoin_Representative_Helper</class>
+			</representative>
+		</helpers>
+		<models>
+			<representative>
+				<class>Escoin_Representative_Model</class>
+				<resourceModel>representative_resource</resourceModel>
+			</representative>
+			<representative_resource>
+				<class>Escoin_Representative_Model_Resource</class>
+				<entities>
+					<representative>
+						<table>representative_representative</table>
+					</representative>
+					<representative_store>
+						<table>representative_representative_store</table>
+					</representative_store>
+				</entities>
+			</representative_resource>
+		</models>
+		<events>
+			<customer_register_success>
+				<observers>
+					<customer_successful_register>
+						<class>Escoin_Representative_Model_Observer</class>
+						<method>customerRegisterSuccess</method>
+					</customer_successful_register>
+				</observers>
+			</customer_register_success>
+			<sales_order_place_after>
+				<observers>
+					<order_successfull_after>
+						<class>Escoin_Representative_Model_Observer</class>
+						<method>orderPlaceSuccess</method>
+					</order_successfull_after>
+				</observers>
+			</sales_order_place_after>
+			<sales_order_invoice_save_commit_after>
+				<observers>
+					<order_invoice_after>
+						<class>Escoin_Representative_Model_Observer</class>
+						<method>orderInvoicePlace</method>
+					</order_invoice_after>
+				</observers>
+			</sales_order_invoice_save_commit_after>
+			<sales_order_shipment_save_commit_after>
+				<observers>
+					<order_invoice_after>
+						<class>Escoin_Representative_Model_Observer</class>
+						<method>orderShipPlace</method>
+					</order_invoice_after>
+				</observers>
+			</sales_order_shipment_save_commit_after>
+		</events>
+		
+	</global>
+	<adminhtml>
+		<layout>
+			<updates>
+				<escoin_representative>
+					<file>escoin_representative.xml</file>
+				</escoin_representative>
+			</updates>
+		</layout>
+		<translate>
+			<modules>
+				<Escoin_Representative>
+					<files>
+						<default>Escoin_Representative.csv</default>
+					</files>
+				</Escoin_Representative>
+			</modules>
+		</translate>
+	</adminhtml>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<Escoin_Representative before="Mage_Adminhtml">Escoin_Representative_Adminhtml</Escoin_Representative>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+	<default>
+		<representative>
+		</representative>
+	</default>
+</config>

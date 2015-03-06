@@ -83,15 +83,46 @@ class Vendor2{
 		if(!$new_model){
 			return false;
 		}
+		
+		print $new_model. "<br />";
 
 		//print_r($product); exit;
 		$productModel = Mage::getModel("catalog/product");
 		$products_id  = $productModel->getIdBySku($new_model);
 		if($products_id){
+			$productModel = Mage::getModel("catalog/product")->load($products_id);
+			
+			if($productModel->getData('vendor_code') == '21316'){
+				//vendor 1 azerty item
+				return $products_id;
+			}
+			
+			$stockQty = $product['quantity'];
+			if (!($stockItem = $productModel->getStockItem())) {
+				$stockItem = Mage::getModel('cataloginventory/stock_item');
+				$stockItem->assignProduct($productModel)
+				->setData('stock_id', 1)
+				->setData('store_id', 1);
+			}
+			$stockItem->setData('qty', $stockQty)
+			->setData('is_in_stock', $stockQty > 0 ? 1 : 0)
+			->setData('manage_stock', 1)
+			->setData('use_config_manage_stock', 0)
+			->save();
+			
+			$quantities = $product['quantities'];
+			$checkExist = $this->dbRead->fetchRow("select id from catalog_product_quantities Where product_id = '$products_id'");
+			if($checkExist){
+				$this->dbWrite->query("Update catalog_product_quantities SET city_dallas = '".$quantities['city_dallas']."' ,  city_StLouis = '".$quantities['city_StLouis']."' , city_Carlisle = '".$quantities['city_Carlisle']."' , city_Fresno = '".$quantities['city_Fresno']."' Where product_id = '$products_id'");
+			}
+			else{
+				$this->dbWrite->query("Insert into catalog_product_quantities SET city_dallas = '".$quantities['city_dallas']."' ,  city_StLouis = '".$quantities['city_StLouis']."' , city_Carlisle = '".$quantities['city_Carlisle']."' , city_Fresno = '".$quantities['city_Fresno']."' , product_id = '$products_id'");
+			}
+			
 			return $products_id;
 		}
 
-		//print $new_model. " -- $products_id <br />";
+		print "$products_id <br />";
 		try{
 			$category_ids = array();
 			//product categories
@@ -110,13 +141,15 @@ class Vendor2{
 			}
 
 			global $base_path;
-			$product['ProductImages'][0] = trim($product['ProductImages'][0]);
-			$source = $this->root_path."sftp/Images_L-600px/".$product['ProductImages'][0];
-			$dest   = $this->root_path."demo/media/catalog/product/".$product['ProductImages'][0];
-			if(@!file_exists($dest)){
-				@copy($source, $dest);
+			foreach($product['ProductImages'] as $productImage){
+				$productImage = trim($productImage);
+				$source = $base_path.$productImage;
+				$dest   = $this->root_path."demo/media/catalog/product/".$productImage;
+				if(@!file_exists($dest)){
+					@copy($source, $dest);
+				}
 			}
-
+			
 			$product_description = $product['product_description'];
 
 			$productModel
@@ -140,8 +173,8 @@ class Vendor2{
 			->setMsrpDisplayActualPriceType(1) //display actual price (1 - on gesture, 2 - in cart, 3 - before order confirmation, 4 - use config)
 			->setMsrp($product['product_price']) //Manufacturer's Suggested Retail Price
 			->setUnitCode($product['ListUnitCode'])
-			->setNewsFromDate('10/1/2014')
-			->setNewsToDate('10/1/2020')
+			->setNewsFromDate(strtotime('now'))
+			->setNewsToDate(strtotime('+120 Days'))
 			->setVendorCode('21315')
 
 			->setDescription($product_description[1])
@@ -156,8 +189,14 @@ class Vendor2{
 				$productModel->setUpdatedAt(strtotime('now')); //product update time
 			}
 			else{
-				$productModel->setMediaGallery (array('images'=>array (), 'values'=>array ())) //media gallery initialization
-				->addImageToMediaGallery($this->root_path.'demo/media/catalog/product/'.$product['ProductImages'][0], array('image','thumbnail','small_image'), false, false); //assigning image, thumb and small image to media gallery
+				$productModel->setMediaGallery (array('images'=>array (), 'values'=>array ())); //media gallery initialization
+				foreach($product['ProductImages'] as $productImage){
+					$dest = $this->root_path.'demo/media/catalog/product/'.$productImage;
+				
+					if($productImage and file_exists($dest) AND $productImage != 'NOA.JPG'){
+						$productModel->addImageToMediaGallery($dest, array('image','thumbnail','small_image'), false, false); //assigning image, thumb and small image to media gallery
+					}
+				}
 			}
 
 			$productModel->save();
@@ -176,23 +215,35 @@ class Vendor2{
 				->setData('use_config_manage_stock', 0)
 				->save();
 
-				$product_id = $productModel->getId();
-				$productModel = Mage::getModel("catalog/product")->load($product_id);
+				//$product_id = $productModel->getId();
+				//$productModel = Mage::getModel("catalog/product")->load($product_id);
 
-				$product['Attributes'] = array('Brand Name' => $product['brand_name'] , 'Product Type' => $product['product_type']);
+				/* $product['Attributes'] = array('Brand Name' => $product['brand_name'] , 'Product Type' => $product['product_type']);
 				$attributes_array = $this->insertUpdateAttributes($product['Attributes']);
 				foreach($attributes_array as $key => $value){
 					$productModel->setData($key , $value);
-				}
+				} */
 
-				$productModel->save();
+				//$productModel->save();
+				
+				$quantities = $product['quantities'];
+				$checkExist = $this->dbRead->fetchRow("select id from catalog_product_quantities Where product_id = '$products_id'");
+				if($checkExist){
+					$this->dbWrite->query("Update catalog_product_quantities SET city_dallas = '".$quantities['city_dallas']."' ,  city_StLouis = '".$quantities['city_StLouis']."' , city_Carlisle = '".$quantities['city_Carlisle']."' , city_Fresno = '".$quantities['city_Fresno']."' Where product_id = '$products_id'");
+				}
+				else{
+					$this->dbWrite->query("Insert into catalog_product_quantities SET city_dallas = '".$quantities['city_dallas']."' ,  city_StLouis = '".$quantities['city_StLouis']."' , city_Carlisle = '".$quantities['city_Carlisle']."' , city_Fresno = '".$quantities['city_Fresno']."' , product_id = '$products_id'");
+				}
 			}
 
 			return $productModel->getId();
 		}
 		catch(Exception $e){
 			print $e->getMessage();
-			Mage::log($e->getMessage());
+			print $e->getTraceAsString();
+			Mage::log($e->getTraceAsString());
+			
+			exit;
 			return false;
 		}
 	}
@@ -356,7 +407,7 @@ class Vendor2{
 
 
 	public function getProductDescription($product , $short , $desc , $notes){
-		$html1 = '<table>
+		$html1 = '<table class="table">
                <tr><td><ul>';
 		$html1 .= '<li>'.$notes.'</li>';
 		if($short){
@@ -407,19 +458,18 @@ class Vendor2{
 		$product['Country Of Origin']  = $row[20];
 		$product['UPC']  = $row[19];
 
-		if($row[14] != 'N/N/N/N'){
-			$product['Product Type']  = $row[13];
-		}
-
 		$product['product_description']  = $this->getProductDescription($product , $row[5] , $row[6] , $row[4]);
 
 		$product['product_type']  = trim($row[13]);
-		$product['stock_number']  = trim(str_ireplace(array("-",".","_","#"),"",$row[1]));
+		$product['stock_number']  = trim(str_ireplace(array("-",".","_"),"",$row[1]));
+	    $parts = explode("#", $product['stock_number']);
+	    $product['stock_number'] = $parts[0];
+	
 		$product['prefix_number'] = trim($row[8]);
 		$product['product_price'] = $row[2];
 		$product['product_name']  = $row[6];
 		$product['brand_name']  = $row[7];
-		$product['quantity']    = $row[17];
+		$product['quantity']    = $row[19];
 
 		$product['quantities']  = array('city_StLouis'=>$row[15],'city_Carlisle'=>$row[16],'city_Fresno'=>$row[18],'city_dallas'=>$row[17]);
 

@@ -7,6 +7,8 @@ else{
 	$root_path = "E:/xampp2/htdocs/usasupplies/";
 }
 
+set_time_limit(1500);
+
 require_once("Vendor1.php");
 
 $Vendor1 = new Vendor1();

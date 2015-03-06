@@ -26,24 +26,11 @@
         });
     }
 
-    function getKeywords(){
-    	jQuery(document).ready(function($) {
-	    	type = (jQuery("#search_type1").prop("checked")) ? 'cartridge' : 'printer';
-	    	console.log(type);
-	    	
-	    	if(type == 'cartridge'){
-	       		jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
-	    	}
-	    	else{
-	       		jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
-	    	}
-    	});
-    	
-    	/*url = '< ?php echo Mage::getUrl('catalog/inktoner/getKeywords');? >?type='+type;
-    	jQuery("#keyword").autocomplete({
-        	source : url
-        });*/
-    }
+    jQuery(document).ready(function($) {
+       	   jQuery("#keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"ImageSupplies"});
+       	   
+       	   jQuery("#printer_keyword").ssTypeAhead({serviceURL:"https://ta.ussco.com/smartchoice/smart-suggestions.jsonp",minlength:1,keywordInterface:"SuppliesFinderModel"});
+	});
 </script>
 
 <div class="inktoner-main">
@@ -84,19 +71,21 @@
 	      <h3>Search by cartridge or printer</h3>
 	      <div class="space">
 			<div class="radiobtn radio" style="padding-left:0;">
-			   <input name="search_type" type="radio" checked="checked" value="cartridge" id="search_type1" onclick="jQuery('#keyword').val('')"  />
+			   <input name="search_type" type="radio" checked="checked" value="cartridge" id="search_type1" onclick="jQuery('#keyword').val('');jQuery('#keyword').show();jQuery('#printer_keyword').hide();"  />
 			</div>
 			
 			<div class="f_left"> Cartridge</div>
 			
 			<div class="radiobtn radio" style="padding-left:10px;">
-			  <input name="search_type" type="radio" value="printer" id="search_type2" onclick="jQuery('#keyword').val('')"  />
+			  <input name="search_type" type="radio" value="printer" id="search_type2" onclick="jQuery('#printer_keyword').val('');jQuery('#printer_keyword').show();jQuery('#keyword').hide();"  />
 			</div>
 			<div class="f_left"> Printer</div>
 	      <div class="clearBoth"> </div> </div>
  
 	      <div class="space" style="position:relative;">
-		  	   <input name="keyword" type="text" id="keyword" placeholder="keyword" onkeypress="getKeywords()" onkeyup="getKeywords()" class="form-control inputs" />
+		  	   <input name="keyword" type="text" id="keyword" autocomplete="off" placeholder="keyword" class="form-control inputs" />
+		  	   
+		  	   <input name="printer_keyword" style="display:none" type="text" id="printer_keyword" autocomplete="off" placeholder="keyword" class="form-control inputs" />
 		  </div>
             
           <div> <button type="submit" class="btn btn-success" style=" background:#60a810;">Go</button></div>

@@ -49,13 +49,25 @@ class Mage_Catalog_InktonerController extends Mage_Core_Controller_Front_Action
 		}
 
 		$search_type = $this->getRequest()->getParam('search_type');
-		if($search_type == 'cartridge'){
+		if($search_type == 'cartridge' || $search_type == 'printer'){
 			$keyword   = $this->getRequest()->getParam('keyword');
 			if(!$keyword){
 				$keyword = $this->getRequest()->getParam('inkkeyword');
 			}
+			if(!$keyword){
+				$keyword = $this->getRequest()->getParam('printer_keyword');
+			}
+			if(!$keyword){
+				$keyword = $this->getRequest()->getParam('printer_inkkeyword');
+			}
 				
-			$url = "catalogsearch/smart?q=$keyword&sf=2";
+			if($search_type == 'cartridge'){
+				$url = "catalogsearch/smart?q=$keyword&sf=2";
+			}
+			else{
+				$url = "catalogsearch/smart?q=$keyword&sf=1";
+			}
+			
 			$this->_redirect($url);
 		}
 			
