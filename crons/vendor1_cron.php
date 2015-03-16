@@ -8,6 +8,7 @@ else{
 }
 
 set_time_limit(1500);
+ini_set("memory_limit", "1024M");
 
 require_once("Vendor1.php");
 
@@ -19,7 +20,13 @@ if(!$action){
 	$action = $argv[1];
 }
 
+$day = $argv[2];
+if(!$day){
+	$day = date('D');
+}
+
 echo $action;
+echo $day;
 
 switch($action){
 	case 'importProducts':
@@ -31,7 +38,7 @@ switch($action){
 		break;
 
 	case 'copyFiles':
-		$Vendor1->copyFiles();
+		$Vendor1->copyFiles($day);
 		break;
 
 	case 'removeProducts':

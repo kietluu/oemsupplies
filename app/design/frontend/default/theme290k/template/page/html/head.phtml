@@ -35,8 +35,13 @@
 <link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
 <link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
 
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.10.2.min.js') ?>"></script>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-migrate-1.2.1.min.js') ?>"></script>
+<?php if(Mage::registry('current_product')):?>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.7.min.js') ?>"></script>
+<?php else: ?>
+        <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.10.2.min.js') ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-migrate-1.2.1.min.js') ?>"></script>
+<?php endif;?>
+
 <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/superfish.js') ?>" async></script>
 <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/scripts.js') ?>" async></script>
 <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -62,9 +67,9 @@
 <?php echo $this->getChildHtml() ?>
 <?php echo $this->helper('core/js')->getTranslatorScript() ?>
 <?php echo $this->getIncludes() ?>
-<?php
+<?php 
 	$product = Mage::registry('current_product');
-	if($product){
+	if($product){ 
 ?>
 <meta property="og:title" content="<?php echo trim($product->getName()); ?>"/>
 <meta property="og:url" content="<?php echo $this->helper('core/url')->getCurrentUrl();?>"/>

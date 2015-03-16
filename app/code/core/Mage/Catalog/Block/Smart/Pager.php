@@ -303,12 +303,14 @@ class Mage_Catalog_Block_Smart_Pager extends Mage_Core_Block_Template
 
 	public function getPreviousPageUrl()
 	{
-		return $this->getPageUrl($this->getCollection()->getCurPage(-1));
+	         return $this->getPageUrl($this->getCurrentPage($this->getCollection())-1);
+		//return $this->getPageUrl($this->getCollection()->getCurPage(-1));
 	}
 
 	public function getNextPageUrl()
 	{
-		return $this->getPageUrl($this->getCollection()->getCurPage(+1));
+	        return $this->getPageUrl($this->getCurrentPage($this->getCollection())+1);
+		//return $this->getPageUrl($this->getCollection()->getCurPage(+1));
 	}
 
 	public function getLastPageUrl()
@@ -365,8 +367,12 @@ class Mage_Catalog_Block_Smart_Pager extends Mage_Core_Block_Template
 	 */
 	public function getFramePages()
 	{
-		$start = $this->getFrameStart();
-		$end = $this->getFrameEnd();
+		//$start = $this->getFrameStart();
+		//$end = $this->getFrameEnd();
+		$curr_page = $this->getCurrentPage($this->getCollection()) ;
+                $start = $curr_page ;
+                $end = $curr_page + $this->_frameLength - 1 ;
+
 		return range($start, $end);
 	}
 

@@ -48,11 +48,15 @@ class Vendor1{
 		//print_r($products); exit;
 		$result = $this->dbRead->fetchRow("select last_id from cron");
 		$start  = $result['last_id'];
-		if($start >= sizeof($products)){
-			$this->dbWrite->query("update cron set last_id = 0");
+		if($start >= count($products)){
+			$this->dbWrite->query("update cron set last_id = 0 , total = '".count($products)."'");
 			$start = 0;
 		}
-		$end = $start + 5000;
+		else{
+			$this->dbWrite->query("update cron set total = '".count($products)."'");
+		}
+		
+		$end = $start + 10000;
 
 		if((int)@$_GET['end']){
 			$end = $start + (int)$_GET['end'];
@@ -567,7 +571,7 @@ class Vendor1{
 		return $product;
 	}
 
-	public function copyFiles(){
+	public function copyFiles($day){
 		//connect to vender1 ftp server
 		$ftp_host = "sftp.ussco.com";
 		$ftp_user = "OEMSPPLY";
@@ -692,6 +696,8 @@ class Vendor1{
 		$dataDir = $this->root_path."sftp/xmlrelns";
 
 		$productRelations = array();
+		$productRelations[0] = null;
+		
 		if($handle = opendir($dataDir)){
 			while (false !== ($file = readdir($handle))){
 				if(strlen($file) > 4 and file_exists($dataDir."/".$file) and stristr($file,"xml")){
@@ -707,6 +713,8 @@ class Vendor1{
 			$start = 1;
 			$end = 20;
 		}
+		
+		$this->dbRead->query("delete from catalog_product_link where link_type_id = 4");
 
 		for($i = $start; $i < $end; $i++){
 			$xml_path = $productRelations[$i];
@@ -731,17 +739,16 @@ class Vendor1{
 			$prefix_number = (String)$ProductRelationship->PrefixNumber;
 			$stock_number  = (String)$ProductRelationship->StockNumberButted;
 
-			$product_sku  = mysql_escape_string($prefix_number . $stock_number); //'AAG70100V05'; //
-			$productModel = Mage::getModel("catalog/product")->loadByAttribute('sku',$product_sku);
+			$product_sku  = mysql_escape_string($prefix_number . $stock_number); 
+			$product = $this->dbRead->fetchRow("Select entity_id from catalog_product_entity Where sku = '$product_sku'");
 				
-			if(!$productModel || !$productModel->getId()){
+			if(!$product || !$product['entity_id']){
 				continue;
 			}
 
 			$Relationships = $ProductRelationship->Relationship;
 
-			$cross_sell_ids = array();
-			$counter = 0;
+			$product_skus = array();
 			foreach($Relationships as $Relationship){
 				$RelationshipMembers = $Relationship->RelationshipMember;
 
@@ -750,23 +757,21 @@ class Vendor1{
 					$xell_stock_number  = (String)$RelationshipMember->StockNumberButted;
 
 					$relation_model = mysql_escape_string($xell_prefix_number . $xell_stock_number);
-					$relExist = $this->dbRead->fetchRow("select entity_id from catalog_product_entity Where sku = '$relation_model'");
-					if($relExist){
-						$xsell_id = $relExist['entity_id'];
-						$cross_sell_ids[$xsell_id] = array('position'=>$counter);
-						$counter++;
-					}
+					$product_skus[] = "'".$relation_model."'";
 				}
 			}
-
-			if($cross_sell_ids){
-				//print $product_sku. "--". print_r($cross_sell_ids);
-
-				//$productModel->setUpSellLinkData($cross_sell_ids);
-				$productModel->setRelatedLinkData($cross_sell_ids);
-
-				//$productModel->setCrossSellLinkData($cross_sell_ids);
-				$productModel->save();
+			
+			if($product_skus){
+				$product_skus_str = implode(",", $product_skus);
+				$relExist = $this->dbRead->fetchAll("select entity_id from catalog_product_entity Where sku IN ($product_skus_str)");
+				
+				if($relExist){
+					foreach ($relExist as $row){
+						$this->dbWrite->query("insert IGNORE into catalog_product_link SET product_id = '".$row['entity_id']."' , linked_product_id = '".$product['entity_id']."' , link_type_id = 4");
+						
+						$this->dbWrite->query("insert IGNORE into catalog_product_link SET product_id = '".$product['entity_id']."' , linked_product_id = '".$row['entity_id']."' , link_type_id = 4");
+					}
+				}
 			}
 		}
 

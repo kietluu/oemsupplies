@@ -1,0 +1,273 @@
+/* Block: Media */
+#product-view-media {
+	width: 320px;
+	float: left;
+	-moz-box-shadow: 0 0 3px rgba(186, 183, 165, .75);
+	-webkit-box-shadow: 0 0 3px rgba(186, 183, 165, .75);
+	box-shadow: 0 0 3px rgba(186, 183, 165, .75);
+	margin-bottom: 30px;
+	padding: 5px;
+	background-color: #fff;
+}
+
+#product-view-media-main-image {
+	border: 0px solid #d7d7d7;
+	position: relative;
+}
+
+#product-view-media-main-image iframe {
+	display: block;
+}
+
+.product-view-media-slider {
+	margin: 0;
+	padding: 0px;
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#product-view-media-slider-list {
+	overflow: hidden;
+	height: 100px;
+	margin-left:8px;
+}
+
+#product-view-media-slider-prev,#product-view-media-slider-next {
+	position: absolute;
+	top: 0;
+	cursor: pointer;
+	height: 76px;
+	width: 14px;
+	background:
+		url(http://www.sketchbubble.com/skin/frontend/default/theme217k/images/basicSprite.png?v=5)
+		no-repeat 0 0;
+	text-indent: -9999px;
+}
+
+#product-view-media-slider-prev {
+	background-position: -62px 28px;
+	left: -4px;
+	z-index: 1000;
+}
+
+#product-view-media-slider-next {
+	background-position: -95px 28px;
+	right: -4px;
+	z-index: 1000;
+}
+
+#product-view-media-slider-list li {
+	float: left;
+	margin: 0;
+}
+
+#product-view-media-slider-list li:first-child a {
+	margin-left: 0;
+}
+
+#product-view-media-slider-list a {
+	display: block;
+	margin-left: 9px;
+	border: 1px solid #d7d7d7;
+}
+
+#product-view-media-slider-list a img {
+	display: block;
+}
+
+#product-view-media-slider-list a:hover,#product-view-media-slider-list .active a
+	{
+	border: 1px solid #8c8c8c;
+}
+
+#product-view-media-slider-list a:hover {
+	opacity: .9;
+}
+
+.product-view-media-slider-video {
+	position: relative;
+}
+
+.product-view-media-slider-video span {
+	width: 39px;
+	height: 25px;
+	position: absolute;
+	top: 26px;
+	left: 32px;
+	background:
+		url(http://www.sketchbubble.com/skin/frontend/default/theme217k/images/basicSprite.png?v=5)
+		no-repeat -2px -42px;
+	cursor: pointer;
+}
+
+#product-view-media-zoomtool {
+	position: absolute;
+	right: 7px;
+	bottom: 40px;
+	background:
+		url(http://www.sketchbubble.com/skin/frontend/default/theme217k/images/basicSprite.png?v=5)
+		no-repeat 0 0;
+	width: 36px;
+	height: 36px;
+	text-indent: -9999px;
+}
+
+/* Pop-up: Checkout message: No stores */
+.product-view-nostores-popup {
+	width: 400px;
+	margin: 0 auto;
+	background-color: #fff;
+	font: normal 18px/ 24px CallunaSansSemiBold;
+	text-align: center;
+}
+
+#lightwindow-content .product-view-nostores-popup-text {
+	padding: 15px 33px 25px 33px;
+	color: #86857c;
+	text-align: left;
+}
+
+.product-view-nostores-popup .ui-button-blue-middle {
+	margin-right: 15px;
+}
+
+.product-view-nostores-popup .ui-button {
+	font: normal 19px/ 35px CallunaSansSemiBold;
+	vertical-align: top;
+}
+
+/* SLIMBOX */
+#lbOverlay {
+	position: fixed;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #637484;
+	cursor: pointer;
+}
+
+#lbCenter {
+	margin-top: -50px;
+	padding: 40px 20px;
+	width: 765px !important;
+	height: 720px !important;
+}
+
+#lbCenter,#lbBottomContainer {
+	position: absolute;
+	z-index: 9999;
+	/* overflow: hidden; */
+	background-color: #E5E5E5;
+}
+
+.lbLoading {
+	background: #fff
+		url(http://www.sketchbubble.com/skin/frontend/default/theme217k/images/loading.gif)
+		no-repeat 50% 54%;
+}
+
+#lbImage {
+	position: absolute;
+	left: 20px;
+	top: 40px;
+	border: none;
+	background-position: 50% 55%;
+	background-repeat: no-repeat;
+}
+
+#lbImage,#lbImage>div {
+	width: 725px !important;
+	height: 680px !important;
+	display: block !important;
+}
+
+#lbPrevLink,#lbNextLink {
+	display: none;
+	position: absolute;
+	top: -40px;
+	width: 20px;
+	outline: none;
+	padding: 20px 0;
+	height: 720px !important;
+	background:
+		url(http://www.sketchbubble.com/skin/frontend/default/theme217k/images/bkg_lightbox-control.png)
+		0 50% no-repeat;
+}
+
+.lbLoading #lbImage {
+	background-image: none !important;
+}
+
+.lbLoading #lbPrevLink,.lbLoading #lbNextLink {
+	display: inline !important;
+}
+
+.shown_prev {
+	padding-right: 37px !important;
+}
+
+.shown_next {
+	position: relative;
+}
+
+.shown_next:before,.shown_next .before {
+	position: absolute;
+	left: -17px;
+	top: 0;
+	width: 17px;
+	height: 720px;
+	background: #E5E5E5;
+	content: '';
+}
+
+.shown_none {
+	padding: 40px !important;
+}
+
+.shown_none #lbImage {
+	left: 40px;
+}
+
+#lbPrevLink {
+	left: -40px;
+	background-position: -40px 50%;
+}
+
+#lbPrevLink:hover {
+	background-position: -60px 50%;
+}
+
+#lbNextLink {
+	right: -40px;
+	background-position: 0 50%;
+}
+
+#lbNextLink:hover {
+	background-position: -20px 50%;
+}
+
+#lbBottom {
+	display: none;
+}
+
+#lbCloseLink {
+	display: block;
+	float: right;
+	width: 66px;
+	height: 22px;
+	margin: 5px 0;
+	outline: none;
+}
+
+#lbCaption,#lbNumber {
+	margin-right: 71px;
+}
+
+#lbCaption {
+	font-weight: bold;
+}

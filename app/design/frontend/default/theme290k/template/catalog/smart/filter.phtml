@@ -121,7 +121,7 @@ for($i=0;$i<=10;$i++){
 								
 								        if($filter->FilterStyle != 'Keyword'){
 								        	  echo stripslashes($value->Description);
-								        	  ?><a class="btn-remove" href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?".http_build_query($searchFilters); ?>" title="<?php echo $this->__('Remove This Item') ?>"><?php echo $this->__('Remove This Item') ?></a><?php 
+								        	  ?><a class="btn-remove" href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?".http_build_query($searchFilters); ?>" title="<?php echo $this->__('Remove This Item') ?>"><?php echo $this->__('Remove This Item') ?></a> <br /><?php 
 								        }
 								        else{
 								        	echo stripslashes($value->Description);
@@ -173,11 +173,11 @@ for($i=0;$i<=10;$i++){
             	<dd>
             		<div class="space">
             			<div class="f_left">
-            				<input type="text" class="form-control inputs" placeholder="Extra Keyword" size="15" style="width:180px;" name='rkey' value='<?php echo $_GET['rkey'];?>' />
+            				<input type="text" class="form-control inputs" placeholder="Extra Keyword" size="15" style="width:150px;" name='rkey' value='<?php echo $_GET['rkey'];?>' />
             				<input type="hidden" name='filter_category' value='BM' />
             			</div>	
             			<div>	
-            				<button class='go_button1' type="submit" value="Go">Go</button>
+            				<button class="btn btn-success" style=" background:#60a810; margin:0 0 0 10px;" type="submit">Go</button>
             			</div>
             			<div class="clear"></div>	
             		</div>	
