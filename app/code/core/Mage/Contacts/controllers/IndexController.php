@@ -72,6 +72,20 @@ class Mage_Contacts_IndexController extends Mage_Core_Controller_Front_Action
 
                 $error = false;
 
+               //edit by parm sharma
+                $captchaParams = $this->getRequest()->getPost(Mage_Captcha_Helper_Data::INPUT_NAME_FIELD_VALUE);
+                $formId = 'contact_form' ;
+                $captchaModel = Mage::helper('captcha')->getCaptcha($formId);
+                if ($captchaModel->isRequired()) {
+                    if (!$captchaModel->isCorrect($captchaParams[$formId])) {
+                        Mage::getSingleton('customer/session')->addError(Mage::helper('captcha')->__('Incorrect CAPTCHA.'));
+                $this->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+                Mage::getSingleton('customer/session')->setCustomerFormData($this->getRequest()->getPost());
+                $this->_redirect('*/*/');
+                return;
+                    }
+                }
+
                 if (!Zend_Validate::is(trim($post['name']) , 'NotEmpty')) {
                     $error = true;
                 }

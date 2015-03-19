@@ -55,7 +55,7 @@
     <form id="empty_toner_form" name="empty_toner_form" action="<?php echo $this->getUrl('recycle-empty-toner/') ?>index/sendemail" role="form" method="POST">
         <div class="form-group">
             <label for="companyname">Company Name *</label>
-            <input type="text" class="form-control" id="companyname" name="companyname"  placeholder="Company Name" />
+            <input type="text" class="form-control" id="companyname" name="companyname"  placeholder="Company Name" value="<?php if(Mage::getSingleton('customer/session')->isLoggedIn()){ echo Mage::getSingleton('customer/session')->getCustomer()->getPrimaryBillingAddress()->getCompany() ; }  ?>" />
         </div>
         <div class="form-group">
             <label for="name">Contact Name *</label>
@@ -63,7 +63,7 @@
         </div>
         <div class="form-group">
             <label for="phone">Phone # *</label>
-            <input type="text" class="form-control" id="phone" name="phone"  placeholder="Enter phone" />
+            <input type="text" class="form-control" id="phone" name="phone"  placeholder="Enter phone" value="<?php if(Mage::getSingleton('customer/session')->isLoggedIn()){ echo Mage::getSingleton('customer/session')->getCustomer()->getPrimaryBillingAddress()->getTelephone() ;  }  ?>" />
         </div>
         <div class="form-group">
             <label for="E-Mail">E-Mail Address *</label>

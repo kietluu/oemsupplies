@@ -32,8 +32,8 @@
    <figure><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('map_content')->toHtml() ?></figure>
 </div>
 <div class="contact-block clearfix">
-	<div class="contact-left"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('contact_block')->toHtml() ?></div>
-	<form action="<?php echo $this->getFormAction(); ?>" id="contactForm" method="post">
+   	<div class="contact-left"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('contact_block')->toHtml() ?></div>
+	<form name="contactForm" action="<?php echo $this->getFormAction(); ?>" id="contactForm" method="post">
 		<div class="fieldset">
 			<h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h2>
 			<ul class="form-list">
@@ -53,7 +53,7 @@
 					<div class="field last">
 						<label for="telephone"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
 						<div class="input-box">
-							<input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="input-text" type="text" />
+							<input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="<?php if(Mage::getSingleton('customer/session')->isLoggedIn()){ echo Mage::getSingleton('customer/session')->getCustomer()->getPrimaryBillingAddress()->getTelephone() ;  }  ?>" class="input-text" type="text" />
 						</div>
 					</div>
 				</li>
@@ -63,6 +63,7 @@
 						<textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="required-entry input-text" cols="5" rows="3"></textarea>
 					</div>
 				</li>
+                                <?php echo $this->getChildHtml('form.additional.info'); ?>
 			</ul>
 		</div>
 		<div class="buttons-set">

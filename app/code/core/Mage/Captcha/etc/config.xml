@@ -106,6 +106,14 @@
                     </captcha_register>
                 </observers>
             </controller_action_predispatch_checkout_onepage_saveBilling>
+            <controller_action_predispatch_contacts_index_post>
+                <observers>
+                    <captcha>
+                        <class>captcha/observer</class>
+                        <method>checkContact</method>
+                    </captcha>
+                </observers>
+            </controller_action_predispatch_contacts_index_post>
             <customer_customer_authenticated>
                 <observers>
                     <captcha_reset_attempt>
@@ -141,6 +149,7 @@
                 </captcha>
             </updates>
         </layout>
+        
     </frontend>
     <admin>
         <routers>
@@ -185,7 +194,7 @@
                 <case_sensitive>0</case_sensitive>
                 <always_for>
                     <backend_forgotpassword>1</backend_forgotpassword>
-                </always_for>
+               </always_for>
             </captcha>
         </admin>
         <customer>
@@ -206,6 +215,7 @@
                     <user_forgotpassword>1</user_forgotpassword>
                     <guest_checkout>1</guest_checkout>
                     <register_during_checkout>1</register_during_checkout>
+                    <contact_form>1</contact_form>
                 </always_for>
             </captcha>
         </customer>
@@ -233,6 +243,9 @@
                     <register_during_checkout>
                         <label>Register during Checkout</label>
                     </register_during_checkout>
+                    <contact_form>
+                    <label>Contact Us</label>
+                    </contact_form>
                 </areas>
             </frontend>
             <backend>

@@ -64,7 +64,8 @@
     <div class="pages">
         <strong><?php echo $this->__('Page:') ?></strong>
         <ol>
-        <?php if (!$this->isFirstPage()): ?>
+        <?php // if (!$this->isFirstPage()):
+        if($this->getCurrentPage($this->getCollection()) > 1): ?>
             <li>
                 <a class="previous<?php if(!$this->getAnchorTextForPrevious()): ?> i-previous  fa fa-caret-left<?php endif;?>" href="<?php echo $this->getPreviousPageUrl() ?>" title="<?php echo $this->__('Previous') ?>">
                     <?php if(!$this->getAnchorTextForPrevious()): ?>

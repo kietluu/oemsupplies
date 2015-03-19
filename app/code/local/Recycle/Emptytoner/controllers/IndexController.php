@@ -11,10 +11,16 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
 		array('template' => 'recycle/Emptytoner.phtml'));
 
 		$this->getLayout()->getBlock('content')->append($block);
+                $left_block = $this->getLayout()->createBlock(
+            'Mage_Core_Block_Template',
+            'featured',
+		array('template' => 'catalog/navigation/featured_random.phtml'));
+
+                $this->getLayout()->getBlock('left')->insert($left_block , 'featured', true);
 		$this->getLayout()->getBlock('right')->insert($block, 'catalog.compare.sidebar', true);
 		$this->_initLayoutMessages('core/session');
 		$customer_data = Mage::getSingleton('customer/session')->getCustomer();
-		$name = $customer_data->getName();
+                $name = $customer_data->getName();
 		$email = $customer_data->getEmail();
 		$block->assign(array('name'=>$name ,'email'=> $email));
 		$this->renderLayout();
@@ -27,7 +33,7 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
             'Mage_Core_Block_Template',
             'recycle.service_tech',
 		array('template' => 'recycle/Servicetechnician.phtml'));
-
+            
 		$params = $this->getRequest()->getParams();
 		if(isset($params) && !empty($params)) {
 			$company_name = $params['companyname'] ;

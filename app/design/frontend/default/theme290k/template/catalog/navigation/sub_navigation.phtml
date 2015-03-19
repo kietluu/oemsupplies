@@ -20,6 +20,14 @@ $_maincategorylisting = $this->getCurrentCategory();
      font-size:13px;
      line-height:15px;
  }
+ @media only screen and (min-device-width: 320px) and (max-device-width: 400px) {
+ .sub-category-listing{width:100%;}
+ }
+ 
+  @media only screen and (min-device-width: 750px) and (max-device-width: 1000px) {
+ .sub-category-listing{width:48%;}
+ }
+ 
 </style>
 <div id="categories">
   <div class="col_full">
@@ -39,7 +47,7 @@ $_maincategorylisting = $this->getCurrentCategory();
 				$_product = null;
 				foreach ( $products as $_product ) {}
 				if(isset($_product)):?>
-					<div class="sub-category-listing col-sm-3">
+					 <div class="sub-category-listing col-sm-3">
 					  <div class="linkimage">
 					    <a href="<?php echo $this->getCategoryUrl($_category)?>" class="product-image">
 						  <?php
@@ -47,7 +55,7 @@ $_maincategorylisting = $this->getCurrentCategory();
 							   $layer->setCurrentCategory($cur_category);
 							   if($_imgUrl=$this->getCurrentCategory()->getImageUrl()):
 						  		?>
-						  		<img src="<?php echo $_imgUrl ?>"  width="135" height="135"  alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+						  		<img src="<?php echo $_imgUrl ?>"  width="135" height="135" class="img-responsive" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
 					 	  <?php endif; ?>
  
  						  <?php
@@ -97,13 +105,14 @@ $_maincategorylisting = $this->getCurrentCategory();
 				   <?php if($_description=$this->getCurrentCategory()->getDescription()):?>
 						<p class="category-description"><?php //echo $_description ?></p>
 				   <?php endif; ?>
-			  </div>
+			  </div> 
 		<?php
 			endif;
 		endif;
 	endforeach;
 ?>
-</div>
+<div class="clear"></div>
+</div><div class="clear"></div>
 	<br clear=all>
 </div>
 </div> 
