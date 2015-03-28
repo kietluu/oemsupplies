@@ -176,9 +176,9 @@ for($i=0;$i<=10;$i++){
             				<input type="text" class="form-control inputs" placeholder="Extra Keyword" size="15" style="width:150px;" name='rkey' value='<?php echo $_GET['rkey'];?>' />
             				<input type="hidden" name='filter_category' value='BM' />
             			</div>	
-            			<div>	
+            				
             				<button class="btn btn-success" style=" background:#60a810; margin:0 0 0 10px;" type="submit">Go</button>
-            			</div>
+            			
             			<div class="clear"></div>	
             		</div>	
             	</dd>
@@ -194,7 +194,7 @@ for($i=0;$i<=10;$i++){
 	                  <dd style="max-height:140px;overflow-y:scroll;">
 	                  	  <ol>
 		                  	  <?php foreach($_filter->FilterValue as $filterValue):?>
-		                  	  		<?php $sf = (int)$_GET['sf'];?>
+		                  	  		<?php $sf = (int)@$_GET['sf'];?>
 		                  	  		<li>
 		                  	  			<a href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?". 'kf='.$keywordFilter.'&q='.$keyword.'&rkey='.$refine_keyword.'&sf='.$sf.'&fid0='.$filterValue->Value.'&fst0='.$_filter->FilterStyle.$appliedFilters;?>">
 		                  	  				 <?php echo stripslashes($filterValue->Description) .'('. $filterValue->AvailableResults.')';?>

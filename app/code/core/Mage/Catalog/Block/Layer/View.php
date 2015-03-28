@@ -185,14 +185,15 @@ class Mage_Catalog_Block_Layer_View extends Mage_Core_Block_Template
 	public function getFilters()
 	{
 		$filters = array();
-		if ($categoryFilter = $this->_getCategoryFilter()) {
-			$filters[] = $categoryFilter;
-		}
-
+		
 		$categoryId = Mage::registry('current_category')->getId();
 		$dbRead = Mage::getSingleton("core/resource")->getConnection("core_read");
 		$result = $dbRead->fetchRow("Select entity_id from catalog_category_entity where parent_id = '$categoryId'");
 		if(!$result) {
+			if ($categoryFilter = $this->_getCategoryFilter()) {
+				$filters[] = $categoryFilter;
+			}
+			
 			$filterableAttributes = $this->_getFilterableAttributes();
 			foreach ($filterableAttributes as $attribute) {
 				$filters[] = $this->getChild($attribute->getAttributeCode() . '_filter');

@@ -44,7 +44,7 @@ class Mage_Catalog_InktonerController extends Mage_Core_Controller_Front_Action
 
 		$model = $this->getRequest()->getParam('model');
 		if($brand_id and $model){
-			$url = "catalogsearch/smart?q=printer&fst1=SuppliesFinderBrand&fid11=$brand_id&fst2=SuppliesFinderModel&fid21=$model";
+			$url = "catalogsearch/smart?q=printer&fst1=SuppliesFinderBrand&fid11=$brand_id&fst2=SuppliesFinderModel&fid21=$model&";
 			$this->_redirect($url);
 		}
 

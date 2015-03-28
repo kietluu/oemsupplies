@@ -24,16 +24,15 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-
 /**
  * Product list
  *
- * @category   Mage
- * @package    Mage_Catalog
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @category Mage
+ * @package Mage_Catalog
+ * @author Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
-{
+class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract {
+
 	/**
 	 * Default toolbar block name
 	 *
@@ -60,28 +59,28 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 
 	public $_filters;
 
-	public function init(){
-		include_once Mage::getBaseDir()."/crons/config.php";
-
+	public function init() {
+		include_once Mage::getBaseDir () . "/crons/config.php";
+		
 		$this->requestUrl = $requestUrl;
-		$this->searchUrl  = $searchUrl;
-		$this->username   = $username;
-		$this->password   = $password;
+		$this->searchUrl = $searchUrl;
+		$this->username = $username;
+		$this->password = $password;
 	}
 
-	public function setSize($size){
-		$this->numberResults = (int)$size;
+	public function setSize($size) {
+		$this->numberResults = ( int ) $size;
 	}
 
-	public function getSize(){
+	public function getSize() {
 		return $this->numberResults;
 	}
 
-	public function setFilters($filters){
+	public function setFilters($filters) {
 		$this->_filters = $filters;
 	}
 
-	public function getFilters(){
+	public function getFilters() {
 		return $this->_filters;
 	}
 
@@ -90,341 +89,485 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return Mage_Eav_Model_Entity_Collection_Abstract
 	 */
-	protected function _getProductCollection()
-	{
-		$this->init();
-
-		if (is_null($this->_productCollection)) {
+	protected function _getProductCollection() {
+		$this->init ();
+		
+		if (is_null ( $this->_productCollection )) {
 			$fstCategory = false;
-			$page = (int)$_GET['p'];
-			if(!$page){
+			$page = ( int ) $_GET ['p'];
+			if (! $page) {
 				$page = 1;
 			}
-
-			$keyword = trim($_GET['q']);
-			if($keyword and strlen($keyword) > 0){
-				$response = $this->_doFilter($keyword , $page);
+			
+			$keyword = trim ( $_GET ['q'] );
+			
+			if (isset($_GET ['fst1']) && $_GET ['fst1'] == 'SuppliesFinderBrand') {
+				$response = $this->_doFilter ( null, $page );
 			}
-			else{
-				$keyword = $this->helper('catalogsearch')->getQueryText();
-				$response = $this->_sendRequest($keyword , false , $page);
+			elseif ($keyword and strlen ( $keyword ) > 0) {
+				$response = $this->_doFilter ( $keyword, $page );
 			}
-
-			if($response['items']){
-				$sku_list = array_keys($response['items']);
-
-				$products = Mage::getResourceModel('catalog/product_collection')
-				->addAttributeToSelect('*')
-				//->addAttributeToFilter('SKU', array('in'=> array('ACM38000')));
-				->addAttributeToFilter('SKU', array('in'=> $sku_list));
-				$products->load();
+			else {
+				$keyword = $this->helper ( 'catalogsearch' )->getQueryText ();
+				$response = $this->_sendRequest ( $keyword, false, $page );
 			}
-
-			$this->setFilters(array($response['AvailableFilters'] , $response['AppliedFilters']));
-			$this->setSize($response['totalItems']);
-
-			$this->_productCollection = $products;
+			
+			if ($response ['items']) {
+				$sku_list = array_keys ( $response ['items'] );
+				
+				$_productCollection = Mage::getModel('catalog/product')->getCollection();
+				$_productCollection->addAttributeToSelect('*');
+				//$_productCollection->addUrlRewrite();
+				//$_productCollection->addAttributeToFilter('visibility', 4);
+				//$_productCollection->addStoreFilter(Mage::app()->getStore()->getStoreId());
+				$_productCollection->addAttributeToFilter('sku', array('in' => $sku_list));
+				$_productCollection->getSelect()->order(new Zend_Db_Expr('FIELD(e.sku, ' . "'" . implode("','", $sku_list) . "'".')'));
+			}
+			
+			//print_r($products); exit;
+			
+			$this->setFilters ( array(
+					$response ['AvailableFilters'],
+					$response ['AppliedFilters'] ) );
+			$this->setSize ( $response ['totalItems'] );
+			
+			$this->_productCollection = $_productCollection;
 		}
-
+		
 		return $this->_productCollection;
 	}
 
-	protected function _doFilter($keyword , $page = 1){
+	protected function _doFilter($keyword, $page = 1) {
 		$extraFilter = false;
 		$sequence = 1;
-
-		$refine_keyword = trim($_GET['rkey']);
-		if($refine_keyword){
-			$refine_keyword = str_ireplace("-"," ",$refine_keyword);
-			$keyword = str_ireplace($refine_keyword,"",$keyword);
-			$keyword = trim($keyword);
+		
+		$refine_keyword = trim ( $_GET ['rkey'] );
+		$rkey = '';
+		if ($refine_keyword) {
+			$refine_keyword = str_ireplace ( "-", " ", $refine_keyword );
+			$keyword = str_ireplace ( $refine_keyword, "", $keyword );
+			$keyword = trim ( $keyword );
 			$rkey = $refine_keyword;
 		}
-
-		if(isset($_GET['kf']) && !$_GET['kf']){
+		
+		if (isset ( $_GET ['kf'] ) && ! $_GET ['kf']) {
 			$fkeyword = false;
 			$sequence = 1;
 		}
-		else{
+		else {
 			$fkeyword = $keyword;
 			$sequence = 2;
 		}
-
-		$fst = (string)$_GET['fst0'];
-		if(!in_array($fst,array('Attribute','Brand','Category','Catalog','Contract','Item','ItemIndicator','Keyword','PriceRange','SuppliesFinderBrand','SuppliesFinderDeviceType','SuppliesFinderModel','Manufacturer','CountryOfOrigin','ProductClass','Price'))){
+		
+		$fst = ( string ) @$_GET ['fst0'];
+		if (! in_array ( $fst, array(
+				'Attribute',
+				'Brand',
+				'Category',
+				'Catalog',
+				'Contract',
+				'Item',
+				'ItemIndicator',
+				'Keyword',
+				'PriceRange',
+				'SuppliesFinderBrand',
+				'SuppliesFinderDeviceType',
+				'SuppliesFinderModel',
+				'Manufacturer',
+				'CountryOfOrigin',
+				'ProductClass',
+				'Price' ) )) {
 			$fst = 'Keyword';
 		}
-
+		
 		$attAdded = array();
 		$attAddedValue = array();
 		$availFilters = array();
 		$fstCategoryCount = 0;
-
-		for($i=1;$i<=10;$i++){
+		
+		for($i = 1; $i <= 10; $i ++) {
 			$filterValues = array();
-			if(isset($_GET['fst'.$i]) and !empty($_GET['fst'.$i])){
-				$fst = $_GET['fst'.$i];
-				if(!in_array($fst,array('Attribute','Brand','Category','Catalog','Contract','Item','ItemIndicator','Keyword','PriceRange','SuppliesFinderBrand','SuppliesFinderDeviceType','SuppliesFinderModel','Manufacturer','CountryOfOrigin','ProductClass','Price'))){
+			if (isset ( $_GET ['fst' . $i] ) and ! empty ( $_GET ['fst' . $i] )) {
+				$fst = $_GET ['fst' . $i];
+				if (! in_array ( $fst, array(
+						'Attribute',
+						'Brand',
+						'Category',
+						'Catalog',
+						'Contract',
+						'Item',
+						'ItemIndicator',
+						'Keyword',
+						'PriceRange',
+						'SuppliesFinderBrand',
+						'SuppliesFinderDeviceType',
+						'SuppliesFinderModel',
+						'Manufacturer',
+						'CountryOfOrigin',
+						'ProductClass',
+						'Price' ) )) {
 					$fst = 'Keyword';
 				}
-
-				if( !in_array($fst,$attAdded) || (in_array($fst,$attAdded) && $attAddedValue[$fst] != $_GET['fid'.$i.'1']) ){
-					for($k=1;$k<=10;$k++){
-						if(isset($_GET['fid'.$i.$k]) and is_numeric($_GET['fid'.$i.$k])){
-							if($fst == 'Category'){
+				
+				if (! in_array ( $fst, $attAdded ) || (in_array ( $fst, $attAdded ) && $attAddedValue [$fst] != $_GET ['fid' . $i . '1'])) {
+					for($k = 1; $k <= 10; $k ++) {
+						if (isset ( $_GET ['fid' . $i . $k] ) and is_numeric ( $_GET ['fid' . $i . $k] )) {
+							if ($fst == 'Category') {
 								$fstCategory = true;
-								$fstCategoryCount++;
-								$availFilters[$fst][] = $_GET['fid'.$i.$k];
+								$fstCategoryCount ++;
+								$availFilters [$fst] [] = $_GET ['fid' . $i . $k];
 							}
-							else{
-								$filterValues[] = $_GET['fid'.$i.$k];
+							else {
+								$filterValues [] = $_GET ['fid' . $i . $k];
 							}
 						}
 					}
-
-					if($filterValues and sizeof($filterValues) > 0){
-						$extraFilter .= $this->extraFilter($sequence,$fst,$filterValues);
-						$sequence++;
-
-						$attAdded[] = $fst;
-						$attAddedValue[$fst]  = $_GET['fid'.$i.'1'];
+					
+					if ($filterValues and sizeof ( $filterValues ) > 0) {
+						$extraFilter .= $this->extraFilter ( $sequence, $fst, $filterValues );
+						$sequence ++;
+						
+						$attAdded [] = $fst;
+						$attAddedValue [$fst] = $_GET ['fid' . $i . '1'];
 					}
 				}
 			}
 		}
-
-		$fid = $_GET['fid0'];
-		$fst = (string)$_GET['fst0'];
-		if(is_numeric($fid)){
-			$availFilters[$fst][] = $fid;
-			$attAdded[] = $fst;
-			$attAddedValue[$fst] = $fid;
+		
+		$fid = @$_GET ['fid0'];
+		$fst = ( string ) @$_GET ['fst0'];
+		if (is_numeric ( $fid )) {
+			$availFilters [$fst] [] = $fid;
+			$attAdded [] = $fst;
+			$attAddedValue [$fst] = $fid;
 		}
-
-		if(count($availFilters) > 0){
-			foreach($availFilters as $fst => $filterValues){
-				if(sizeof($filterValues) > 0){
-					$extraFilter .= $this->extraFilter($sequence,$fst,$filterValues);
-					$sequence++;
+		
+		if (count ( $availFilters ) > 0) {
+			foreach ( $availFilters as $fst => $filterValues ) {
+				if (sizeof ( $filterValues ) > 0) {
+					$extraFilter .= $this->extraFilter ( $sequence, $fst, $filterValues );
+					$sequence ++;
 				}
 			}
 		}
-
-		if(!$fkeyword && !$fstCategory){
+		
+		if (! $fkeyword && ! $fstCategory) {
 			$fkeyword = $keyword;
 		}
-
-		if($rkey && !$fkeyword){
-			$extraFilter .= $this->extraFilter($sequence,'Keyword',array(0=>$rkey));
+		
+		if ($rkey && ! $fkeyword) {
+			$extraFilter .= $this->extraFilter ( $sequence, 'Keyword', array(0 => $rkey ) );
 		}
-
-		$dbRead  = Mage::getSingleton("core/resource")->getConnection("core_read");
-		$dbWrite = Mage::getSingleton("core/resource")->getConnection("core_write");
-
-		if(isset($_GET['order']) && $_GET['order']){
-			$filter_category = $_GET['order'];
+		
+		$dbRead = Mage::getSingleton ( "core/resource" )->getConnection ( "core_read" );
+		$dbWrite = Mage::getSingleton ( "core/resource" )->getConnection ( "core_write" );
+		
+		$filter_limit = 10;
+		if (isset ( $_GET ['limit'] ) && $_GET ['limit']) {
+			$filter_limit = $_GET ['limit'];
 		}
-
-		if(!$filter_category){
-			$filter_category = 'BM';
+		
+		$filter_category = 'BM';
+		if (isset ( $_GET ['order'] ) && $_GET ['order']) {
+			$filter_category = $_GET ['order'];
 		}
-			
-		if($filter_category == 'PA' || $filter_category == 'PD'){
-			if($filter_category == 'PA'){
+		
+		if ($filter_category == 'PA' || $filter_category == 'PD') {
+			if ($filter_category == 'PA') {
 				$order = 'ASC';
 			}
-			else{
+			else {
 				$order = 'DESC';
 			}
-
-			$start = ($page-1)*10;
-
-			$items = $dbRead->fetchAll("select * from ussco_smart_search where session_id = '".session_id()."' order by abs(product_price) $order limit $start , 10");
-			if(sizeof($items) == 0){
+			
+			$start = ($page - 1) * $filter_limit;
+			
+			$items = $dbRead->fetchAll ( "select * from ussco_smart_search where session_id = '" . session_id () . "' order by abs(product_price) $order limit $start , $filter_limit" );
+			if (sizeof ( $items ) == 0) {
 				$bufferSize = 500;
-				$SortResponse = $this->_sendRequest($fkeyword , $rkey , 1 , $bufferSize , $filter_category , $extraFilter);
-				if($SortResponse['items'] and count($SortResponse['items']) > 0){
+				$SortResponse = $this->_sendRequest ( $fkeyword, $rkey, 1, $bufferSize, $filter_category, $extraFilter );
+				if ($SortResponse ['items'] and count ( $SortResponse ['items'] ) > 0) {
 					$models = array();
 					$sql_query = "Insert into ussco_smart_search(session_id , product_model , list_type) values";
-					foreach($SortResponse['items'] as $item){
-						$sql_query .= "('".session_id()."' , '".$item['products_model']."' , '".$item['list_type']."'),";
-						$models[] = "'" . $item['products_model'] . "'";
+					foreach ( $SortResponse ['items'] as $item ) {
+						$sql_query .= "('" . session_id () . "' , '" . $item ['products_model'] . "' , '" . $item ['list_type'] . "'),";
+						$models [] = "'" . $item ['products_model'] . "'";
 					}
-
-					$sql_query = substr($sql_query , 0, -1);
-					if($sql_query){
-						$dbWrite->query($sql_query);
-
-						$models_str = implode(",",$models);
-						$prices = $dbRead->fetchAll("select price , sku from catalog_product_index_price pc
+					
+					$models = array_unique ( $models );
+					
+					$sql_query = substr ( $sql_query, 0, - 1 );
+					if ($sql_query) {
+						$dbWrite->query ( $sql_query );
+						
+						$models_str = implode ( ",", $models );
+						
+						$prices = $dbRead->fetchAll ( "select price , sku from catalog_product_index_price pc
 													inner join catalog_product_entity pe on (pc.entity_id = pe.entity_id)
-													where sku IN($models_str)");
-						foreach($prices as $price){
-							$update_query = "Update ussco_smart_search set product_price = '".$price['price']."' where product_model = '".$price['sku']."' and session_id = '".session_id()."'";
-							$dbWrite->query($update_query);
+													where sku IN($models_str)" );
+						foreach ( $prices as $price ) {
+							$update_query = "Update ussco_smart_search set product_price = '" . $price ['price'] . "' where product_model = '" . $price ['sku'] . "' and session_id = '" . session_id () . "'";
+							$dbWrite->query ( $update_query );
 						}
 					}
 				}
-
-				$items = $dbRead->fetchAll("select * from ussco_smart_search where session_id = '".session_id()."' order by abs(product_price) $order limit $start , 10");
+				
+				$items = $dbRead->fetchAll ( "select * from ussco_smart_search where session_id = '" . session_id () . "' order by abs(product_price) $order limit $start , $filter_limit" );
 			}
-
+			
 			$referenceFilter = '';
-			if(sizeof($items) > 0) {
+			if (sizeof ( $items ) > 0) {
 				$referenceFilter = '<ns:ItemReferenceFilters>';
 				$seq = 1;
-				foreach($items as $item){
-					$referenceFilter .= '<ns:ItemReference ReferenceType="'.$item['list_type'].'" Sequence="'.$seq.'">';
-					$referenceFilter .= '<ns:ItemNumber>'.$item['product_model'].'</ns:ItemNumber>';
+				foreach ( $items as $item ) {
+					$referenceFilter .= '<ns:ItemReference ReferenceType="' . $item ['list_type'] . '" Sequence="' . $seq . '">';
+					$referenceFilter .= '<ns:ItemNumber>' . $item ['product_model'] . '</ns:ItemNumber>';
 					$referenceFilter .= '</ns:ItemReference>';
-					$seq++;
+					$seq ++;
 				}
 			}
 			$referenceFilter .= '</ns:ItemReferenceFilters>';
-
-			$response = $this->_sendRequest($fkeyword , $rkey , 1 , 10 , 'BM' , $extraFilter , $referenceFilter);
-			//print_r($response);
-			//print "daasda"; exit;
+			
+			$response = $this->_sendRequest ( $fkeyword, $rkey, 1, $filter_limit, 'BM', $extraFilter, $referenceFilter );
+			// print_r($response);
+			// print "daasda"; exit;
 		}
-		else{
-			$dbWrite->query("delete from ussco_smart_search where session_id = '".session_id()."'");
-			$bufferSize = 10;
-				
-			if($_GET['fst1'] == 'SuppliesFinderBrand'){
-				$fkeyword = '';
+		else {
+			$dbWrite->query ( "delete from ussco_smart_search where session_id = '" . session_id () . "'" );
+			if (isset ( $_GET ['limit'] ) && $_GET ['limit']) {
+				$bufferSize = $_GET ['limit'];
+			}
+			else {
+				$bufferSize = 10;
 			}
 			
-			$response = $this->_sendRequest($fkeyword , $rkey , $page , $bufferSize , $filter_category , $extraFilter , false);
+			if ($_GET ['fst1'] == 'SuppliesFinderBrand') {
+				$response = $this->_suppliesFinderRequest ( $extraFilter, $page, $bufferSize, $filter_category );
+			}
+			else {
+				$response = $this->_sendRequest ( $fkeyword, $rkey, $page, $bufferSize, $filter_category, $extraFilter, false );
+			}
 		}
-
+		
 		return $response;
 	}
 
-	protected function extraFilter($sequence = 2 , $filterStyle = 'Keyword' , $filterValues,$keywordInterface = 'Standard'){
-		$extra = '<ns:Filter displayStyle="Top" keywordInterface="'.$keywordInterface.'" sequence="'.$sequence.'" CrossReference="ALT">
-                  <ns:FilterStyle>'.$filterStyle.'</ns:FilterStyle>
+	protected function extraFilter($sequence = 2, $filterStyle = 'Keyword', $filterValues, $keywordInterface = 'Standard') {
+		$extra = '<ns:Filter displayStyle="Top" keywordInterface="' . $keywordInterface . '" sequence="' . $sequence . '" CrossReference="ALT">
+                  <ns:FilterStyle>' . $filterStyle . '</ns:FilterStyle>
                   <!--Optional:-->
-                  <ns:FilterDescription>'.$filterStyle.'</ns:FilterDescription>
+                  <ns:FilterDescription>' . $filterStyle . '</ns:FilterDescription>
                   <!--1 or more repetitions:-->';
-
+		
 		$k = 1;
-		foreach($filterValues as $filterValue){
-			$extra .=  '<ns:FilterValue displayStyle="Top" sequence="'.$k.'">
-                     <ns:Value>'.$filterValue.'</ns:Value>
+		foreach ( $filterValues as $filterValue ) {
+			$extra .= '<ns:FilterValue displayStyle="Top" sequence="' . $k . '">
+                     <ns:Value>' . $filterValue . '</ns:Value>
                   </ns:FilterValue>';
-			$k++;
+			$k ++;
 		}
-
+		
 		$extra .= '</ns:Filter>';
 		return $extra;
 	}
 
-	protected function _sendRequest($keyword , $rkey = false , $page = 1 , $per_page = 12 , $sort = 'BM' ,$extraFilter = false , $referenceFilter = false){
-		$page = (int)$page;
-		if(!$page){
+	protected function _sendRequest($keyword, $rkey = false, $page = 1, $per_page = 12, $sort = 'BM', $extraFilter = false, $referenceFilter = false) {
+		$page = ( int ) $page;
+		if (! $page) {
 			$page = 1;
 		}
-
-		$per_page = (int)$per_page;
-		if(!$per_page){
+		
+		$per_page = ( int ) $per_page;
+		if (! $per_page) {
 			$per_page = 12;
 		}
-
-		$keyword = str_ireplace(array("-","®"),"",$keyword);
+		
+		$keyword = str_ireplace ( array(
+				"-",
+				"®" ), "", $keyword );
 		$page = (($page - 1) * $per_page) + 1;
-
-		$filename = Mage::getBaseUrl()."/xml/search.xml";
-		$xml = file_get_contents($filename);
-
-		if($_GET['sf'] == 1){
+		
+		$filename = Mage::getBaseUrl () . "/xml/search.xml";
+		$xml = file_get_contents ( $filename );
+		
+		if (isset($_GET ['sf']) && $_GET ['sf'] == 1) {
 			$keywordInterface = 'SuppliesFinder';
 		}
-		elseif($_GET['sf'] == 2){
+		elseif (isset($_GET ['sf']) && $_GET ['sf'] == 2) {
 			$keywordInterface = 'ImageSupplies';
 		}
-		else{
+		else {
 			$keywordInterface = 'Standard';
 		}
-
-		if($keyword){
-			$keywordNode = '<ns:Filter displayStyle="Top" keywordInterface="'.$keywordInterface.'" sequence="1" CrossReference="ALT">
+		
+		if ($keyword) {
+			$keywordNode = '<ns:Filter displayStyle="Top" keywordInterface="' . $keywordInterface . '" sequence="1" CrossReference="ALT">
 		                  <ns:FilterStyle>Keyword</ns:FilterStyle>
 		                  <ns:FilterDescription>Keyword</ns:FilterDescription>
 		                  <ns:FilterValue displayStyle="Top" sequence="1">
-		                     <ns:Description>'.$keyword.'</ns:Description>
-		                     <ns:Value>'.$keyword.'</ns:Value>
+		                     <ns:Description>' . $keyword . '</ns:Description>
+		                     <ns:Value>' . $keyword . '</ns:Value>
 		                  </ns:FilterValue>';
-			if($rkey){
+			if ($rkey) {
 				$keywordNode .= '<ns:FilterValue displayStyle="Top" sequence="2">
-		                       <ns:Description>'.$rkey.'</ns:Description>
-		                       <ns:Value>'.$rkey.'</ns:Value>
+		                       <ns:Description>' . $rkey . '</ns:Description>
+		                       <ns:Value>' . $rkey . '</ns:Value>
 		                     </ns:FilterValue>';
 			}
-
+			
 			$keywordNode .= '</ns:Filter>';
 		}
-		else{
+		else {
 			$keywordNode = false;
 		}
-
-		$xml = sprintf($xml,$this->username,$this->password,session_id(),$keywordNode,$extraFilter,$sort,$page,$per_page,$referenceFilter);
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$this->searchUrl);
-
-		curl_setopt($ch, CURLOPT_POST,1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,$xml);
-		curl_setopt($ch, CURLOPT_HTTPHEADER,array("content-type:text/xml;content-length:".strlen($xml)));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-		curl_setopt($ch, CURLOPT_TIMEOUT,10);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
-
-		$result = curl_exec($ch);
-		$error = curl_exec($ch);
-
-		$start_pos = strpos($result,"<getSearchResponse");
-		$end_pos   = strpos($result,"</getSearchResponse>");
-		$result = substr($result,$start_pos,$end_pos);
-		$result = str_replace(array('</soapenv:Envelope>','</soapenv:Body>'),"",$result);
-		//print_r($result); exit;
-
+		
+		$xml = sprintf ( $xml, $this->username, $this->password, session_id (), $keywordNode, $extraFilter, $sort, $page, $per_page, $referenceFilter );
+		
+		$ch = curl_init ();
+		curl_setopt ( $ch, CURLOPT_URL, $this->searchUrl );
+		
+		curl_setopt ( $ch, CURLOPT_POST, 1 );
+		curl_setopt ( $ch, CURLOPT_POSTFIELDS, $xml );
+		curl_setopt ( $ch, CURLOPT_HTTPHEADER, array("content-type:text/xml;content-length:" . strlen ( $xml ) ) );
+		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt ( $ch, CURLOPT_TIMEOUT, 10 );
+		curl_setopt ( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+		curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+		
+		$result = curl_exec ( $ch );
+		$error = curl_exec ( $ch );
+		
+		$start_pos = strpos ( $result, "<getSearchResponse" );
+		$end_pos = strpos ( $result, "</getSearchResponse>" );
+		$result = substr ( $result, $start_pos, $end_pos );
+		$result = str_replace ( array(
+				'</soapenv:Envelope>',
+				'</soapenv:Body>' ), "", $result );
+		// print_r($result); exit;
+		
 		$response = array();
-		$responsObj = simplexml_load_string($result); // or die("can not parse");
-		if(!$responsObj){
+		$responsObj = simplexml_load_string ( $result ); // or die("can not parse");
+		if (! $responsObj) {
 			return $response;
 		}
-
+		
 		$products = array();
 		$Items = $responsObj->searchResponse->ItemPage->Items->Item;
-
-		if($Items){
-			foreach($Items as $Item){
-				$products_model = (string)$Item->ItemNumber;
+		
+		if ($Items) {
+			foreach ( $Items as $Item ) {
+				$products_model = ( string ) $Item->ItemNumber;
 				$list_type = 'UnitedItemNumber';
-				if(!$products_model){
-					$products_model = (string)$Item->DealerItemNumber;
+				if (! $products_model) {
+					$products_model = ( string ) $Item->DealerItemNumber;
 					$list_type = 'DealerItemNumber';
 				}
-
-				if($products_model){
-					$products[$products_model] = array('products_model' => $products_model ,
-						    'ListPrice' => (string)$Item->ListPrice , 
-						    'list_type' => $list_type ,	 
-						    'products_name' => stripslashes((string)$Item->Description),
-							'manufacturers_name' =>$Item->Brand->BrandDescription . " &#174;");
+				
+				if ($products_model) {
+					$products [$products_model] = array(
+							'products_model' => $products_model,
+							'ListPrice' => ( string ) $Item->ListPrice,
+							'list_type' => $list_type,
+							'products_name' => stripslashes ( ( string ) $Item->Description ),
+							'manufacturers_name' => $Item->Brand->BrandDescription . " &#174;" );
 				}
 			}
 		}
+		
+		// print_r($products); exit;
+		$response = array(
+				"totalItems" => $responsObj->searchResponse->ItemPage->TotalResults,
+				"page" => $page,
+				'perPageValue' => $per_page,
+				'items' => $products,
+				'AvailableFilters' => $responsObj->searchResponse->AvailableFilters,
+				'AppliedFilters' => $responsObj->searchResponse->AppliedFilters,
+				'AvailableSorts' => $responsObj->searchResponse->AvailableSorts );
+		
+		return $response;
+	}
 
-		//print_r($products); exit;
-		$response = array("totalItems" => $responsObj->searchResponse->ItemPage->TotalResults,
-					  "page" => $page , 'perPageValue' => $per_page , 'items' => $products , 
-					  'AvailableFilters' => $responsObj->searchResponse->AvailableFilters,
-					  'AppliedFilters'   => $responsObj->searchResponse->AppliedFilters,
-					  'AvailableSorts'   => $responsObj->searchResponse->AvailableSorts
-		);
-
+	protected function _suppliesFinderRequest($extraFilter, $page = 1, $per_page = 12, $sort = 'BM') {
+		$page = ( int ) $page;
+		if (! $page) {
+			$page = 1;
+		}
+		
+		$per_page = ( int ) $per_page;
+		if (! $per_page) {
+			$per_page = 12;
+		}
+		
+		$page = (($page - 1) * $per_page) + 1;
+		
+		$filename = Mage::getBaseUrl () . "/xml/supplies_finder.xml";
+		$xml = file_get_contents ( $filename );
+		
+		$xml = sprintf ( $xml, $this->username, $this->password, session_id (), $extraFilter, $sort, $page, $per_page );
+		// print $xml; exit;
+		
+		$ch = curl_init ();
+		curl_setopt ( $ch, CURLOPT_URL, $this->searchUrl );
+		
+		curl_setopt ( $ch, CURLOPT_POST, 1 );
+		curl_setopt ( $ch, CURLOPT_POSTFIELDS, $xml );
+		curl_setopt ( $ch, CURLOPT_HTTPHEADER, array(
+				"content-type:text/xml;content-length:" . strlen ( $xml ) ) );
+		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt ( $ch, CURLOPT_TIMEOUT, 10 );
+		curl_setopt ( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+		curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+		
+		$result = curl_exec ( $ch );
+		$error = curl_exec ( $ch );
+		
+		$start_pos = strpos ( $result, "<getSuppliesFinderResponse" );
+		$end_pos = strpos ( $result, "</getSuppliesFinderResponse>" );
+		$result = substr ( $result, $start_pos, $end_pos );
+		$result = str_replace ( array(
+				'</soapenv:Envelope>',
+				'</soapenv:Body>' ), "", $result );
+		// print_r($result); exit;
+		
+		$response = array();
+		$responsObj = simplexml_load_string ( $result ); // or die("can not parse");
+		if (! $responsObj) {
+			return $response;
+		}
+		
+		$products = array();
+		$Items = $responsObj->suppliesFinderResponse->ItemPage->Items->Item;
+		
+		if ($Items) {
+			foreach ( $Items as $Item ) {
+				$products_model = ( string ) $Item->ItemNumber;
+				$list_type = 'UnitedItemNumber';
+				if (! $products_model) {
+					$products_model = ( string ) $Item->DealerItemNumber;
+					$list_type = 'DealerItemNumber';
+				}
+				
+				if ($products_model) {
+					$products [$products_model] = array(
+							'products_model' => $products_model,
+							'ListPrice' => ( string ) $Item->ListPrice,
+							'list_type' => $list_type,
+							'products_name' => stripslashes ( ( string ) $Item->Description ),
+							'manufacturers_name' => $Item->Brand->BrandDescription . " &#174;" );
+				}
+			}
+		}
+		
+		// print_r($products); exit;
+		$response = array(
+				"totalItems" => $responsObj->suppliesFinderResponse->ItemPage->TotalResults,
+				"page" => $page,
+				'perPageValue' => $per_page,
+				'items' => $products,
+				'AvailableFilters' => $responsObj->suppliesFinderResponse->AvailableFilters,
+				'AppliedFilters' => $responsObj->suppliesFinderResponse->AppliedFilters,
+				'AvailableSorts' => $responsObj->suppliesFinderResponse->AvailableSorts );
+		
 		return $response;
 	}
 
@@ -433,13 +576,12 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return Mage_Catalog_Model_Layer
 	 */
-	public function getLayer()
-	{
-		$layer = Mage::registry('current_layer');
+	public function getLayer() {
+		$layer = Mage::registry ( 'current_layer' );
 		if ($layer) {
 			return $layer;
 		}
-		return Mage::getSingleton('catalog/layer');
+		return Mage::getSingleton ( 'catalog/layer' );
 	}
 
 	/**
@@ -447,9 +589,8 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return Mage_Eav_Model_Entity_Collection_Abstract
 	 */
-	public function getLoadedProductCollection()
-	{
-		return $this->_getProductCollection();
+	public function getLoadedProductCollection() {
+		return $this->_getProductCollection ();
 	}
 
 	/**
@@ -457,55 +598,57 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return string
 	 */
-	public function getMode()
-	{
-		return $this->getChild('toolbar')->getCurrentMode();
+	public function getMode() {
+		return $this->getChild ( 'toolbar' )->getCurrentMode ();
 	}
 
 	/**
 	 * Need use as _prepareLayout - but problem in declaring collection from
 	 * another block (was problem with search result)
 	 */
-	protected function _beforeToHtml()
-	{
-		$toolbar = $this->getToolbarBlock();
-
+	protected function _beforeToHtml() {
+		$toolbar = $this->getToolbarBlock ();
+		
 		// called prepare sortable parameters
-		$collection = $this->_getProductCollection();
-
+		$collection = $this->_getProductCollection ();
+		
 		// use sortable parameters
-		if ($orders = $this->getAvailableOrders()) {
-			$orders = array("BM" => "Best Match", "BA" => "Brand", "MP"=>"Most Popular" , "PA" => "Price Ascending" , "PD" => "Price Descending");
-
-			$toolbar->setAvailableOrders($orders);
+		if ($orders = $this->getAvailableOrders ()) {
+			$orders = array(
+					"BM" => "Best Match",
+					"BA" => "Brand",
+					"MP" => "Most Popular",
+					"PA" => "Price Ascending",
+					"PD" => "Price Descending" );
+			
+			$toolbar->setAvailableOrders ( $orders );
 		}
-		if ($sort = $this->getSortBy()) {
-			$toolbar->setDefaultOrder($sort);
+		if ($sort = $this->getSortBy ()) {
+			$toolbar->setDefaultOrder ( $sort );
 		}
-		if ($dir = $this->getDefaultDirection()) {
-			$toolbar->setDefaultDirection($dir);
+		if ($dir = $this->getDefaultDirection ()) {
+			$toolbar->setDefaultDirection ( $dir );
 		}
-		if ($modes = $this->getModes()) {
-			$toolbar->setModes($modes);
+		if ($modes = $this->getModes ()) {
+			$toolbar->setModes ( $modes );
 		}
-
+		
 		// set collection to toolbar and apply sort
-		$toolbar->setCollection($collection);
-		$toolbar->setSize($this->getSize());
-
-		$this->setChild('toolbar', $toolbar);
-
-		$filters = $this->getFilterBlock();
-		$filters->setFilters($this->getFilters());
-
-		$this->setChild("filter", $filters);
-
-		Mage::dispatchEvent('catalog_block_smart_list_collection', array(
-			'collection' => $this->_getProductCollection()
-		));
-
-		//$this->_getProductCollection()->load();
-		return parent::_beforeToHtml();
+		$toolbar->setCollection ( $collection );
+		$toolbar->setSize ( $this->getSize () );
+		
+		$this->setChild ( 'toolbar', $toolbar );
+		
+		$filters = $this->getFilterBlock ();
+		$filters->setFilters ( $this->getFilters () );
+		
+		$this->setChild ( "filter", $filters );
+		
+		Mage::dispatchEvent ( 'catalog_block_smart_list_collection', array(
+				'collection' => $this->_getProductCollection () ) );
+		
+		// $this->_getProductCollection()->load();
+		return parent::_beforeToHtml ();
 	}
 
 	/**
@@ -513,14 +656,13 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return Mage_Catalog_Block_Product_List_Toolbar
 	 */
-	public function getToolbarBlock()
-	{
-		if ($blockName = $this->getToolbarBlockName()) {
-			if ($block = $this->getLayout()->getBlock($blockName)) {
+	public function getToolbarBlock() {
+		if ($blockName = $this->getToolbarBlockName ()) {
+			if ($block = $this->getLayout ()->getBlock ( $blockName )) {
 				return $block;
 			}
 		}
-		$block = $this->getLayout()->createBlock($this->_defaultToolbarBlock, microtime());
+		$block = $this->getLayout ()->createBlock ( $this->_defaultToolbarBlock, microtime () );
 		return $block;
 	}
 
@@ -529,9 +671,8 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return Mage_Catalog_Block_Product_List_Toolbar
 	 */
-	public function getFilterBlock()
-	{
-		$block = $this->getLayout()->createBlock("catalog/smart_filter", microtime());
+	public function getFilterBlock() {
+		$block = $this->getLayout ()->createBlock ( "catalog/smart_filter", microtime () );
 		return $block;
 	}
 
@@ -540,14 +681,12 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return string
 	 */
-	public function getAdditionalHtml()
-	{
-		return $this->getChildHtml('additional');
+	public function getAdditionalHtml() {
+		return $this->getChildHtml ( 'additional' );
 	}
 
-	public function getFiltersHtml()
-	{
-		return $this->getChildHtml('filter');
+	public function getFiltersHtml() {
+		return $this->getChildHtml ( 'filter' );
 	}
 
 	/**
@@ -555,26 +694,22 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return string
 	 */
-	public function getToolbarHtml()
-	{
-		return $this->getChildHtml('toolbar');
+	public function getToolbarHtml() {
+		return $this->getChildHtml ( 'toolbar' );
 	}
 
-	public function setCollection($collection)
-	{
+	public function setCollection($collection) {
 		$this->_productCollection = $collection;
 		return $this;
 	}
 
-	public function addAttribute($code)
-	{
-		$this->_getProductCollection()->addAttributeToSelect($code);
+	public function addAttribute($code) {
+		$this->_getProductCollection ()->addAttributeToSelect ( $code );
 		return $this;
 	}
 
-	public function getPriceBlockTemplate()
-	{
-		return $this->_getData('price_block_template');
+	public function getPriceBlockTemplate() {
+		return $this->_getData ( 'price_block_template' );
 	}
 
 	/**
@@ -582,33 +717,32 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return Mage_Catalog_Model_Config
 	 */
-	protected function _getConfig()
-	{
-		return Mage::getSingleton('catalog/config');
+	protected function _getConfig() {
+		return Mage::getSingleton ( 'catalog/config' );
 	}
 
 	/**
 	 * Prepare Sort By fields from Category Data
 	 *
-	 * @param Mage_Catalog_Model_Category $category
+	 * @param Mage_Catalog_Model_Category $category        	
 	 * @return Mage_Catalog_Block_Product_List
 	 */
 	public function prepareSortableFieldsByCategory($category) {
-		if (!$this->getAvailableOrders()) {
-			$this->setAvailableOrders($category->getAvailableSortByOptions());
+		if (! $this->getAvailableOrders ()) {
+			$this->setAvailableOrders ( $category->getAvailableSortByOptions () );
 		}
-		$availableOrders = $this->getAvailableOrders();
-		if (!$this->getSortBy()) {
-			if ($categorySortBy = $category->getDefaultSortBy()) {
-				if (!$availableOrders) {
-					$availableOrders = $this->_getConfig()->getAttributeUsedForSortByArray();
+		$availableOrders = $this->getAvailableOrders ();
+		if (! $this->getSortBy ()) {
+			if ($categorySortBy = $category->getDefaultSortBy ()) {
+				if (! $availableOrders) {
+					$availableOrders = $this->_getConfig ()->getAttributeUsedForSortByArray ();
 				}
-				if (isset($availableOrders[$categorySortBy])) {
-					$this->setSortBy($categorySortBy);
+				if (isset ( $availableOrders [$categorySortBy] )) {
+					$this->setSortBy ( $categorySortBy );
 				}
 			}
 		}
-
+		
 		return $this;
 	}
 
@@ -617,11 +751,7 @@ class Mage_Catalog_Block_Smart_List extends Mage_Catalog_Block_Product_Abstract
 	 *
 	 * @return array
 	 */
-	public function getCacheTags()
-	{
-		return array_merge(
-		parent::getCacheTags(),
-		$this->getItemsTags($this->_getProductCollection())
-		);
+	public function getCacheTags() {
+		return array_merge ( parent::getCacheTags (), $this->getItemsTags ( $this->_getProductCollection () ) );
 	}
 }
