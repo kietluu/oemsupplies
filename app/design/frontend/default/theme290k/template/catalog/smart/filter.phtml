@@ -49,29 +49,29 @@ for($i=0;$i<=10;$i++){
     <div class="block-title">
         <strong><span><?php echo $this->__('Shop By') ?></span></strong>
     </div>
-    
+
     <div class="block-content">
     	<div class="currently">
     		<p class="block-subtitle"><?php echo $this->__('Currently Shopping by:') ?></p>
-    	
+
     		<ol>
 		       <?php if($filters[1]->Filter): ?>
 		           <?php foreach($filters[1]->Filter as $filter):?>
 		        	     <li>
-		        			 <span class="label"><?php echo $filter->FilterDescription ?>:</span>  
-		        			 
+		        			 <span class="label"><?php echo $filter->FilterDescription ?>:</span>
+
 		        			 <?php if($filter->FilterStyle != 'Keyword'):?>
 		        			 	<br />
 		        			 <?php endif;?>
-		        			 	
+
 		        			 <span class="value">
-			        			<?php 
+			        			<?php
 			        				if($filter->FilterStyle != 'Keyword'){
 								        $appliedFilters .= "&fst$k=".$filter->FilterStyle."&";
-								        ?><input type="hidden" name="<?php echo "fst$k";?>" value="<?php echo (string)$filter->FilterStyle;?>" /><?php 
+								        ?><input type="hidden" name="<?php echo "fst$k";?>" value="<?php echo (string)$filter->FilterStyle;?>" /><?php
 								        $_GET["fst$k"] = (string)$filter->FilterStyle;
 								    }
-								    
+
 								    $l = 1;
 		        					foreach($filter->FilterValue as $value){
 								        if($value->AutoSpellCorrect){
@@ -80,7 +80,7 @@ for($i=0;$i<=10;$i++){
 								        else{
 								            $value->Description = ((string)$value->Description);
 								        }
-								
+
 								        $value->Description = str_ireplace("\\","",$value->Description);
 								        if($filter->FilterStyle == 'Keyword'){
 								            if(strlen($value->Value) > 0){
@@ -90,11 +90,11 @@ for($i=0;$i<=10;$i++){
 								        }
 								        else{
 								            $appliedFilters .= "fid$k$l=".$value->Value."&";
-								            ?><input type="hidden" name="<?php echo "fid$k$l";?>" value="<?php echo (string)$value->Value;?>" /><?php 
+								            ?><input type="hidden" name="<?php echo "fid$k$l";?>" value="<?php echo (string)$value->Value;?>" /><?php
 								            $_GET["fid$k$l"] = (string)$value->Value;
 								            $l++;
 								        }
-								
+
 								        $searchFilters  = array();
 								        $m = 1;
 								        foreach($filters[1]->Filter as $sfilter){
@@ -113,34 +113,34 @@ for($i=0;$i<=10;$i++){
 								                    }
 								                }
 								            }
-								
+
 								            if($sfilter->FilterStyle != 'Keyword'){
 								                $m++;
 								            }
 								        }
-								
+
 								        if($filter->FilterStyle != 'Keyword'){
 								        	  echo stripslashes($value->Description);
-								        	  ?><a class="btn-remove" href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?".http_build_query($searchFilters); ?>" title="<?php echo $this->__('Remove This Item') ?>"><?php echo $this->__('Remove This Item') ?></a> <br /><?php 
+								        	  ?><a class="btn-remove" href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?".http_build_query($searchFilters); ?>" title="<?php echo $this->__('Remove This Item') ?>"><?php echo $this->__('Remove This Item') ?></a> <br /><?php
 								        }
 								        else{
 								        	echo stripslashes($value->Description);
 								        	echo "<br />";
 								        }
 		        					}
-		        					
+
 		        					if($filter->FilterStyle != 'Keyword'){
 								        $k++;
 								    }
 		        			    ?>
 		        			 </span>
-		        		</li>	 
-		        	 <?php endforeach;?>  
+		        		</li>
+		        	 <?php endforeach;?>
 		 		<?php endif; ?>
 		 	</ol>
-		 </div>				
-        
-         <?php 
+		 </div>
+
+         <?php
         	$_GET['kf'] = $keywordFilter;
         	$_GET['rkey'] = urldecode($_GET['rkey']);
 			if($appliedkeywords){
@@ -150,22 +150,22 @@ for($i=0;$i<=10;$i++){
 			    $_GET['q'] = urldecode($_GET['q']);
 			}
 			$_GET['rkey'] = str_ireplace("\\","",$_GET['rkey']);
-			
+
 			$keyword = trim($_GET['q']);
 			$refine_keyword = trim($_GET['rkey']);
-			
+
 			// draw hidden fields
 			reset($_GET);
 			while(list($key, $value) = each ($_GET)) {
 			    if($key != 'search' and $key != 'rkey' and strpos($key,"fid") === false and strpos($key,"fst") === false){
 			        if($key != 'filter_category')
-			        ?><input type="hidden" name="<?php echo $key;?>" value="<?php echo $value;?>" /><?php 
+			        ?><input type="hidden" name="<?php echo $key;?>" value="<?php echo $value;?>" /><?php
 			    }
 			}
         ?>
-        
+
         <br />
-        
+
         <?php if($filters[0]): ?>
             <p class="block-subtitle"><?php echo $this->__('Shopping Options') ?></p>
             <dl id="narrow-by-list">
@@ -175,33 +175,50 @@ for($i=0;$i<=10;$i++){
             			<div class="f_left">
             				<input type="text" class="form-control inputs" placeholder="Extra Keyword" size="15" style="width:150px;" name='rkey' value='<?php echo $_GET['rkey'];?>' />
             				<input type="hidden" name='filter_category' value='BM' />
-            			</div>	
-            				
+            			</div>
+
             				<button class="btn btn-success" style=" background:#60a810; margin:0 0 0 10px;" type="submit">Go</button>
-            			
-            			<div class="clear"></div>	
-            		</div>	
+
+            			<div class="clear"></div>
+            		</div>
             	</dd>
-            	
+
                 <?php foreach ($filters[0]->Filter as $_filter): ?>
-                	  <?php 
+                	  <?php
                 		if($_filter->FilterDescription == 'Refine Search')
         					continue;
         			  ?>
-                
+
 	                  <dt><?php echo $_filter->FilterDescription ?></dt>
-	                    
-	                  <dd style="max-height:140px;overflow-y:scroll;">
-	                  	  <ol>
-		                  	  <?php foreach($_filter->FilterValue as $filterValue):?>
-		                  	  		<?php $sf = (int)@$_GET['sf'];?>
-		                  	  		<li>
-		                  	  			<a href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?". 'kf='.$keywordFilter.'&q='.$keyword.'&rkey='.$refine_keyword.'&sf='.$sf.'&fid0='.$filterValue->Value.'&fst0='.$_filter->FilterStyle.$appliedFilters;?>">
+
+	                  <dd>
+	                  	  <ol id="<?php echo $_filter->FilterDescription ?>">
+		                  	  <?php $i=0 ;
+                                          foreach($_filter->FilterValue as $filterValue):?>
+		                  	  		<?php $sf = (int)$_GET['sf']; ?>
+                                      <?php
+                                      $style = '';
+                                      $id = '';
+                                      if($i >= 8){
+
+                                          $style = "display:none;" ;
+                                          $id = $_filter->FilterDescription . "more5" ;
+                                          //$html = '' ;
+                                      } ?>
+                                                         <li class="<?php echo $id ; ?>" style="<?php echo $style ; ?>">
+                                                             <a href="<?php echo $this->helper('catalogsearch')->getResultUrl()."?". 'kf='.$keywordFilter.'&q='.$keyword.'&rkey='.$refine_keyword.'&sf='.$sf.'&fid0='.$filterValue->Value.'&fst0='.$_filter->FilterStyle.$appliedFilters;?>">
 		                  	  				 <?php echo stripslashes($filterValue->Description) .'('. $filterValue->AvailableResults.')';?>
 		                  	  			</a>
 		                  	  		</li>
-		                  	  <?php endforeach;?>
+
+		                  	  <?php $i++ ;
+                                          endforeach; ?>
 	                  	  </ol>
+                              <?php if(count($_filter->FilterValue) >= 8 ): ?>
+                          <span style="float:right;color:blue;" id="<?php echo $_filter->FilterDescription ; ?>_after">
+                              <a href="javascript:void(0);" onclick="showmoreli('<?php echo $_filter->FilterDescription ?>')" >Show more</a>
+                          </span>
+                              <?php endif; ?>
 	                  </dd>
                 <?php endforeach; ?>
             </dl>
@@ -211,3 +228,20 @@ for($i=0;$i<=10;$i++){
 </div>
 <?php endif; ?>
 </form>
+
+
+<script type="text/javascript">
+function showmoreli(id){
+    jQuery('.'+id+'more5').show();
+    //jQuery("#"+id+"_after").hide();
+    var html = '<a href="javascript:void(0);" onclick=showlessli("'+id+'") >Show less</a>' ;
+    jQuery("#"+id+"_after").html(html);
+}
+
+function showlessli(id){
+    jQuery("."+id+"more5").hide();
+    var html = '<a href="javascript:void(0);" onclick=showmoreli("'+id+'") >Show More</a>' ;
+    jQuery("#"+id+"_after").html(html);
+}
+
+</script>

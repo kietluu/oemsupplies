@@ -118,7 +118,7 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
 			if (count($activeChildren)) {
 				$columns = (int)Mage::getStoreConfig('custom_menu/columns/count');
 				//$htmlPopup[] = '<div class="block1">';
-				$htmlPopup[] = '<div class="col-sm-9">';
+				$htmlPopup[] = '<div class="col-sm-9" style="padding:0;">';
 
 				////////////////////////
 				$htmlPopup[] = '<div id="' . $blockId . '" class="block2">';
@@ -137,7 +137,7 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
 			// --- draw Custom User Block ---
 			if ($blockHtml) {
 				//$htmlPopup[] = '<div id="' . $blockId . '" class="block3">';
-				$htmlPopup[] = '<div id="' . $blockId . '" class="col-sm-3">';
+				$htmlPopup[] = '<div id="' . $blockId . '" class="col-sm-3" style="padding:0;">';
 				$htmlPopup[] = $blockHtml[1];
 				$htmlPopup[] = '</div>';
 			}

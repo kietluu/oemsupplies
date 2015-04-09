@@ -1,62 +1,118 @@
+<style>
+    a.button > span {
+    background: url("<?php echo $this->getSkinUrl('images/button.gif') ; ?>") repeat-x scroll 0 0 transparent;
+    border: 1px solid #2A59B5;
+    color: #FFFFFF;
+    /*background: url("../images/bg_title.gif") repeat-x scroll 0 100% #FFFFFF;*/
+    font-family: 'Roboto',sans-serif;
+    font-size: 14px;
+    height: 32px;
+    line-height: 30px;
+}
+a.button > span {
+    float: left;
+    padding: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+a.button span span {
+    display: block;
+    float: left;
+    padding: 0 10px;
+}
+a.button {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    cursor: pointer;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    width: auto;
+}
+a.button {
+    color: #000000;
+    font: 12px Arial,Helvetica,sans-serif;
+    vertical-align: middle;
+}
+</style>
+
 <?php
 /**
-* Magento
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE_AFL.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@magentocommerce.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade Magento to newer
-* versions in the future. If you wish to customize Magento for your
-* needs please refer to http://www.magentocommerce.com for more information.
-*
-* @category   design_default
-* @package    Mage
-* @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
-* @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*/
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   design_default
+ * @package    Mage
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+$module_name = Mage::app()->getRequest()->getModuleName();
 ?>
+<?php if($module_name == "recycle-empty-toner" || $module_name == "customer" || ($module_name == "catalog" && (Mage::registry('current_category')->getlevel() == 2 || Mage::registry('current_category')->getlevel() == 3))): ?>
+
 <?php 
-$collection = Mage::getResourceModel('catalog/product_collection');
-        Mage::getModel('catalog/layer')->prepareProductCollection($collection);
-        $collection->getSelect()->order('rand()');
-        $collection->addStoreFilter();      
-        $collection->setPageSize(5);
+    $collection = Mage::getResourceModel('catalog/product_collection');
+    Mage::getModel('catalog/layer')->prepareProductCollection($collection);
+    $collection->getSelect()->order('rand()');
+    $collection->addStoreFilter();
+    $collection->setPageSize(5);
 ?>
 
 <?php if($collection->count()):?>
-<div class="block block-featured-product">
-  <div class="block-title">
-    <strong>
-    	<span>Featured Product</span>
-    </strong>
-  </div>
-  <div class="block-content">
-    <ul id="featured-product-list">
-    	  <?php foreach ($collection as $_product): ?>
-		      <li class="featured-product">
-		          <h4><?php echo $this->htmlEscape($_product->getName())?></h4>
-		          <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
-		            <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(117, 117); ?>" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
-		          </a>
-		          <span><?php echo $this->helper('core')->currency(Mage::helper('tax')->getPrice($_product, $_product->getFinalPrice()), true, false); ?></span>&nbsp;
-		          <br>
-		          <a class="view-item-button" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">View Item</a> |
-		          
-                          <a href="<?php echo Mage::helper('checkout/cart')->getAddUrl($_product); ?>" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" ><?php echo $this->__('Add to Cart') ?></a>
-                          
-		          <!--<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo Mage::getUrl('checkout/cart/add/')?>product/<?php echo $_product->getId() ?>/')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>-->
-		      </li>
-		  <?php endforeach;?>    
-    </ul>
-  </div>
-</div>
+	<div class="block block-featured-product">
+	    <div class="block-title">
+	        <strong>
+	            <span>Featured Products</span>
+	        </strong>
+	    </div>
+	    <div class="block-content" style="padding:0 5px;">
+	        <ul id="product-list">
+	            <?php foreach ($collection as $_product): ?>
+	               <li class="featured-product" style="border-bottom: 1px solid #9B3535;text-align:center;padding-bottom:10px;">
+	                   <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
+	                       <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(117, 117); ?>" alt="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>" />
+	                   </a>
+	                   
+	                   <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getImageLabel($_product, 'small_image')) ?>">
+	                     <h5><?php echo $this->htmlEscape($_product->getName())?></h5>
+	                   </a>
+	
+		               <?php if($_product->isSaleable()): ?>
+                        	<form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form_<?php echo $_product->getId()?>">
+	                  		<?php if(!$_product->isGrouped()): ?>
+								<label for="qty"><?php echo $this->__('Qty') ?>:</label>
+								<input class="input-text qty form-control" size="4" type="text" name="qty" id="qty" maxlength="3" value="<?php echo ($this->getMinimalQty($_product)?$this->getMinimalQty($_product):1) ?>"/>
+							<?php endif; ?>
+							<br />	<br />
+	                   		<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="this.form.submit()"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+	                   		</form>
+	                   		
+                        <?php else: ?>
+                            <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                        <?php endif; ?>
+		              
+		              <br clear="all" />
+	            </li>
+	          <?php endforeach;?>
+	        </ul>
+	    </div>
+	</div>
+ <?php endif; ?>
+
 <?php endif; ?>

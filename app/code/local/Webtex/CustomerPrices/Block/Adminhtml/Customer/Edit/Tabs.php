@@ -44,11 +44,14 @@ class Webtex_CustomerPrices_Block_Adminhtml_Customer_Edit_Tabs extends Mage_Admi
 //            'url'       => $this->getUrl('customerprices/customer/customerprices', array('_current' => true)),
 //        ),'addresses');
 
+        if (Mage::registry('current_customer')->getId()) {
+            
             $this->addTab('customerprices', array(
                 'label'     => Mage::helper('catalog')->__('Customer Prices'),
-                'content'   => $this->getLayout()
-                    ->createBlock('customerprices/adminhtml_customer_edit_tab_customerprices')->toHtml(),
+                'content'   => $this->getLayout()->createBlock('customerprices/adminhtml_customer_edit_tab_customerprices')->toHtml(),
+                'after'     => 'addresses',
             ));
+        }
         return parent::_beforeToHtml();
     }
 }

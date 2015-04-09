@@ -10,12 +10,24 @@ div.osc li.fields {
 }
 
 div.onestep-step {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
+    border: 1px solid #bcbcbc;
+    padding: 10px;
+	border-radius: 5px;
 }
 div.osc-column .step-title {
-    font-weight: bold;
+    /* font-weight: bold;
     font-size: 16px;
-    margin: 0 0 10px 0;
+   margin: 0 0 10px 0;
+	margin:20px 0;*/
+	  font-size: 16px;
+    font-weight: normal;
+    margin: 20px 0;
+    background:none repeat scroll 0 0 lightblue;
+    border-radius: 5px;
+    color: black;
+    padding: 10px;
+	width: 100%;
 }
 div.customer-name, div.two-fields {
     width: 100%;
@@ -23,12 +35,12 @@ div.customer-name, div.two-fields {
 div.customer-name .input-box, div.customer-name input[type="text"],
 div.two-fields .input-box, div.two-fields input[type="text"],
 div.two-fields .input-box, div.two-fields input[type="password"]{
-    width: 100%;
+  width: 100%;
 }
 div.customer-name .field, div.two-fields .field {
-    float:left;
+   /*  float:left;
     margin-right: 10px;
-    width: 122px;
+   width: 122px;*/
 }
 
 ul.form-list input[type="radio"] {
@@ -41,7 +53,7 @@ ul.form-list div.input-box label {
 }
 
 div.osc-column-wrapper {
-    width: 890px;
+    width: /*890px*/100%;
     padding: 5px;
     min-height: 200px;;
 }
@@ -49,8 +61,8 @@ div.osc-column-wrapper h3 {
     font-size: 14px;
 }
 div.osc-column-wrapper div.osc-column {
-    width: 293px;
-    margin-right: 5px;
+    /*width: 293px;
+    margin-right: 5px;*/
     float: left;
 }
 
@@ -91,4 +103,22 @@ div.checkout-review-update-container {
 #review-submit-please-wait {
     float: left;
     margin: 10px;
+}
+#co-billing-form > fieldset {
+	    border-radius: 5px;
+}
+#co-shipping-form {
+        border-radius: 5px;
+		height:auto;
+}
+#co-billing-form {
+    border: 1px solid #bcbcbc;
+    display: block;
+      border-radius: 5px;
+    padding: 10px;
+}
+#co-billing-form > fieldset {
+   border: none; 
+    box-sizing: border-box;
+   padding: 0; 
 }

@@ -32,7 +32,7 @@ class Webtex_CustomerPrices_Block_Adminhtml_System_Convert_Export_Form extends M
         );
 
 	$exportConfig = array('file_path' => '/var/customerprices/customerprices.csv',
-	                      'delimiter' => ';',
+	                      'delimiter' => ',',
 	                      'enclosure' => '"',
 	                      );
 

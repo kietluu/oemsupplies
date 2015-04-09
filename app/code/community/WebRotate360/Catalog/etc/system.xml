@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   WebRotate 360
+ * @package    WebRotate360_Catalog
+ * @author     WebRotate 360 LLC
+ * @copyright  Copyright (c) 2013 WebRotate 360 LLC. (http://www.webrotate360.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+
+    <sections>
+        <wr360_product_view translate="label" module="WebRotate360_Catalog">
+            <label>WebRotate 360 Product Viewer</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>314</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>0</show_in_store>
+
+            <groups>
+                <readme translate="label">
+                    <label>Readme</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <comment><![CDATA[
+                    <p style=";margin:0 20px 15px 0;">
+                    1) To start using this extension please first create a new product attribute that can be labeled 360 Viewer Path, for example. Set the Attribute Code to <b>webrotate_path</b> and the catalog input type to Text Field. Assign the new attribute to any of your existing attribute sets where you are planing to use 360 views. If using the Master Config feature (available in the PRO version of the script) as per the following notes under the Master Config URL field, please create an extra attribute with the attribute code set to webrotate_root.
+                    </p>
+                    <p style=";margin:10px 20px 15px 0;">
+                    2) There are two integration types included with this module: <b>Standard</b> and <b>Ad-hoc</b>. Standard integration will override the default implementation of your product media block (the one that is usually presented on the left side of your product page with a thumbnail gallery. The Standard integration can be configured to either embed your 360 views in place of the main product image or show up as an extra gallery thumbnail that activates the prettyPhoto lightbox popup with a 360 viewer loaded inside the popup. Please note that when this integration mode is enabled, the default product image zooming is implemented via the prettyPhoto lightbox as well.</p>
+                    <p style=";margin:10px 20px 15px 0;">
+                    3) It's possible that your current Magento theme already overrides the product media block with a custom implementation which may prevent WebRotate 360 extension from running in the Standard integration mode as noted above or may result in disabling any previous customizations in the product media block that you would still like to keep. Ad-hoc integration can help in such situations as it doesn't override any existing block customizations. Instead, it dynamically embeds itself in place of an html placeholder of your choosing. This allows picking any location on a product page and then either embed a 360 view inside the placeholder or show a small thumbnail graphic that activates the prettyPhoto lightbox popup with your 360 view on click. This ad-hoc behavior is only active when a 360 view is configured for a given product under Catalog and can be also used in conjunction with other customizations inside the product image area such as Cloud Zoom or similar.
+                    </p>
+                    <p style=";margin:10px 20px 20px 0;">
+                    4) There's one sample 360 view included with this module that you can use to test your integration. The sample is located under your base skin folder under webrotate360. To use this sample, just enter the following
+                    URL into the new attribute field (<b>webrotate_path</b>) for your test product in the Catalog: <b>skin/frontend/base/default/webrotate360/360assets/sampleshoe/config.xml</b>. Similarly, you can simply create your 360 views using our <a href="http://www.webrotate360.com/360-product-viewer.html">desktop software</a> (SpotEditor) and then upload them to your Magento server via FTP. Note that you only need to upload a single folder that is auto-created under 360_assets in the published folder of your SpotEditor project upon publish. Once uploaded to your FTP, note the URL of the configuration file (.xml) in your uploaded folder and then just enter a relative path / URL of this xml file on your server in the new attribute field for each product in the catalog accordingly.
+                    </p>
+                    <p style=";margin:10px 20px 15px 0;border-top: 1px solid #DFDFDF;padding-top:20px;">
+                    <i>If you haven't created 360 product views with WebRotate 360 Product Viewer before, please download our <a href="http://www.webrotate360.com/360-product-viewer.html">free software</a> (Windows or Mac OS X) and follow this simple <a href="http://www.youtube.com/watch?v=W3uFpXy1ne4">YouTube video</a> or check out this <a href="http://www.webrotate360.com/360_product_viewer_download/Readme.pdf">user guide</a> on how to create 360 spins on your computer which you can then upload to your Magento installation via FTP. Note that you only need to upload a single folder that is auto-created under 360_assets in the published folder of your SpotEditor project upon publish.
+                    </i></p>
+                    <p style=";margin:10px 20px 15px 0;border-top: 1px solid #DFDFDF;padding-top:20px;">
+                    <b>If your Magento theme doesn't use either default or rwd design package, please copy this layout file and the webrotate360 template folder to your current design accordingly:</b><br><br>
+                    1) app/design/frontend/default/default/layout/webrotate360.xml<br>
+                    2) app/design/frontend/default/default/template/webrotate360<br><br>
+                    If you have any issues with our module, please ping us on <a href="mailto:support@webrotate360.com">support@webrotate360.com</a> or visit our <a href="http://360-product-views.com/forum/">forum</a> and we would be happy to assist.
+                    </p>]]>
+                    </comment>
+                </readme>
+                <settings translate="label">
+                    <label>Global Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <include_jquery translate="label">
+                            <label>Include jQuery</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[If your Magento theme already includes jQuery, you may need to select No. If not sure, please leave as-is.]]></comment>
+                        </include_jquery>
+                        <popup_width translate="label">
+                            <label>Viewer Width (px or %)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Viewer width in pixel. When Embed In Place is set to Yes, can be a relative width (e.g. 100%) for responsive themes.]]></comment>
+                        </popup_width>
+                        <popup_height translate="label">
+                            <label>Viewer Height (px)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Viewer height in pixel.]]></comment>
+                        </popup_height>
+                        <base_width translate="label">
+                            <label>Responsive Base Width (px)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Optionally force viewer to scale its height relative to your original viewer width (base width). The setting usually applies when your viewer width is relative (%), i.e when your product page is responsive. Only works when Embed In Place is set to Yes.]]></comment>
+                        </base_width>
+                        <viewer_skin translate="label">
+                            <label>Viewer Skin</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>WebRotate360_Catalog/Source_ViewerSkin</source_model>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Viewer skin.]]></comment>
+                        </viewer_skin>
+                        <pretty_theme translate="label">
+                            <label>prettyPhoto Theme</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>WebRotate360_Catalog/Source_PrettyPhoto</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[prettyPhoto lightbox (popup theme).]]></comment>
+                        </pretty_theme>
+                        <popup_icon translate="label">
+                            <label>360 Popup Icon Path</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Points to an alternative location of the graphic (e.g PNG or JPG) that activates the prettyPhoto popup with a 360 view on click. Only applies when Embed In Place is set to No.]]></comment>
+                        </popup_icon>
+                        <master_config translate="label">
+                            <label>Master Config URL (PRO)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Master Config allows having just a single XML configuration file for all products with 360 views and then only enter a Root Path URL pointing to a product asset folder for each product on your server (or CDN). Root Path URL is entered using a different product attribute with the attribute code set to <b>webrotate_root</b>. If not using Master Config, just enter the config file URL (.xml) for each product under your Catalog as per the Readme section.]]></comment>
+                        </master_config>
+                        <license translate="label">
+                            <label>License Path</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>44</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[URL path to license.lic on this server (PRO and Enterprise). Click <a href="http://www.webrotate360.com/360-product-viewer.html" target="_blank">HERE</a> for more details.]]></comment>
+                        </license>
+                    </fields>
+                </settings>
+                <adhoc translate="label">
+                    <label>Ad-hoc Integration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <use_adhoc translate="label">
+                            <label>Enable Ad-hoc Integration</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Refer to the readme section above for the details. You can select either Ad-hoc or Standard integration below but not both.]]></comment>
+                        </use_adhoc>
+                        <placeholder translate="label">
+                            <label>Page Placeholder (id or class)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Any existing HTML element on your product page where the ad-hoc integration will embed (e.g, .product-img-box or can be element's #id).]]></comment>
+                        </placeholder>
+                        <embedded translate="label">
+                            <label>Embed In Place</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[If set to No, the viewer doesn't embed inside the page placeholder. Instead, a small thumbnail graphic is inserted inside the placeholder which will then activate the prettyPhoto lightbox popup with a 360 view on click.]]></comment>
+                        </embedded>
+                    </fields>
+                </adhoc>
+                <standard translate="label">
+                    <label>Standard Integration with Image Gallery</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <comment><![CDATA[]]></comment>
+                    <fields>
+                        <use_standard translate="label">
+                            <label>Enable Standard Integration</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Refer to the readme section above for the details. You can select either Standard or Ad-hoc integration above but not both.]]></comment>
+                        </use_standard>
+                        <embedded translate="label">
+                            <label>Embed In Place</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[If set to No, the viewer is not presented in place of the main product image. Instead, a small thumbnail graphic is added to the end of the product image gallery which will then activate the prettyPhoto lightbox popup with a 360 view on click.]]></comment>
+                        </embedded>
+                        <thumb_width translate="label">
+                            <label>Gallery Thumbnail Width (px)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Enter your preferred thumbnail width (just numbers - no 'px'). Should be the same as your CSS width for the gallery thumbnail.]]></comment>
+                        </thumb_width>
+                        <thumb_height translate="label">
+                            <label>Gallery Thumbnail Height (px)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>16</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Enter your preferred thumbnail height (just numbers - no 'px'). Should be the same as your CSS height for the gallery thumbnail.]]></comment>
+                        </thumb_height>
+                    </fields>
+                </standard>
+            </groups>
+        </wr360_product_view>
+    </sections>
+</config>

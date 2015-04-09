@@ -1,0 +1,9 @@
+<select name="category" id="category" onchange="getModels(this.value)" class="form-control">
+    <option>Select One</option>
+    
+	<?php foreach($this->getCategories() as $category):?>
+	
+    	<option value="<?php echo $category['id']?>"><?php echo $category['category_name']?></option>
+    	
+    <?php endforeach;?>
+</select>

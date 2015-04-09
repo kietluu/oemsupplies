@@ -55,8 +55,10 @@ Review.prototype = {
         var checkoutMethod,
             request,
             parameters = '',
-            postUrl   = this.getStepUpdateUrl,
-            onSuccess = this.onUpdate,
+            //postUrl   = this.getStepUpdateUrl,
+            postUrl   = this.submitOrderUrl,
+            //onSuccess = this.onUpdate,
+            onSuccess = this.onSuccess;
             i;
 
         /**

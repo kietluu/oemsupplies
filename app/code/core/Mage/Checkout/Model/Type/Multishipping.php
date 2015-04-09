@@ -129,22 +129,22 @@ class Mage_Checkout_Model_Type_Multishipping extends Mage_Checkout_Model_Type_Ab
                     $items[] = $item;
                     continue;
                 }
-                if ($item->getQty() > 1) {
-                    for ($i = 0, $n = $item->getQty(); $i < $n; $i++) {
-                        if ($i == 0) {
-                            $addressItem = $item;
-                        } else {
-                            $addressItem = clone $item;
-                        }
-                        $addressItem->setQty(1)
-                            ->setCustomerAddressId($address->getCustomerAddressId())
-                            ->save();
-                        $items[] = $addressItem;
-                    }
-                } else {
+//                if ($item->getQty() > 1) {
+//                    for ($i = 0, $n = $item->getQty(); $i < $n; $i++) {
+//                        if ($i == 0) {
+//                            $addressItem = $item;
+//                        } else {
+//                            $addressItem = clone $item;
+//                        }
+//                        $addressItem->setQty(1)
+//                            ->setCustomerAddressId($address->getCustomerAddressId())
+//                            ->save();
+//                        $items[] = $addressItem;
+//                    }
+//                } else {
                     $item->setCustomerAddressId($address->getCustomerAddressId());
                     $items[] = $item;
-                }
+              //  }
             }
         }
         $this->_quoteShippingAddressesItems = $items;

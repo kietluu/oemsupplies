@@ -68,7 +68,10 @@ class Webtex_CustomerPrices_Block_Adminhtml_Customer_Edit_Tab_Customerprices ext
         $customerId = $customer->getId();
         if($customerId) {
             $products = Mage::getModel('customerprices/prices')->getCollection()->addCustomerFilter($customerId)->load();
-            return $products->getData();
+            $data = $products->getData();
+            if(isset($data[0]['discount'])) {
+                return $data[0]['discount'];
+            }
         }
         return '';
     }

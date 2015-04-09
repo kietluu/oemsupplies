@@ -47,15 +47,15 @@ class Webtex_CustomerPrices_Model_Product_Type_Configurable_Price extends Mage_C
 	         ->addFieldToFilter('customer_id',$customer->getId());
 	if($model->count()){
 	   $rows = $model->getData();
-           if(isset($rows[0]['price']) && (int)$rows[0]['price'] != 0){
+           if(isset($rows[0]['price']) && (float)$rows[0]['price'] != 0){
 	    if($pos = strpos($rows[0]['price'],'%')){
 	        if(in_array(substr($rows[0]['price'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$rows[0]['price'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$rows[0]['price'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$rows[0]['price'] ;
+	            $productPrice = $productPrice/100 * (float)$rows[0]['price'] ;
 	        }
 	    } elseif (in_array(substr($rows[0]['price'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$rows[0]['price'] ;
+	        $productPrice = $productPrice + (float)$rows[0]['price'] ;
 	    } else {
 	        $productPrice =  $rows[0]['price'];
 	    }

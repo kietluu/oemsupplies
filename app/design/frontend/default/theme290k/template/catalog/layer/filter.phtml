@@ -30,18 +30,52 @@
  *
  * @see Mage_Catalog_Block_Layer_Filter
  */
+ $f_name = str_replace("(" , "" , $this->getName()) ;
+ $l_name = str_replace(")" , "" , $f_name) ;
+ $filter_name = str_replace(" " , "" , $l_name) ;
 ?>
 
-<ol>
-<?php foreach ($this->getItems() as $_item): ?>
-    <li>
-        <?php if ($_item->getCount() > 0): ?>
+<ol id="<?php echo $filter_name ;?>">
+    <?php $i=0 ;
+    foreach ($this->getItems() as $_item): ?>
+        <?php
+        $style = '';
+        $id = '';
+        if($i >= 8) {
+            $style = "display:none;" ;
+            $id = $filter_name . "more5" ;
+        } ?>
+    <li class="<?php echo $id ; ?>" style="<?php echo $style ; ?>">
+            <?php if ($_item->getCount() > 0): ?>
         <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
-        <?php else: echo $_item->getLabel() ?>
-        <?php endif; ?>
-        <?php if ($this->shouldDisplayProductCount()): ?>
+            <?php else: echo $_item->getLabel() ?>
+            <?php endif; ?>
+            <?php if ($this->shouldDisplayProductCount()): ?>
         (<?php echo $_item->getCount() ?>)
-        <?php endif; ?>
+            <?php endif; ?>
     </li>
-<?php endforeach ?>
+    <?php $i++ ;
+    endforeach ?>
 </ol>
+<?php if(count($this->getItems()) >= 8 ): ?>
+<span style="float:right;color:blue;" id="<?php echo $filter_name ; ?>_after">
+    <a href="javascript:void(0);" onclick="showmoreli('<?php echo $filter_name ; ?>')" >Show more</a>
+</span>
+                              <?php endif; ?>
+
+<script type="text/javascript">
+function showmoreli(id){
+    jQuery('.'+id+'more5').show();
+    //jQuery("#"+id+"_after").hide();
+    var html = '<a href="javascript:void(0);" onclick=showlessli("'+id+'") >Show less</a>' ;
+    jQuery("#"+id+"_after").html(html);
+}
+
+function showlessli(id){
+    jQuery("."+id+"more5").hide();
+    var html = '<a href="javascript:void(0);" onclick=showmoreli("'+id+'") >Show More</a>' ;
+    jQuery("#"+id+"_after").html(html);
+}
+
+</script>
+

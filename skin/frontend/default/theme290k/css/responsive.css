@@ -48,7 +48,7 @@ body.ind .swipe,body.ind div.shadow{display:none!important;left:-300px!important
 .cart .crosssell .add-to-links{float:none}
 .cart .crosssell .product-details button.button > span{font-size:11px}
 .cart .discount-form .input-box input{width:198px}
-.form-list .input-box{width:225px}
+.form-list .input-box{/*width:225px*/}
 .cart .shipping .form-list li select option{width:174px}
 .cart .totals button.button > span{font-size:14px}
 .cart .totals table th,.cart .totals table td{font-size:11px;padding:15px 10px}
@@ -99,7 +99,7 @@ body.ind .swipe,body.ind div.shadow{display:none!important;left:-300px!important
 #co-billing-form > fieldset{display:table-column}
 .checkout-progress li{clear:left;width:100%}
 .box-collateral.form-add .box-collateral-content{overflow:auto}
-.form-list select{width:340px}
+.form-list select{/*width:340px*/}
 .search-form .form-list select{width:300px}
 .multiple-checkout .form-list li.wide .input-box{width:100%}
 .multiple-checkout .gift-messages-form .item .details .field{width:100%}

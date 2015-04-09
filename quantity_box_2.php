@@ -32,19 +32,19 @@ $qtyBox = $dbRead->fetchRow("select * from catalog_product_quantities Where prod
 		<th style="color:#fff;">Quantity</th>
 	</tr>
 	<tr class="even">
+		<td>Carlisle</td>
+		<td align="center"><?php echo $qtyBox['city_Carlisle'];?></td>
+	</tr>
+	<tr class="even">
 		<td>Dallas</td>
 		<td align="center"><?php echo $qtyBox['city_dallas'];?></td>
 	</tr>
 	<tr class="odd">
-		<td>St. Louis</td>
-		<td align="center"><?php echo $qtyBox['city_StLouis'];?></td>
-	</tr>
-	<tr class="even">
-		<td>Carlisle</td>
-		<td align="center"><?php echo $qtyBox['city_Carlisle'];?></td>
-	</tr>
-	<tr class="odd">
 		<td>Fresno</td>
 		<td align="center"><?php echo $qtyBox['city_Fresno'];?></td>
+	</tr>
+	<tr class="odd">
+		<td>St. Louis</td>
+		<td align="center"><?php echo $qtyBox['city_StLouis'];?></td>
 	</tr>
 </table>

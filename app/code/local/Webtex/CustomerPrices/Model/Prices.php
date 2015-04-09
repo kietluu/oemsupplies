@@ -91,12 +91,12 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
 	if(isset($row['discount'])){
 	    if($pos = strpos($row['discount'],'%')){
 	        if(in_array(substr($row['discount'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['discount'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice/100 * (float)$row['discount'] ;
 	        }
 	    } elseif (in_array(substr($row['discount'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['discount'] ;
+	        $productPrice = $productPrice + (float)$row['discount'] ;
 	    } else {
 	        $productPrice =  $row['discount'];
 	    }
@@ -105,15 +105,15 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
         $query = $connection->select()->from($tablePrefix . 'customerprices_prices')->where('product_id = ' . $product->getId() . ' AND customer_id = ' . $customerId . ' AND qty <= '. $qty);
         $row = $connection->fetchRow($query);
 
-        if(isset($row['price']) && (int)$row['price'] != 0){
+        if(isset($row['price']) && (float)$row['price'] != 0){
 	    if($pos = strpos($row['price'],'%')){
 	        if(in_array(substr($row['price'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['price'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['price'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['price'] ;
+	            $productPrice = $productPrice/100 * (float)$row['price'] ;
 	        }
 	    } elseif (in_array(substr($row['price'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['price'] ;
+	        $productPrice = $productPrice + (float)$row['price'] ;
 	    } else {
 	        $productPrice =  $row['price'];
 	    }
@@ -157,12 +157,12 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
 	if(isset($row['discount'])){
 	    if($pos = strpos($row['discount'],'%')){
 	        if(in_array(substr($row['discount'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['discount'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice/100 * (float)$row['discount'] ;
 	        }
 	    } elseif (in_array(substr($row['discount'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['discount'] ;
+	        $productPrice = $productPrice + (float)$row['discount'] ;
 	    } else {
 	        $productPrice =  $row['discount'];
 	    }
@@ -171,15 +171,15 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
 
         $query = $connection->select()->from($tablePrefix . 'customerprices_prices')->where('product_id = ' . $product->getId() . ' AND customer_id = ' . $customerId . ' and qty <= '.$qty);
         $row = $connection->fetchRow($query);
-	if(isset($row['special_price']) && (int)$row['special_price'] != 0){
+	if(isset($row['special_price']) && (float)$row['special_price'] != 0){
 	    if($pos = strpos($row['special_price'],'%')){
 	        if(in_array(substr($row['special_price'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['special_price'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['special_price'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['special_price'] ;
+	            $productPrice = $productPrice/100 * (float)$row['special_price'] ;
 	        }
 	    } elseif (in_array(substr($row['special_price'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['special_price'] ;
+	        $productPrice = $productPrice + (float)$row['special_price'] ;
 	    } else {
 	        $productPrice =  $row['special_price'];
 	    }
@@ -208,12 +208,12 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
 	if(isset($row['discount'])){
 	    if($pos = strpos($row['discount'],'%')){
 	        if(in_array(substr($row['discount'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['discount'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice/100 * (float)$row['discount'] ;
 	        }
 	    } elseif (in_array(substr($row['discount'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['discount'] ;
+	        $productPrice = $productPrice + (float)$row['discount'] ;
 	    } else {
 	        $productPrice =  $row['discount'];
 	    }
@@ -222,15 +222,15 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
         $query = $connection->select()->from($tablePrefix . 'customerprices_prices')->where('product_id = ' . $product->getId() . ' AND customer_id = ' . $customerId .' and qty <= '.$qty);
         $row = $connection->fetchRow($query);
 
-        if(isset($row['price']) && (int)$row['price'] != 0){
+        if(isset($row['price']) && (float)$row['price'] != 0){
 	    if($pos = strpos($row['price'],'%')){
 	        if(in_array(substr($row['price'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['price'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['price'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['price'] ;
+	            $productPrice = $productPrice/100 * (float)$row['price'] ;
 	        }
 	    } elseif (in_array(substr($row['price'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['price'] ;
+	        $productPrice = $productPrice + (float)$row['price'] ;
 	    } else {
 	        $productPrice =  $row['price'];
 	    }
@@ -266,12 +266,12 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
 	if(isset($row['discount'])){
 	    if($pos = strpos($row['discount'],'%')){
 	        if(in_array(substr($row['discount'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['discount'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['discount'] ;
+	            $productPrice = $productPrice/100 * (float)$row['discount'] ;
 	        }
 	    } elseif (in_array(substr($row['discount'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['discount'] ;
+	        $productPrice = $productPrice + (float)$row['discount'] ;
 	    } else {
 	        $productPrice =  $row['discount'];
 	    }
@@ -280,15 +280,15 @@ class Webtex_CustomerPrices_Model_Prices extends Mage_Core_Model_Abstract {
 
         $query = $connection->select()->from($tablePrefix . 'customerprices_prices')->where('product_id = ' . $product->getId() . ' AND customer_id = ' . $customerId . ' and qty <= '.$qty);
         $row = $connection->fetchRow($query);
-	if(isset($row['special_price']) && (int)$row['special_price'] != 0){
+	if(isset($row['special_price']) && (float)$row['special_price'] != 0){
 	    if($pos = strpos($row['special_price'],'%')){
 	        if(in_array(substr($row['special_price'], 0, 1), array('+', '-'))) {
-	            $productPrice = $productPrice + $productPrice/100 * (int)$row['special_price'] ;
+	            $productPrice = $productPrice + $productPrice/100 * (float)$row['special_price'] ;
 	        } else {
-	            $productPrice = $productPrice/100 * (int)$row['special_price'] ;
+	            $productPrice = $productPrice/100 * (float)$row['special_price'] ;
 	        }
 	    } elseif (in_array(substr($row['special_price'], 0, 1), array('+', '-'))){
-	        $productPrice = $productPrice + (int)$row['special_price'] ;
+	        $productPrice = $productPrice + (float)$row['special_price'] ;
 	    } else {
 	        $productPrice =  $row['special_price'];
 	    }

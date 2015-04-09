@@ -1,5 +1,5 @@
-<select name="model" id="model" class="form-control">
-    <option>Select One</option>
+<select name="model" id="model" class="form-control" onchange="this.form.submit()">
+    <option>Select Model</option>
     
 	<?php foreach($this->getModels() as $model):?>
 	

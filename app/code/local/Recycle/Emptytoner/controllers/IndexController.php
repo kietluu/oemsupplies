@@ -34,6 +34,13 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
             'recycle.service_tech',
 		array('template' => 'recycle/Servicetechnician.phtml'));
             
+            $left_block = $this->getLayout()->createBlock(
+            'Mage_Core_Block_Template',
+            'featured',
+		array('template' => 'catalog/navigation/featured_random.phtml'));
+
+                $this->getLayout()->getBlock('left')->insert($left_block , 'featured', true);
+
 		$params = $this->getRequest()->getParams();
 		if(isset($params) && !empty($params)) {
 			$company_name = $params['companyname'] ;

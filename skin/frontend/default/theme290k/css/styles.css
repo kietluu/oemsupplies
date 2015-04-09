@@ -72,7 +72,7 @@ ul,ol{list-style:none}
 .col4-set .col-3{float:left;width:23.5%}
 .col4-set .col-4{float:right;width:23.5%}
 input,select,textarea,button{font:12px Arial,Helvetica,sans-serif;vertical-align:middle;color:#000}
-input.input-text,select,textarea,.form-control{border:1px solid #bcbcbc;border-radius:0}
+input.input-text,select,textarea,.form-control{border:1px solid #bcbcbc;border-radius:0; width:100%;}
 input.input-text,textarea{padding:6px 12px;resize:none;-webkit-appearance:none;border-radius:0}
 select{padding:2px;moz-box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 select option{padding-right:10px}
@@ -95,9 +95,9 @@ p.control input.checkbox,p.control input.radio{margin-right:6px}
 .form-list li.control label{float:none}
 .form-list li.control input.radio,.form-list li.control input.checkbox{margin-right:6px}
 .form-list li.control .input-box{clear:none;display:inline;width:auto}
-.form-list .input-box{display:block;clear:both;margin-bottom:7px;width:260px}
-.form-list .field{float:left;width:360px}
-.form-list input.input-text{width:333px}
+.form-list .input-box{display:block;clear:both;margin-bottom:7px;/*width:260px*/}
+.form-list .field{/*float:left;width:360px*/ }
+.form-list input.input-text{/*width:333px width: auto;*/}
 .form-list textarea{resize:none;width:254px;height:10em}
 .form-list select{width:100%}
 .form-list li.wide .input-box{width:535px}
@@ -287,7 +287,7 @@ tr.summary-details-excluded{font-style:italic}
 .header .welcome-msg{float:right;margin:0 0 7px;font-size:17px;font-weight:400;color:#9b3535}
 .header .links{float:right;clear:both;margin:0 0 17px}
 .header .links li{float:left;padding:0}
-.header .links li a{display:inline-block;color:#000;margin-left:18px}
+.header .links li a{display:inline-block;color:#000;margin-left:13px}
 .header .links li a:hover{color:#BC2124}
 .header .links .top-link-cart,.header .links .top-car{display:none}
 .header .form-search{text-align:right}
@@ -331,13 +331,14 @@ tr.summary-details-excluded{font-style:italic}
 .block-cart-header .summary:hover,.block-cart-header .empty:hover{cursor:pointer}
 .block-cart-header .btn-remove,.block-cart-header .btn-edit{float:right;margin:0 5px 0 0}
 .block-cart-header .truncated{display:none}
-.block-cart-header .cart-content{position:absolute;right:0;top:39px;z-index:9;min-width:280px;width:100%;display:none;cursor:default}
+.block-cart-header .cart-content{position:absolute;right:0;top:39px;z-index:9;min-width:280px;/*width:100%;*/display:none;cursor:default; width:512px;border-radius:5px; border:1px solid #bcbcbc;}
+.block-cart-header .cart-content ol{overflow-y: scroll;height: 215px;}
 .block-cart-header .empty .cart-content{background:#272727;padding:10px;color:#fff;border:1px solid #444;moz-box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;border-radius:6px}
 .block-cart-header .actions{padding:20px 20px 10px;overflow:hidden}
 .block-cart-header .actions button.button{float:left;margin-bottom:10px;margin-right:10px}
 .block-cart-header .actions button.button > span{background:#60a810;border:0}
 .block-cart-header .actions button.button:hover > span{background:#999;border:0}
-.block-cart-header .actions button.button+button.button{margin-right:0}
+.block-cart-header .actions button.button+button.button{/*margin-right:0*/}
 .block-cart-header .mini-products-list li.item{background:#f9f9f9;border-top:1px solid #bcbcbc;width:100%;float:left;clear:both;min-height:85px;padding:20px;position:relative}
 .block-cart-header .mini-products-list .product-image{width:70px;border:1px solid #ededed}
 .block-cart-header .mini-products-list .product-details{margin:0 0 0 80px;overflow:inherit}
@@ -510,7 +511,7 @@ tr.summary-details-excluded{font-style:italic}
 .products-grid .desc_grid{font-size:12px;line-height:17px;color:#777;margin-bottom:11px}
 .add-to-links{float:left}
 .products-grid .product-name,.products-list .product-name{font-size:15px;line-height:18px;font-weight:400;margin:0 0 3px;/*height:35px*/}
-.cms-index-index .products-grid .product-name{min-height:36px}
+.cms-index-index .products-grid .product-name{min-height:/*36px*/55px}
 .products-grid .product-name a,.products-list .product-name a{color:#232323;text-decoration:none}
 .products-grid .product-name a:hover,.products-list .product-name a:hover{color:#60a810}
 .products-grid .product-image img,.products-list .product-image img{max-width:100%}
@@ -782,9 +783,8 @@ tr.summary-details-excluded{font-style:italic}
 .product-view .box-tags .form-add button.button{margin-left:32px;margin-top:10px}
 .product-view .box-tags .form-add p{clear:both}
 .box-collateral.box-tags .note{color:#60a810;padding-bottom:15px;padding-top:5px}
-.video,.map-content{height:100%;position:relative;padding-bottom:56.25%;overflow:hidden}
+.video,.map-content{height:100%;position:relative;overflow:hidden}
 .video iframe{height:100%;width:100%;position:absolute;left:0;top:0}
-.map-content{margin-bottom:30px;padding-bottom:50%}
 .map-content figure iframe{border:none;height:100%;width:100%;position:absolute;left:0;top:0}
 .dashboard #my_recent_reviews li{padding-bottom:7px}
 .dashboard #my_recent_reviews li .ratings{margin:0 0 5px}
@@ -927,7 +927,7 @@ tr.summary-details-excluded{font-style:italic}
 .cart .totals button.button:hover > span{background:#999;border:0}
 .checkout-types li{padding-top:15px}
 .checkout-types li:first-child{padding-top:0}
-.checkout-types li a{color:#a6a6a6;text-decoration:underline}
+.checkout-types li a{color:black/*#a6a6a6*/;text-decoration:underline}
 .checkout-types li a:hover{text-decoration:none}
 .cart .totals .checkout-types{text-align:center;float:none;padding:15px 11px}
 .cart .totals .checkout-types li a{width:auto}
@@ -1029,7 +1029,7 @@ tr.summary-details-excluded{font-style:italic}
 #checkout-review-table tfoot td{font-weight:700;color:#000;text-align:right!important}
 #checkout-review-table tfoot td+td{text-align:left!important}
 #review-buttons-container{padding:20px 0 0;margin:0}
-#co-shipping-form{border:1px solid #bcbcbc;padding:10px;display:block}
+#co-shipping-form{border:1px solid #bcbcbc;padding:10px;display:block;height: 534px;}
 .opc .active .step-title{cursor:default;background:#60a810}
 .opc .active .step-title .number{background:#fff;color:#3a3a3a}
 .opc .active .step-title h2{font-size:12px;line-height:15px;padding-top:7px}
@@ -1356,7 +1356,7 @@ body div.shadow{display:block;height:100%;left:0;opacity:.5;position:fixed;top:0
 .newsletter_wrapper .input-box input{padding:6px 10px;background:#323232;border:solid 1px #353535;box-shadow:inset 0 4px 8px rgba(0,0,0,0.15);border-radius:2px;font-size:12px;color:#fff;width:100%;height:32px;margin:0}
 .newsletter_wrapper .input-box input.validation-failed{color:#333!important}
 .newsletter_wrapper .actions{position:absolute;right:0;top:0}
-.newsletter_wrapper .actions button strong{display:block;background:url(../images/bg_search.gif) repeat-x;border-top:solid 1px #b4de86;width:52px;height:32px;text-align:center;line-height:30px;font-size:15px;font-weight:400;color:#fff;border-radius:2px}
+.newsletter_wrapper .actions button strong{display:block;background:url(../images/bg_search.gif) repeat-x;border-top:solid 1px #2A59B5;width:52px;height:32px;text-align:center;line-height:30px;font-size:15px;font-weight:400;color:#fff;border-radius:2px}
 .newsletter_wrapper .actions button:hover strong{background:#666;border-top:solid 1px #757575}
 .store-switcher{margin-top:10px}
 span.toggle{position:absolute;cursor:pointer;right:10px;top:0;width:20px;text-align:center;font-size:16px}
@@ -1442,4 +1442,11 @@ span.opened:before{content:"\f068"}
 .menu_pro {font-size: 10px!important;} 
 .brand_logos {margin: 10px 0 0 0!important;}
 #wp_custom_menu_419 .prod img{height:321px!important;}
+}
+li.bml-checkout-type{list-style-type:none;}
+.desc ul{ margin: 0 0 0 5px;padding:0;}
+.desc li{list-style: outside none disc; padding:0 0 0 10px;}
+ 
+#multiship-addresses-table select{width:auto;}
+#narrow-by-list dt{background:lightblue;border-radius: 5px;color: black;font-size: 16px;font-weight: normal;margin: 20px 0;padding: 10px;width: 100%;border:none;	
 }

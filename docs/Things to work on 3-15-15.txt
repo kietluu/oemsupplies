@@ -1,0 +1,118 @@
+
+1. Shopping cart drop down needs to have ship to multiiple locations
+2. Multiple locations doesnt work.  
+3. One step Check out:
+
+a. When you log in and creeate a ship to address under My Account. It adds the address to the one step checkout page http://oemsupplies.com/demo/checkout/onestep/. If you look under the billing inforamtion it has too many addresses. Usually a customer will have only one billing address. Billig information should only have 1 option. They should be able to change the option
+b. Also United States needs to be removed for all addressess.
+
+
+4. Here show more attributes not all working.
+http://oemsupplies.com/demo/catalogsearch/smart/?kf=1&q=pens&rkey=&sf=0&fid0=4294785006&fst0=Category
+
+5. Pop up window for QTY needs a line between Fresno and Ft Lauderdale
+
+6. Shop Now button on slider needs to be moved.. 
+
+7. All first catgory menues should be like Office Supplies.
+
+8. Need to make sure that we can remove prices or hide prices like we do now on oem for customers to "Request A Quote" For unique price upload.
+
+9. Sort By doesnt sort properly and Show only showes 10 products even if you select 25  Done  *(Working Partially*)
+
+http://oemsupplies.com/demo/catalogsearch/smart/index/?dir=asc&kf=1&limit=25&order=PD&q=calendars&rkey=
+
+A. Smart search gives correct Sort by Choices. Navigation does not
+B. If navigating and then select show 20 itmes, then do a smart search for an item it show 10 items. But the Show items is still set for 20. 
+
+
+10. All 2nd and and 3rd categories need attributes on left side of page. Just like here http://oemsupplies.com/demo/office-supplies/staplers-punches/punches.html
+
+
+
+
+
+
+
+8. Need to change the default image if there is more than one. Example SKU SMD34210
+
+Also for same Example SKU SMD34210 the Supplies and Accessories tab on oemsupplies.com should be the same as We recommend tab on OEM Supplies Demo page
+
+
+
+
+11. When you select a category you run out of attributes on next page.
+
+http://oemsupplies.com/demo/office-supplies/calendars-planners-personal-organizers.html
+
+ Attributes should appear like ss trade
+
+
+
+These pages should have same attributes
+https://www.oemsupplies.com/appointment-book-refills-c-4_72_337?zenid=3cc6be543b20531d8096d69b2a7f2e90
+http://oemsupplies.com/demo/office-supplies/calendars-planners-personal-organizers.html?cat=242
+
+12. The demo page should have a landing page like oem page.
+
+https://www.oemsupplies.com/calendars-planners-personal-organizers-c-4_72?zenid=3cc6be543b20531d8096d69b2a7f2e90
+
+not like this
+
+http://oemsupplies.com/demo/office-supplies/calendars-planners-personal-organizers.html
+
+The landing pages need to look like link below. To about 3 levels of the sub category. 
+
+
+http://oemsupplies.com/demo/office-supplies.html
+
+Done
+
+
+13. a. Ink and toner in drop down menu not populating lists in search
+    b. Need image place holders to be like the other drop down menues. They should all have 8 images and be the same as the other drop down menu sizes
+
+14. When you click on ink and toner it works fine,** but when you select the printer radio buttun it opens 2 search boxes everytime.
+
+http://oemsupplies.com/demo/ink-toner.html
+
+Done
+
+
+15. a. Search for Printer on left side does not give any results   -  Done
+    b. When making the 3rd and last selection on the Search for Printer on left side, thne it should automatically search for you
+    c. The three bozes should read by default Box 1 "Manufacturer" Box 2 "Type" Box 3 "Model"
+
+http://oemsupplies.com/demo/ink-toner.html
+
+
+16. Page needs to auto fill
+     
+    http://oemsupplies.com/demo/recycle-empty-toner
+	
+	Done
+
+17. Can we add bullets for the points under each product
+http://oemsupplies.com/demo/technology.html/?manufacturer=6269
+
+
+18. can you add ** Availability: 200 Units in Stock ** to product list page  -  Done
+
+19. The first  time you try one step check out and select check/money order.  The bottom says "update order before placing"   - Done
+    a. When you select it there is nothing to let you update your order. You select it and then it says Place Order
+    b. You should also have an option to "ship to multiple addresses.
+    c. Also you get error invalid shipping method the first time. The second time you hit Place Order it works (**you have to place your two times**)
+
+
+
+http://oemsupplies.com/demo/checkout/onestep/
+
+
+
+
+
+
+
+
+
+

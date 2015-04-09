@@ -289,4 +289,27 @@ class Mage_Captcha_Model_Observer
         $captchaParams = $request->getPost(Mage_Captcha_Helper_Data::INPUT_NAME_FIELD_VALUE);
         return $captchaParams[$formId];
     }
+    
+    /**
+     * Edit by param sharma
+     * Check Captcha On Contact  Page
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Mage_Captcha_Model_Observer
+     */
+    public function checkContact($observer)
+    {
+        $formId = 'contactForm';
+        $captchaModel = Mage::helper('captcha')->getCaptcha($formId);
+        if ($captchaModel->isRequired()) {
+            $controller = $observer->getControllerAction();
+            if (!$captchaModel->isCorrect($this->_getCaptchaString($controller->getRequest(), $formId))) {
+                Mage::getSingleton('customer/session')->addError(Mage::helper('captcha')->__('Incorrect CAPTCHA.'));
+                $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+                Mage::getSingleton('customer/session')->setCustomerFormData($controller->getRequest()->getPost());
+                $controller->getResponse()->setRedirect(Mage::getUrl('*/*/create'));
+            }
+        }
+        return $this;
+    }
 }

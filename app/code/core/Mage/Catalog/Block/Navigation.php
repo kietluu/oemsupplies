@@ -466,4 +466,14 @@ class Mage_Catalog_Block_Navigation extends Mage_Core_Block_Template
 
         return $html;
     }
+    
+    public function getFeaturedProducts(){
+    	$collection = Mage::getResourceModel('catalog/product_collection');
+    	Mage::getModel('catalog/layer')->prepareProductCollection($collection);
+    	$collection->getSelect()->order('rand()');
+    	$collection->addStoreFilter();
+    	$collection->setPageSize(5);
+    	
+    	return $collection;
+    }
 }

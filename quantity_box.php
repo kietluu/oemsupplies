@@ -91,33 +91,33 @@ $qtyBox = $dbRead->fetchRow("select * from catalog_product_quantities Where prod
 		<td>Boston</td>
 		<td align="center"><?php echo $quantities[5];?></td>
 	</tr>
-	<tr class="odd">
-		<td>Chicago</td>
-		<td align="center"><?php echo $quantities[25];?></td>
-	</tr>
 	<tr class="even">
 		<td>Carlisle</td>
 		<td align="center"><?php echo $qtyBox['city_Carlisle'];?></td>
-	</tr>
-	<tr class="even">
-		<td>Cleveland</td>
-		<td align="center"><?php echo $quantities[11];?></td>
 	</tr>
 	<tr class="odd">
 		<td>Charlotte</td>
 		<td align="center"><?php echo $quantities[53];?></td>
 	</tr>
+		<tr class="odd">
+		<td>Chicago</td>
+		<td align="center"><?php echo $quantities[25];?></td>
+	</tr>
+	<tr class="even">
+		<td>Cleveland</td>
+		<td align="center"><?php echo $quantities[11];?></td>
+	</tr>
 	<tr class="even">
 		<td>Cranbury</td>
 		<td align="center"><?php echo $quantities[50];?></td>
 	</tr>
-	<tr class="odd">
-		<td>Denver</td>
-		<td align="center"><?php echo $quantities[51];?></td>
-	</tr>
 	<tr class="even">
 		<td>Dallas</td>
 		<td align="center"><?php echo $quantities[27] + $qtyBox['city_Fresno'];?></td>
+	</tr>
+	<tr class="odd">
+		<td>Denver</td>
+		<td align="center"><?php echo $quantities[51];?></td>
 	</tr>
 	<tr class="odd">
 		<td>Fresno</td>
@@ -132,16 +132,16 @@ $qtyBox = $dbRead->fetchRow("select * from catalog_product_quantities Where prod
 		<td align="center"><?php echo $quantities[17];?></td>
 	</tr>
 	<tr class="odd">
-		<td>Minneapolis</td>
-		<td align="center"><?php echo $quantities[12];?></td>
+		<td>Los Angeles</td>
+		<td align="center"><?php echo $quantities[6];?></td>
 	</tr>
 	<tr class="even">
 		<td>Memphis</td>
 		<td align="center"><?php echo $quantities[42];?></td>
 	</tr>
 	<tr class="odd">
-		<td>Los Angeles</td>
-		<td align="center"><?php echo $quantities[6];?></td>
+		<td>Minneapolis</td>
+		<td align="center"><?php echo $quantities[12];?></td>
 	</tr>
 	<tr class="even">
 		<td>Phoenix</td>
@@ -157,6 +157,6 @@ $qtyBox = $dbRead->fetchRow("select * from catalog_product_quantities Where prod
 	</tr>
 	<tr class="odd">
 		<td>St. Louis</td>
-		<td align="center"><?php echo $qtyBox['city_StLouis'];?></td>
+		<td align="center"><?php echo $qtyBox['city_StLouis'] + $quantities[15];?></td>
 	</tr>
 </table>

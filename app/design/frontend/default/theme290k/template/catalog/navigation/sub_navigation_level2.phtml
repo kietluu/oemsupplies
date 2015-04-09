@@ -1,0 +1,118 @@
+<?php 
+
+//Get the Current Category
+$_maincategorylisting = $this->getCurrentCategory();
+
+?>
+<style>
+ .sub-category-listing{
+ 	 <?php if($_maincategorylisting->getLevel() == 2):?>
+     		height:340px;
+     <?php else:?>
+     		height:240px;
+     <?php endif;?>
+     		
+     border:1px solid #b1b1b1;
+     border-radius:4px;
+     width:23%;
+     margin:5px;
+     padding-top:10px;
+     font-size:13px;
+     line-height:15px;
+ }
+ @media only screen and (min-device-width: 320px) and (max-device-width: 400px) {
+ .sub-category-listing{width:100%;}
+ }
+ 
+  @media only screen and (min-device-width: 750px) and (max-device-width: 1000px) {
+ .sub-category-listing{width:48%;}
+ }
+ 
+</style>
+<div id="categories">
+  <div class="col_full">
+    <div class="listing" >
+ 	<?php	
+		// Iterate all categories in store
+		foreach ($this->getCurrentChildCategories() as $_category):
+			if($_category->getIsActive()):
+				$cur_category = Mage::getModel('catalog/category')->load($_category->getId());
+				
+				// Load a random product from this category
+				$products = Mage::getResourceModel('catalog/product_collection')->addCategoryFilter($cur_category);
+				$products->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(100);
+				$products->load();
+				
+				// This a bit of a fudge - there's only one element in the collection
+				$_product = null;
+				foreach ( $products as $_product ) {}
+				if(isset($_product)):?>
+					 <div class="sub-category-listing col-sm-3">
+					  <div class="linkimage">
+					    <a href="<?php echo $this->getCategoryUrl($_category)?>" class="product-image">
+						  <?php
+							   $layer = Mage::getSingleton('catalog/layer');
+							   $layer->setCurrentCategory($cur_category);
+							   if($_imgUrl=$this->getCurrentCategory()->getImageUrl()):
+						  		?>
+						  		<img src="<?php echo $_imgUrl ?>"  width="135" height="135" class="img-responsive" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+					 	  <?php endif; ?>
+ 
+ 						  <?php
+							// If there is not a image set for that Category - Display a random product Image
+							if(!$_imgUrl):
+								$product_collection = Mage::getModel('catalog/category')->load($_category->getId())->getProductCollection();
+								$product_collection->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(1);
+								
+								foreach($product_collection as $product) {
+									$product_id = $product->getId();
+									$full_product = Mage::getModel('catalog/product')->load($product_id);
+									$product_image_url = $full_product->getImageUrl();
+								}
+							?>
+							<img src="<?php echo $product_image_url; ?>" width="135" height="135" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+						  <?php endif; ?>
+					   </a>
+				    </div>
+ 
+ 					<h2 class="product-name" style="margin-top: 5px;">
+						<a href="<?php echo $this->getCategoryUrl($_category)?>">
+							<b><?php echo $_category->getName()?></b>
+						</a>
+					</h2>
+					
+					<div>
+	                    <dl id="narrow-by-list">
+	                    	<ul>
+	                    		<?php $subcategories = Mage::getModel('catalog/category')->getCategories($this->getCurrentCategory()->getId());?>
+	                    		
+	                    		<?php if($subcategories):?>
+					               	<?php $n = 0;foreach ($subcategories as $category): if($n >= 4) break;?>
+					                    <li><a href="<?php echo $category->getRequestPath();?>"><?php echo $category->getName(); ?></a></li>
+					                <?php $n++; endforeach;?> 
+					                
+					            <?php else:?>
+					            		<li>There are no sub categories.</li>
+					            <?php endif;?>     
+					            
+					            <li style="margin-top:5px;"><a href="<?php echo $this->getCategoryUrl($_category)?>"><b>All Categories</b></a></li>
+				           </ul>       
+            		   </dl>
+            		   <script type="text/javascript">decorateDataList('narrow-by-list');</script>
+                   </div>
+                   <hr />
+	 
+				   <?php if($_description=$this->getCurrentCategory()->getDescription()):?>
+						<p class="category-description"><?php //echo $_description ?></p>
+				   <?php endif; ?>
+			  </div> 
+		<?php
+			endif;
+		endif;
+	endforeach;
+?>
+<div class="clear"></div>
+</div><div class="clear"></div>
+	<br clear=all>
+</div>
+</div> 

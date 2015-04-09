@@ -41,7 +41,7 @@
 	    	<h3>Search for Printer</h3>
             <div class="space">
             	<select name="brand" id="brand" onchange="getCategories(this.value)" class="form-control">
-            		<option value="">Select One</option>
+            		<option value="">Select Manufacturer</option>
             		<?php foreach($this->getBrands() as $brand):?>
             			<option value="<?php echo $brand['id']?>"><?php echo $brand['supplier_name']?></option>
             		<?php endforeach;?>
@@ -50,13 +50,13 @@
             
             <div class="space" id="categories">
             	<select name="category" id="category" disabled="disabled" class="form-control">
-            		<option>Select One</option>
+            		<option>Select Type</option>
             	</select>
             </div>
             
             <div class="space" id="models">
-            	<select name="model" id="model" disabled="disabled" class="form-control">
-            		<option>Select One</option>
+            	<select name="model" id="model" disabled="disabled" class="form-control" onchange="this.form.submit()">
+            		<option>Select Model</option>
             	</select>
             </div>
             
