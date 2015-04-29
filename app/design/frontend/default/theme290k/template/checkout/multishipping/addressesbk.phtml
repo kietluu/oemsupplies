@@ -30,8 +30,57 @@
  *
  * @see Mage_Checkout_Block_Multishipping_Addresses
  */
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+foreach($customer->getAddresses() as $address){
+    $options[] = array(
+                    'value' => $address->getId(),
+                    'label' => $address->format('oneline')
+                );
+}
+//echo"<pre>";print_r($options);
+$cart = Mage::getModel('checkout/cart')->getQuote();
+$cart_items = $cart->getAllItems() ;
+//foreach ($cart->getAllItems() as $item) {
+//   // echo '<pre>';print_r($item->getProduct()); exit;
+//   echo  "ProductId :" . $productId = $item->getProduct()->getId() . "<br>" ;
+//   echo  "Product :" . $productName = $item->getProduct()->getName() . "<br>" ;
+//   echo  "qty :" . $productqty = $item->getQty() . "<br>" ;
+//   echo  "price :" . $productPrice = $item->getProduct()->getPrice() . "<br>" ;
+//}
+// exit;
+
+
 ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+<div>
+
+    <select id="product_name">
+        <option value="">Select Product</option>
+    <?php foreach($cart_items as $item) { ?>
+        <option value="<?php echo $item->getQty() ; ?>"><?php echo $item->getProduct()->getName(); ?></option>
+    <?php } ?>
+    </select>&nbsp;&nbsp;
+    <select id="product_qty">
+            <!--<?php foreach ($cart_items as $item) { ?>
+        <option value="<?php echo $item->getProduct()->getId() ?>"><?php echo $item->getQty() ; ?></option>
+        <?php } ?>-->
+    </select>&nbsp;&nbsp;
+    <select id="product_address">
+        <?php foreach($options as $option){ ?>
+        <option value="<?php echo $option['value'] ;  ?>"><?php echo $option['label'] ;  ?></option>
+        <?php } ?>
+    </select>&nbsp;&nbsp;
+
+    <?php foreach($cart_items as $item){ ?>
+    <input id="<?php echo $item->getProduct()->getId() ?>" type="hidden" value="<?php echo $item->getItemDeleteUrl() ?> ">
+    <?php } ?>
+
+    <button id="sbmt_data" > Go </button>
+
+</div>
+<br><br>
+
 <form id="checkout_multishipping_form" action="<?php echo $this->getPostActionUrl() ?>" method="post">
     <div class="multiple-checkout">
         <div class="page-title title-buttons">
@@ -42,7 +91,7 @@
         <input type="hidden" name="new_address" value="0" id="add_new_address_flag" />
         <h2><?php echo $this->__('Please select shipping address for applicable items') ?></h2>
         <table class="data-table" id="multiship-addresses-table">
-            <col />
+            <col width="1" />
             <col width="1" />
             <col width="1" />
             <col width="1" />
@@ -51,7 +100,7 @@
                     <th><?php echo $this->__('Product') ?></th>
                     <th class="a-center"><?php echo $this->__('Qty') ?></th>
                     <th><?php echo $this->__('Send To') ?></th>
-                    <th>&nbsp;</th>
+                    <!--<th>&nbsp;</th>-->
                 </tr>
             </thead>
             <tfoot>
@@ -60,8 +109,9 @@
                 </tr>
             </tfoot>
             <tbody>
-            <?php foreach ($this->getItems() as $_index => $_item): ?>
-                <?php if ($_item->getQuoteItem()) :?>
+               <!--<?php foreach ($this->getItems() as $_index => $_item): ?>
+                <?php if ($_item->getQuoteItem()) :
+                 ?>
                 <tr>
                     <td><?php echo $this->getItemHtml($_item->getQuoteItem())?></td>
                     <td><input type="text" name="ship[<?php echo $_index ?>][<?php echo $_item->getQuoteItemId() ?>][qty]" value="<?php echo $this->escapeHtml($_item->getQty()) ?>" size="2" class="input-text qty" /></td>
@@ -69,7 +119,7 @@
                     <td class="a-center"><a href="<?php echo $this->getItemDeleteUrl($_item) ?>" title="<?php echo $this->__('Remove Item') ?>" class="btn-remove2"><?php echo $this->__('Remove Item') ?></a></td>
                 </tr>
                 <?php endif; ?>
-            <?php endforeach; ?>
+            <?php endforeach; ?> -->
             </tbody>
         </table>
         <script type="text/javascript">decorateTable('multiship-addresses-table')</script>
@@ -79,3 +129,45 @@
         </div>
     </div>
 </form>
+
+
+
+
+<script>
+    jQuery("#product_name").change(function(){
+        jQuery('#product_qty').html('');
+        var qty = jQuery('#product_name').val();
+        var pro_name = jQuery('#product_name :selected').text();
+        if(pro_name != '' && qty != ''){
+            //alert()
+            var content = '' ;
+            for(var i =1 ; i<= qty ; i++){
+                content += "<option value="+i+">"+ i +"</option>" ;
+                //content += content ;
+            }
+            jQuery('#product_qty').append(content);
+        }
+    });
+
+    jQuery("#sbmt_data").click(function(){
+        var maxqty = jQuery('#product_name').val();
+        var qty = jQuery('#product_qty :selected').text();
+        var pro_name = jQuery('#product_name :selected').text();
+        var pro_address = jQuery('#product_address :selected').text();
+        if(pro_name != '' && qty != '' && pro_address != ''){
+            if(maxqty != '' && qty == maxqty){
+                jQuery('#product_name :selected').remove();
+            }else{
+               var remain_qty = parseInt(maxqty) -  parseInt(qty) ;
+               jQuery('#product_name :selected').val(remain_qty);
+            }
+//<td class='a-center'><a href='<?php //echo $this->getItemDeleteUrl($_item) ?>' title='Remove' class='btn-remove2'>Remove</a></td>
+              var html = "<tr>  <td>"+pro_name+"</td><td><input type='text' name='[<?php echo $_index ?>][<?php echo $_item->getQuoteItemId() ?>][qty]' value='"+qty+"' size='2' class='input-text qty' /></td><td>"+pro_address+"</td>   </tr>" ;
+            jQuery('tbody').append(html);
+
+    }else{
+            alert("please select all required fields") ;
+        }
+    });
+
+</script>

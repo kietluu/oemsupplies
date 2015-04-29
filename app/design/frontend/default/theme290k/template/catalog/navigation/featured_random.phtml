@@ -64,7 +64,7 @@ a.button {
 
 $module_name = Mage::app()->getRequest()->getModuleName();
 ?>
-<?php if($module_name == "recycle-empty-toner" || $module_name == "customer" || ($module_name == "catalog" && (Mage::registry('current_category')->getlevel() == 2 || Mage::registry('current_category')->getlevel() == 3))): ?>
+<?php if($module_name == "recycle-empty-toner" || $module_name == "customer" || ($module_name == "catalog" && (Mage::registry('current_category')->getlevel() == 2))): ?>
 
 <?php 
     $collection = Mage::getResourceModel('catalog/product_collection');

@@ -7,7 +7,7 @@ else{
 	$root_path = "E:/xampp2/htdocs/usasupplies/";
 }
 
-set_time_limit(1500);
+set_time_limit(7200);
 ini_set("memory_limit", "1024M");
 
 require_once("Vendor1.php");

@@ -187,19 +187,23 @@ class Mage_Catalog_Block_Layer_View extends Mage_Core_Block_Template
 		$filters = array();
 		
 		$categoryId = Mage::registry('current_category')->getId();
-		$dbRead = Mage::getSingleton("core/resource")->getConnection("core_read");
-		$result = $dbRead->fetchRow("Select entity_id from catalog_category_entity where parent_id = '$categoryId'");
-		if(!$result) {
-			if ($categoryFilter = $this->_getCategoryFilter()) {
-				$filters[] = $categoryFilter;
-			}
-			
-			$filterableAttributes = $this->_getFilterableAttributes();
-			foreach ($filterableAttributes as $attribute) {
-				$filters[] = $this->getChild($attribute->getAttributeCode() . '_filter');
-			}
+		//$dbRead = Mage::getSingleton("core/resource")->getConnection("core_read");
+		//$result = $dbRead->fetchRow("Select entity_id from catalog_category_entity where parent_id = '$categoryId'");
+		
+		$category = Mage::getModel('catalog/category')->load( $categoryId );
+		if( $category->getLevel() > 2 ){
+			//if(!$result) {
+				if ($categoryFilter = $this->_getCategoryFilter()) {
+					$filters[] = $categoryFilter;
+				}
+				
+				$filterableAttributes = $this->_getFilterableAttributes();
+				foreach ($filterableAttributes as $attribute) {
+					$filters[] = $this->getChild($attribute->getAttributeCode() . '_filter');
+				}
+			//}
 		}
-
+		
 		return $filters;
 	}
 

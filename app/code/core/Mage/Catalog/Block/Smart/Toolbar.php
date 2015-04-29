@@ -170,7 +170,7 @@ class Mage_Catalog_Block_Smart_Toolbar extends Mage_Core_Block_Template
 	{
 		parent::_construct();
 		$this->_orderField  = Mage::getStoreConfig(
-		Mage_Catalog_Model_Config::XML_PATH_LIST_DEFAULT_SORT_BY
+			Mage_Catalog_Model_Config::XML_PATH_LIST_DEFAULT_SORT_BY
 		);
 
 		$this->_availableOrder = $this->_getConfig()->getAttributeUsedForSortByArray();

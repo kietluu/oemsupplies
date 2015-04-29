@@ -218,6 +218,9 @@ class Mage_Checkout_MultishippingController extends Mage_Checkout_Controller_Act
             $message = $this->_getCheckout()->getMinimumAmountDescription();
             $this->_getCheckout()->getCheckoutSession()->addNotice($message);
         }
+        
+        $this->_getCheckout()->reset();
+        
         $this->loadLayout();
         $this->_initLayoutMessages('customer/session');
         $this->_initLayoutMessages('checkout/session');
@@ -250,9 +253,27 @@ class Mage_Checkout_MultishippingController extends Mage_Checkout_Controller_Act
             else {
                 $this->_redirect('*/*/addresses');
             }
-            if ($shipToInfo = $this->getRequest()->getPost('ship')) {
+            
+            //set here $shipToInfo manualy because form is chanegd
+            //print_r($_POST); exit;
+            $ship = array();
+            foreach($_POST['shipping_product'] as $index => $item_quote_id){
+            	if($item_quote_id){
+            		$ship[$index][$item_quote_id]['address'] = $_POST['shipping_address'][$index];
+            		$ship[$index][$item_quote_id]['qty'] = $_POST['shipping_qty'][$index];
+            	}
+            }
+            
+            $shipToInfo = $ship;
+            if(!$shipToInfo){
+            	$shipToInfo = $this->getRequest()->getPost('ship');
+            }
+            
+            if ($shipToInfo) {
                 $this->_getCheckout()->setShippingItemsInformation($shipToInfo);
             }
+            
+            $this->_redirect('*/*/shipping');
         }
         catch (Mage_Core_Exception $e) {
             $this->_getCheckoutSession()->addError($e->getMessage());
@@ -572,5 +593,17 @@ class Mage_Checkout_MultishippingController extends Mage_Checkout_Controller_Act
         );
 
         $this->setFlag('', 'redirectLogin', true);
+    }
+    
+    public function updateQtyBoxAction(){
+		$layout = Mage::getSingleton('core/layout');
+
+		$layout->getUpdate();
+		$renderer = $layout->createBlock('checkout/multishipping_addresses');
+
+		$renderer->setTemplate("checkout/multishipping/updateqty.phtml");
+		$rendererhtml = $renderer->toHtml();
+
+		$this->getResponse()->setBody($rendererhtml);
     }
 }

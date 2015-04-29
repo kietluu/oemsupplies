@@ -125,7 +125,7 @@ class Vendor1{
 			}
 
 			$product_description .= "<p>".$product['notes']['Long_Selling_Copy']."</p>";
-			$product_description .= "<br /><table>";
+			$product_description .= "<br /><table class='table'>";
 			$i = 0;
 			foreach($product['Attributes'] as $key => $value){
 				$product_description .= '<td><b>'.$key.'</b></td>';
@@ -224,7 +224,7 @@ class Vendor1{
 		$attributes_array = array();
 
 		foreach($attributes as $sequence => $value){
-			if($sequence > 84){
+			if($sequence > 8){
 				continue;
 			}
 
@@ -255,12 +255,12 @@ class Vendor1{
 					            'required' => false,
 					            'user_defined' => true,
 					            'default' => '1',
-					            'searchable' => true,
+					            'searchable' => false,
 					            'filterable' => true,
-					            'comparable' => true,
-                                'filterable_in_search' => true,
+					            'comparable' => false,
+                                'filterable_in_search' => false,
 					            'visible_on_front' => false,
-					            'visible_in_advanced_search' => true,
+					            'visible_in_advanced_search' => false,
 					            'used_in_product_listing' => false,
 					            'unique' => false,
 								'position' => $sequence,	

@@ -3,13 +3,38 @@
 //Get the Current Category
 $_maincategorylisting = $this->getCurrentCategory();
 
+function getCategoryGlobalAttributes($category_id , $limit = 4){
+	return;
+	$dbRead  = Mage::getSingleton("core/resource")->getConnection("core_read");
+	$dbWrite = Mage::getSingleton("core/resource")->getConnection("core_write");
+
+	//$categories = $dbRead->fetchAll("select group_concat(distinct entity_id) as entity_id from catalog_category_entity where parent_id = '$category_id'");
+	//$category_id = $categories['entity_id'];
+
+	$products = $dbRead->fetchAll("select distinct product_id from catalog_category_product where category_id in ($category_id)");
+	$productIds = array();
+	if($products){
+		foreach($products as $product){
+			$productIds[] = $product['product_id'];
+		}
+	}
+
+	$productIdsStr = implode(",", $productIds);
+	$valuesIds = $dbRead->fetchRow("select group_concat(distinct value) as ids from catalog_product_entity_int where entity_id in ($productIdsStr)");
+	$valuesIdsStr = implode(",", $valuesIds);
+
+	$_query = "select distinct ao.option_id , aov.value from eav_attribute_option ao inner join eav_attribute_option_value aov on (ao.option_id = aov.option_id) where attribute_id = 137 and aov.option_id in ($valuesIdsStr) limit $limit";
+	$attribute_options = $dbRead->fetchAll($_query);
+	
+	return $attribute_options;
+}
 ?>
 <style>
  .sub-category-listing{
  	 <?php if($_maincategorylisting->getLevel() == 2):?>
      		height:340px;
      <?php else:?>
-     		height:240px;
+     		height:300px;
      <?php endif;?>
      		
      border:1px solid #b1b1b1;
@@ -35,27 +60,12 @@ $_maincategorylisting = $this->getCurrentCategory();
  	<?php	
 		// Iterate all categories in store
 		foreach ($this->getCurrentChildCategories() as $_category):
-			if($_category->getIsActive()):
-				$cur_category = Mage::getModel('catalog/category')->load($_category->getId());
-				
-				// Load a random product from this category
-				$products = Mage::getResourceModel('catalog/product_collection')->addCategoryFilter($cur_category);
-				$products->getSelect()->order(new Zend_Db_Expr('RAND()'))->limit(100);
-				$products->load();
-				
-				// This a bit of a fudge - there's only one element in the collection
-				$_product = null;
-				foreach ( $products as $_product ) {}
-				if(isset($_product)):?>
-					 <div class="sub-category-listing col-sm-3">
-					  <div class="linkimage">
+			if($_category->getIsActive()):?>
+				<div class="sub-category-listing col-sm-3">
+				 	<div class="linkimage">
 					    <a href="<?php echo $this->getCategoryUrl($_category)?>" class="product-image">
-						  <?php
-							   $layer = Mage::getSingleton('catalog/layer');
-							   $layer->setCurrentCategory($cur_category);
-							   if($_imgUrl=$this->getCurrentCategory()->getImageUrl()):
-						  		?>
-						  		<img src="<?php echo $_imgUrl ?>"  width="135" height="135" class="img-responsive" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
+						  <?php if($_imgUrl=$this->getCurrentCategory()->getImageUrl()):	?>
+						  		   <img src="<?php echo $_imgUrl ?>"  width="135" height="135" class="img-responsive" alt="<?php echo $this->htmlEscape($_category->getName()) ?>" />
 					 	  <?php endif; ?>
  
  						  <?php
@@ -83,20 +93,35 @@ $_maincategorylisting = $this->getCurrentCategory();
 					
 					<div>
 	                    <dl id="narrow-by-list">
-	                    	<ul>
-	                    		<?php $subcategories = Mage::getModel('catalog/category')->getCategories($this->getCurrentCategory()->getId());?>
-	                    		
-	                    		<?php if($subcategories):?>
-					               	<?php $n = 0;foreach ($subcategories as $category): if($n >= 4) break;?>
-					                    <li><a href="<?php echo $category->getRequestPath();?>"><?php echo $category->getName(); ?></a></li>
-					                <?php $n++; endforeach;?> 
-					                
-					            <?php else:?>
-					            		<li>There are no sub categories.</li>
-					            <?php endif;?>     
-					            
-					            <li style="margin-top:5px;"><a href="<?php echo $this->getCategoryUrl($_category)?>"><b>All Categories</b></a></li>
-				           </ul>       
+	                    	<?php if($_maincategorylisting->getLevel() == 2):?>
+			                    	<ul>
+			                    		<?php $subcategories = Mage::getModel('catalog/category')->getCategories($_category->getId());?>
+			                    		
+			                    		<?php if($subcategories):?>
+							               	<?php $n = 0;foreach ($subcategories as $category): if($n >= 4) break;?>
+							                    <li><a href="<?php echo $category->getRequestPath();?>"><?php echo $category->getName(); ?></a></li>
+							                <?php $n++; endforeach;?> 
+							                
+							            <?php else:?>
+							            		<li>There are no sub categories.</li>
+							            <?php endif;?>     
+							            
+							            <li style="margin-top:5px;"><a href="<?php echo $this->getCategoryUrl($_category)?>"><b>All Categories</b></a></li>
+						           </ul>    
+						    <?php else:?>
+						    		<ul>
+			                    		<?php $subcategories = getCategoryGlobalAttributes($this->getCurrentCategory()->getId());?>
+			                    		
+			                    		<?php if($subcategories):?>
+							               	<?php $n = 0;foreach ($subcategories as $category): if($n >= 4) break;?>
+							                    <li><a href="?global_product_type=<?php echo $category['option_id'];?>"><?php echo $category['value']; ?></a></li>
+							                <?php $n++; endforeach;?> 
+							                
+							            <?php else:?>
+							            		<li>There are no sub categories.</li>
+							            <?php endif;?>     
+						           </ul>  
+						    <?php endif;?>
             		   </dl>
             		   <script type="text/javascript">decorateDataList('narrow-by-list');</script>
                    </div>
@@ -107,7 +132,6 @@ $_maincategorylisting = $this->getCurrentCategory();
 				   <?php endif; ?>
 			  </div> 
 		<?php
-			endif;
 		endif;
 	endforeach;
 ?>

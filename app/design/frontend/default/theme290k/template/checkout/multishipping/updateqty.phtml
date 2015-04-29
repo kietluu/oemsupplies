@@ -1,0 +1,24 @@
+<?php
+
+$product_id = $_GET['pid'];
+$index = $_GET['index'];
+$total = $_GET['total'];
+
+$products  = $this->getItems();
+$max_qty   = 0;
+foreach ($this->getItems() as $_index => $_item){
+	if($product_id == $_item->getQuoteItemId()){
+		$max_qty = $_item->getQty();
+	}
+}
+
+$max_qty -= $total;
+
+?>
+<select name="shipping_qty[<?php echo $index?>]" onchange="hideExtraRows(<?php echo $product_id;?>,<?php echo $index;?>);" style="width:100px;height:25px;">
+    <option value="">Select Quantity</option>
+     		 
+    <?php for($q = 1; $q <= $max_qty ; $q++):?>
+    	<option value="<?php echo $q;?>"><?php echo $q;?></option>
+    <?php endfor;?>
+</select>
