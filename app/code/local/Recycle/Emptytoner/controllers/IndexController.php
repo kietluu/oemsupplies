@@ -101,6 +101,7 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
 		$this->renderLayout();
 	}
 
+
 	public function requestquoteAction() {
 		$product_sku = '' ;
 		//Get current layout state
@@ -118,17 +119,14 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
 		$this->getLayout()->getBlock('left')->insert($left_block , 'featured', true);
 
 		$params = $this->getRequest()->getParams();
-		if(isset($_GET['pid']) && !empty($_GET['pid'])){
-			$product_id = $_GET['pid'] ;
-			
-			if(isset($params) && !empty($params) && $this->getRequest()->isPost()) {
-				$company_name = $params['companyname'] ;
-				$name = $params['contactname'] ;
-				$phone_number = $params['phone'] ;
-				$email_address = $params['email'] ;
+		if(isset($params) && !empty($params)) {
+			$company_name = $params['companyname'] ;
+			$name = $params['contactname'] ;
+			$phone_number = $params['phone'] ;
+			$email_address = $params['email'] ;
 
-				if ($email_address && !empty($name) && $phone_number && $company_name) {
-					$htmtmsg = '<br /><br /><table style="border-collapse:collapse;" cellpadding="5" cellspacing="0" align="left" border="1">
+			if ($email_address && !empty($name) && $phone_number && $company_name) {
+				$htmtmsg = '<br /><br /><table style="border-collapse:collapse;" cellpadding="5" cellspacing="0" align="left" border="1">
 						 <tr><td width="180px;">Company : </td><td>'.$company_name.'</td></tr>
 						 <tr><td>Name : </td><td>'.$name.'</td></tr>
 						 <tr><td>Phone Number : </td><td>' . $phone_number .'</td></tr>
@@ -138,39 +136,41 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
 						 <tr><td>Address : </td><td style="width:300px;word-wrap:break-word;">' . $_POST['address'] .'</td></tr>
 					 </table> <br /><br />';
 
-					$text_message = "Company : $company_name \n\n";
-					$text_message .= "Name : $name \n\n";
-					$text_message .= "Phone Number : $phone_number \n\n";
-					$text_message .= "Email : $email_address \n\n";
-					$text_message .= "Part Number : {$_POST['partnumber']} \n\n";
-					$text_message .= "Product Quantity : {$_POST['productquantity']} \n\n";
-					$text_message .= "Address : {$_POST['address']} \n\n";
-					$text_message .= "\n\n";
-					$htmtmsg .= "<div><br clear='all' /></div><br /><br />";
-					$subject = "Request A Quote";
+				$text_message = "Company : $company_name \n\n";
+				$text_message .= "Name : $name \n\n";
+				$text_message .= "Phone Number : $phone_number \n\n";
+				$text_message .= "Email : $email_address \n\n";
+				$text_message .= "Part Number : {$_POST['partnumber']} \n\n";
+				$text_message .= "Product Quantity : {$_POST['productquantity']} \n\n";
+				$text_message .= "Address : {$_POST['address']} \n\n";
+				$text_message .= "\n\n";
+				$htmtmsg .= "<div><br clear='all' /></div><br /><br />";
+				$subject = "Request A Quote";
 
-					$headers = "MIME-Version: 1.0" . "\r\n";
-					$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-					$headers .= "From: donotreply@oemsupplies.com" . "\r\n" ."";
+				$headers = "MIME-Version: 1.0" . "\r\n";
+				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+				$headers .= "From: donotreply@oemsupplies.com" . "\r\n" ."";
 
-					try{
-						$to = "daron_walton@oemsupplies.com";
-						mail($to,$subject,$htmtmsg ,$headers);
+				try{
 
-						mail("vipin.garg12@gmail.com",$subject,$htmtmsg ,$headers);
-						Mage::getSingleton('core/session')->addSuccess('Your request has been sent. We will contact you shortly.');
-					}
-					catch(Exception $ex) {
-						Mage::getSingleton('core/session')->addError('An error occured, Please try again.');
-					}
+					$to = "daron_walton@oemsupplies.com";
+					mail($to,$subject,$htmtmsg ,$headers);
+
+					mail("vipin.garg12@gmail.com",$subject,$htmtmsg ,$headers);
+					Mage::getSingleton('core/session')->addSuccess('Your request has been sent. We will contact you shortly.');
 				}
-				$this->_redirect('request-a-quote?pid='.$product_id);
+				catch(Exception $ex) {
+					Mage::getSingleton('core/session')->addError('An error occured, Please try again.');
+				}
 			}
+			//$this->_redirect('request-a-quote');
 		}
-		else{
-			Mage::getSingleton('core/session')->addError('An error occured, Please select a product.');
+		if(isset($_GET['pid']) && !empty($_GET['pid'])){
+			$product_id = $_GET['pid'] ;
 		}
-		
+		//             else{
+		//                 Mage::getSingleton('core/session')->addError('An error occured, Please Select Product Properly.');
+		//             }
 		$this->getLayout()->getBlock('content')->append($block);
 		$this->getLayout()->getBlock('right')->insert($block, 'catalog.compare.sidebar', true);
 		$this->_initLayoutMessages('core/session');
@@ -180,8 +180,9 @@ class Recycle_Emptytoner_IndexController extends Mage_Core_Controller_Front_Acti
 		if(isset($product_id) && $product_id != 0){
 			$product = Mage::getModel('catalog/product')->load($product_id);
 			$product_sku = $product->getSku() ;
+			//echo $product_sku; exit;
 		}
-		$block->assign(array('name'=>$name ,'email'=> $email , 'product_sku'=>$product_sku, 'product_id' => $product_id));
+		$block->assign(array('name'=>$name ,'email'=> $email ,'product_id'=> $product_id, 'product_sku'=>$product_sku));
 		$this->renderLayout();
 	}
 

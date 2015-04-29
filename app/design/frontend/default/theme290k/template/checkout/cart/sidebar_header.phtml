@@ -76,6 +76,8 @@
                         
                         <button type="button" title="<?php echo $this->__('One Step Checkout') ?>" class="button" onclick="setLocation('<?php echo $this->getUrl('checkout/onestep', array('_secure'=>true)); ?>')"><span><span><?php echo $this->__('One Step Checkout') ?></span></span></button>
                         
+                        <button type="button" title="<?php echo $this->__('Checkout with Multiple Addresses') ?>" class="button" onclick="setLocation('<?php echo $this->getUrl('checkout/multishipping', array('_secure'=>true)); ?>')"><span><span><?php echo $this->__('Multiple Shipping') ?></span></span></button>
+
                         <button type="button" title="<?php echo $this->__('My Cart') ?>" class="button" onclick="setLocation('<?php echo $this->getUrl('checkout/cart') ?>')"><span><span><?php echo $this->__('My Cart') ?></span></span></button>
                     </div>
                     <script type="text/javascript">decorateList('cart-sidebar', 'none-recursive')</script>
@@ -90,6 +92,6 @@
             </div>
         </div>
         <p class="mini-cart"><strong>0</strong></p>
-    <?php endif ?>
+    <?php endif; ?>
     </div>
 </div>

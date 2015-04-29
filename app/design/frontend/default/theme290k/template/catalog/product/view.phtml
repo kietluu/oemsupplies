@@ -71,6 +71,19 @@
             <?php endif; ?> 
             
             <?php echo $this->getChildHtml('product_type_data') ?>
+            <?php
+            $resource = Mage::getSingleton('core/resource');
+            $readConnection = $resource->getConnection('core_read');
+            $customer_data = Mage::getSingleton('customer/session')->getCustomer();
+            $customer_id = $customer_data->getId();
+//                                    if(!empty($customer_id)){
+//                                    $product_id = $_product->getId();
+//                                    $query = 'SELECT * FROM customerprices_prices where customer_id = ' . $customer_id . ' and product_id = ' . $product_id ;
+//                                    $results = $readConnection->fetchAll($query);
+//                                    print_r($customer_id);print_r($product_id);print_r($results);
+//                                    }
+                                    ?>
+
             <?php echo $this->getTierPriceHtml() ?>
             <div class="clear"></div>
 
@@ -88,7 +101,22 @@
             <?php if (!$this->hasOptions()):?>
                 <div class="add-to-box">
                     <?php if($_product->isSaleable()): ?>
+
+                    
+                        <?php if($customer_id): ?>
+                    <?php
+                    $query = 'SELECT * FROM customerprices_prices where customer_id = ' . $customer_id . ' and product_id = ' . $_product->getId() ;
+                    $results = $readConnection->fetchAll($query); ?>
+                    <?php if(empty($results)){ ?>
                         <?php echo $this->getChildHtml('addtocart') ?>
+                    <?php }else if( !empty($results) && isset($results[0]['special_price']) && ($results[0]['special_price'] == 0 || $results[0]['special_price'] == NULL ) ) {
+                    $pid = $_product->getId() ;?>
+                     <button type="button" title="<?php echo $this->__('Request A Quote') ?>" class="button" onclick="setLocation('<?php echo $this->getUrl("request-a-quote") . "?pid=$pid" ?>')"><span><span><?php echo $this->__('Request A Quote') ?></span></span></button>
+                    <?php }elseif(!empty($results) && isset($results[0]['special_price']) && ($results[0]['special_price'] > 0)){ ?>
+                    <?php echo $this->getChildHtml('addtocart') ?>
+                    <?php } ?>
+                        <?php endif; ?>
+
                         <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
                             <span class="or"><?php echo $this->__('OR') ?></span>
                         <?php endif; ?>
